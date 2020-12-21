@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "936701381403",
+    "project_id": "weighit-f506b",
+    "storage_bucket": "weighit-f506b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:936701381403:android:4eb9d09b64ef68c7ab61be",
+        "android_client_info": {
+          "package_name": "com.capstone.weighit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "936701381403-eb5ciq7atee2lkekjv3nbeeul12jpdbe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.capstone.weighit",
+            "certificate_hash": "04f6fd65abefec1c6ea571e4fc83ad6086d789c0"
+          }
+        },
+        {
+          "client_id": "936701381403-ahmh8l8oulmbevtnbpuup3g6lf74hjs8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFHr7dk1HjM99NF62WORBRq8IiHugfqvY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "936701381403-ahmh8l8oulmbevtnbpuup3g6lf74hjs8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
