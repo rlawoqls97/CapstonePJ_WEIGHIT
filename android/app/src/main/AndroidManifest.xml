@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.weighit">
    <application
-        android:label="weighit"
+        android:label="Weighit"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
