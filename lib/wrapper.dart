@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
+import 'package:weighit/screens/authenticate/login.dart';
+import 'package:weighit/screens/home/home.dart';
 class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -9,9 +11,9 @@ class Wrapper extends StatelessWidget {
     final user = Provider.of<TheUser>(context);
 
     if (user == null) {
-      return LoginPage();
+      return LogIn();
     } else {
-      return Container(child: Text('Home'));
+      return HomePage();
     }
   }
 }
