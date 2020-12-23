@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:weighit/models/user_info.dart';
 
@@ -49,9 +51,31 @@ class AuthService {
       return null;
     }
   }
+
   // sign in with email & password
+  Future signInWithEmailandPassword() async {}
 
   // register with email & password
+  Future registerWithEmailandPassword(
+      String email, String password, BuildContext context) async {
+    try {
+      var userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      var user = userCredential.user;
+
+      return _userFromFirebaseUser(user);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+      return e.code;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 
   // sign out
   Future signOut() async {
