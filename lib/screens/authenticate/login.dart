@@ -117,7 +117,14 @@ class _LogInState extends State<LogIn> {
                     children: [
                       RaisedButton(
                           color: Colors.white,
-                          onPressed: () {},
+                          onPressed: () async {
+                            dynamic result = await _auth.signInWithApple();
+                            if (result == null){
+                              setState(() {
+                                error = '애플 로그인 중 에러가 발생했습니다';
+                              });
+                            }
+                          },
                           shape: CircleBorder(),
                           child: CircleAvatar(
                             radius: 22,
@@ -365,11 +372,6 @@ class _LogInState extends State<LogIn> {
                     onPressed: () async {
                       dynamic result = await _auth.signInWithEmailandPassword(
                           _emailController.text, _passwordController.text);
-                      if (result == null) {
-                        setState(() {
-                          error = 'No user found for that email.';
-                        });
-                      }
                       if (result == 'user-not-found') {
                         setState(() {
                           error = 'No user found for that email.';
@@ -389,6 +391,10 @@ class _LogInState extends State<LogIn> {
                   'Forgot Password?',
                   style: TextStyle(color: Colors.blue),
                 ),
+                Text(
+                  error,
+                  style: TextStyle(color: Colors.red, fontSize: 13),
+                )
               ],
             ),
           ),
