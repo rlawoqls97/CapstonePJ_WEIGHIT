@@ -352,12 +352,15 @@ class _LogInState extends State<LogIn> {
                       'Log IN',
                       style: TextStyle(color: Colors.white),
                     ),
-                    onPressed: () {
-                      //                 if (e.code == 'user-not-found') {
-                      //   print('No user found for that email.');
-                      // } else if (e.code == 'wrong-password') {
-                      //   print('Wrong password provided for that user.');
-                      // }
+                    onPressed: () async {
+                      dynamic result = await _auth.signInWithEmailandPassword(
+                          _emailController.text, _passwordController.text);
+
+                      if (result == 'user-not-found') {
+                        print('No user found for that email.');
+                      } else if (result == 'wrong-password') {
+                        print('Wrong password provided for that user.');
+                      }
                     },
                   ),
                 ),
