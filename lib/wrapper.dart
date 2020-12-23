@@ -32,7 +32,8 @@ class Wrapper extends StatelessWidget {
             return HomePage();
           } else {
             //만약 유저의 data가 없으면 최초 정보 입력 화면으로 간다.
-            return InputInformation();
+            return HomePage();
+            // return InputInformation();
           }
         },
       );
