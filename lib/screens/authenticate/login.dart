@@ -125,7 +125,14 @@ class _LogInState extends State<LogIn> {
                           )),
                       RaisedButton(
                           color: Colors.white,
-                          onPressed: () {},
+                          onPressed: () async {
+                            dynamic result = await _auth.signInWithGoogle();
+                            if (result == null) {
+                              setState(() {
+                                error = '구글 로그인 중 에러가 발생했습니다';
+                              });
+                            }
+                          },
                           shape: CircleBorder(),
                           child: CircleAvatar(
                             radius: 22,
@@ -339,6 +346,9 @@ class _LogInState extends State<LogIn> {
                       if (value.isEmpty) {
                         return 'Password를 입력해주세요.';
                       }
+                      if (value.length < 8) {
+                        return '8글자 이상 패스워드를 입력해주세요.';
+                      }
                       return null;
                     }),
                 SizedBox(
@@ -355,11 +365,19 @@ class _LogInState extends State<LogIn> {
                     onPressed: () async {
                       dynamic result = await _auth.signInWithEmailandPassword(
                           _emailController.text, _passwordController.text);
-
+                      if (result == null) {
+                        setState(() {
+                          error = 'No user found for that email.';
+                        });
+                      }
                       if (result == 'user-not-found') {
-                        print('No user found for that email.');
+                        setState(() {
+                          error = 'No user found for that email.';
+                        });
                       } else if (result == 'wrong-password') {
-                        print('Wrong password provided for that user.');
+                        setState(() {
+                          error = 'Wrong password provided for that user.';
+                        });
                       }
                     },
                   ),
