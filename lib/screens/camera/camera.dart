@@ -167,8 +167,8 @@ class _CameraScreenState extends State<CameraScreen> {
             Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                  image: AssetImage('assets/apple.jpg'),
+                  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.4), BlendMode.dstATop),
+                  image: AssetImage('assets/body1.jpeg'),
                 ),
               ),
               child: Align(

@@ -389,7 +389,7 @@ class _LogInState extends State<LogIn> {
                 ),
                 Text(
                   'Forgot Password?',
-                  style: TextStyle(color: Colors.blue),
+                  style: TextStyle(color: Theme.of(context).accentColor),
                 ),
                 Text(
                   error,
