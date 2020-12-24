@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  final List<Widget> _children = [CardTile(), Camera(), Status(), Test()];
+  final List<Widget> _children = [CardTile(), CameraScreen(), Status(), Test()];
   @override
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
