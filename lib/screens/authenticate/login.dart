@@ -10,7 +10,7 @@ class LogInBackground extends CustomPainter {
     // var paint = Paint()..color = Color(0xff25E4BD);
     var paint = Paint()..color = Colors.white;
     canvas.drawCircle(
-        Offset(size.width * 0.5, size.height * 0.82), size.height * 0.5, paint);
+        Offset(size.width * 0.5, size.height * 0.75), size.height * 0.4, paint);
   }
 
   @override
@@ -56,15 +56,11 @@ class _LogInState extends State<LogIn> {
                 children: [
                   SizedBox(height: size.height * 0.1),
                   Image.asset('assets/name.png'),
-                  Card(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Container(
-                      width: size.width * 0.3,
-                      height: size.width * 0.3,
-                      child: Center(child: Text('icon')),
+                  Container(
+                    width: size.width * 0.3,
+                    height: size.width * 0.3,
+                    child: Center(
+                      child: Image.asset('assets/logo.png'),
                     ),
                   ),
                   SizedBox(height: size.height * 0.05),
