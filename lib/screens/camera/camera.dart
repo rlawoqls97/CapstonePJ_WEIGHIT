@@ -167,6 +167,7 @@ class _CameraScreenState extends State<CameraScreen> {
             Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
+                  fit: BoxFit.fill,
                   colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.4), BlendMode.dstATop),
                   image: AssetImage('assets/body1.jpeg'),
                 ),
