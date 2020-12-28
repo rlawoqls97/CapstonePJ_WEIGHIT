@@ -10,7 +10,7 @@ class LogInBackground extends CustomPainter {
     // var paint = Paint()..color = Color(0xff25E4BD);
     var paint = Paint()..color = Colors.white;
     canvas.drawCircle(
-        Offset(size.width * 0.5, size.height * 0.8), size.height * 0.5, paint);
+        Offset(size.width * 0.5, size.height * 0.82), size.height * 0.5, paint);
   }
 
   @override
@@ -54,16 +54,8 @@ class _LogInState extends State<LogIn> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  SizedBox(height: size.height * 0.05),
-                  Text(
-                    'WEIGHIT!',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
+                  SizedBox(height: size.height * 0.1),
+                  Image.asset('assets/name.png'),
                   Card(
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
@@ -119,7 +111,7 @@ class _LogInState extends State<LogIn> {
                           color: Colors.white,
                           onPressed: () async {
                             dynamic result = await _auth.signInWithApple();
-                            if (result == null){
+                            if (result == null) {
                               setState(() {
                                 error = '애플 로그인 중 에러가 발생했습니다';
                               });
