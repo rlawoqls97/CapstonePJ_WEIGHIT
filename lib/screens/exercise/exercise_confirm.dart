@@ -16,7 +16,7 @@ class ExerciseConfirm extends StatelessWidget {
           appBar: AppBar(
             iconTheme: IconThemeData(color: Colors.black),
             title: Text(
-              '제목',
+              '어깨운동, 초급',
               style: TextStyle(color: Colors.black),
             ),
             centerTitle: true,
