@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
 import 'package:weighit/screens/exercise/exercise_confirm.dart';
 import 'package:weighit/screens/make_routine.dart';
@@ -13,9 +14,11 @@ class CardTile extends StatefulWidget {
 
 class _CardTileState extends State<CardTile> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final _user = Provider.of<TheUser>(context);
     return SafeArea(
       child: ListView(
         children: [
@@ -31,14 +34,14 @@ class _CardTileState extends State<CardTile> {
                   child: Row(
                     children: [
                       Text(
-                        '헬스마스터님',
+                        _user.username + '님',
                         style: Theme.of(context).textTheme.headline1,
                       ),
                       SizedBox(
                         width: size.width * 0.01,
                       ),
                       Text(
-                        '20일 째 운동중!',
+                        '${_user.workedDays} 일째 운동중!',
                         style: Theme.of(context).textTheme.headline2,
                       ),
                       IconButton(

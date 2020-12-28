@@ -33,7 +33,7 @@ class _ExerciseListState extends State<ExerciseList> {
                       style: Theme.of(context).textTheme.headline6,
                     ),
                     Container(
-                      width: size.width * 0.27,
+                      width: size.width * 0.34,
                       height: size.height * 0.05,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -46,42 +46,34 @@ class _ExerciseListState extends State<ExerciseList> {
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.5),
                             spreadRadius: 3,
-                            blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
+                            blurRadius: 4,
+                            offset: Offset(5, 5), // changes position of shadow
                           ),
                         ],
                       ),
                       child: Center(
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            InkWell(
-                              onTap: () {
+                            IconButton(
+                              icon: Icon(Icons.remove),
+                              onPressed: () {
                                 setState(() {
                                   setNo--;
                                 });
                               },
-                              child: Text(
-                                '-',
-                                style: TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.w400),
-                              ),
                             ),
                             Text(
                               '$setNo set',
                               style: TextStyle(fontSize: 16),
                             ),
-                            InkWell(
-                              onTap: () {
+                            IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () {
                                 setState(() {
                                   setNo++;
                                 });
                               },
-                              child: Text(
-                                '+',
-                                style: TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.w400),
-                              ),
                             ),
                           ],
                         ),

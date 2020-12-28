@@ -29,11 +29,13 @@ class Wrapper extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Scaffold(body: Center(child: CircularProgressIndicator()));
           } else if (snapshot.hasData && snapshot.data.data() != null) {
+            user.username = snapshot.data.get('username');
+            user.weight = snapshot.data.get('weight');
+            user.workedDays = snapshot.data.get('workedDays');
             return HomePage();
           } else {
             //만약 유저의 data가 없으면 최초 정보 입력 화면으로 간다.
-            return HomePage();
-            // return InputInformation();
+            return InputInformation();
           }
         },
       );

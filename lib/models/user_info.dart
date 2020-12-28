@@ -1,8 +1,18 @@
 class TheUser {
   final String uid;
+
   final String level;
   final String routine;
-  TheUser({this.uid, this.level, this.routine});
+  String username;
+  String weight;
+  int workedDays;
+  TheUser(
+      {this.uid,
+      this.level,
+      this.routine,
+      this.username,
+      this.weight,
+      this.workedDays});
 }
 
 class UserExercise {

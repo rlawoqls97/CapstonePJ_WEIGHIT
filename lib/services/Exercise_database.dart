@@ -12,6 +12,7 @@ class ExerciseDB {
       FirebaseFirestore.instance.collection('exercise');
 
   //유저마다 가지고 있는 user collection에 있는 자신 전용 collection을 update하는 것
+  // index 추가 해야함
   Future updateUserExerciseData(
       String name, String part, int weight, int sets, int reps) async {
     return await userCollection
@@ -27,6 +28,7 @@ class ExerciseDB {
   }
 
   //전체 exercise collection update
+  // index 추가 해야함
   Future updateExerciseData(String name, String part) async {
     return await exerciseCollection.add({
       'name': name,
