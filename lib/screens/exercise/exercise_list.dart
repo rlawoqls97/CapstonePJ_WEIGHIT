@@ -37,6 +37,7 @@ class _ExerciseListState extends State<ExerciseList> {
                       height: size.height * 0.05,
                       decoration: BoxDecoration(
                         color: Colors.white,
+                        border: Border.all(color: Theme.of(context).accentColor),
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10),
                             topRight: Radius.circular(10),
