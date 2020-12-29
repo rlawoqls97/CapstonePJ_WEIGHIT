@@ -15,23 +15,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  final List<Widget> _children = [CardTile(), CameraScreen(), Status(), Test()];
+  final List<Widget> _children = [CardTile(), CardTile(), Status(), Test()];
   @override
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Widget build(BuildContext context) {
-    final size = MediaQuery
-        .of(context)
-        .size;
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       bottomNavigationBar: SizedBox(
         height: size.height * 0.1,
         child: BottomNavigationBar(
           backgroundColor: Color(0xffF8F7F7),
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: Theme
-              .of(context)
-              .accentColor,
+          selectedItemColor: Theme.of(context).accentColor,
           unselectedItemColor: Color(0xff878787),
           currentIndex: _selectedIndex,
           onTap: (int index) {
