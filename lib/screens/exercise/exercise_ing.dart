@@ -48,18 +48,15 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
             color: Colors.green,
             child: Text('벤치프레스 5 Set'),
           ),
-          Container(
-            width: 200,
-            height: 50,
-            color: Colors.green,
-            child: Text('사진'),
+          SizedBox(
+            height: size.height * 0.2,
           ),
           Container(
-            width: 200,
-            height: 50,
-            color: Colors.green,
-            child: Text('1세트의 운동이 끝날 때 마다 핸드폰을 옆으로 흔드세요'),
+            padding: EdgeInsets.only(bottom: size.height * 0.05),
+            child: Image.asset('assets/shaking.png'),
           ),
+          Text('1세트의 운동이 끝날 때 마다'),
+          Text('핸드폰을 옆으로 흔드세요'),
         ],
       ),
     );
