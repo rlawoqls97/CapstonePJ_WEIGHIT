@@ -31,6 +31,7 @@ class ExerciseConfirm extends StatelessWidget {
           body: Column(
             children: [
               Expanded(child: ExerciseList()),
+              Text('운동 추가하기\n\n\n\n\n'),
               SizedBox(
                 width: double.infinity,
                 height: size.height * 0.1,
