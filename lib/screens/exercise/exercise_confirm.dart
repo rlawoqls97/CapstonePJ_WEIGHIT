@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
+import 'package:weighit/screens/exercise/exercise_ing.dart';
 import 'package:weighit/screens/exercise/exercise_list.dart';
 import 'package:weighit/services/Exercise_database.dart';
 
@@ -14,6 +15,7 @@ class ExerciseConfirm extends StatelessWidget {
       create: (_) => ExerciseDB(uid: user.uid).userExercise,
       child: Scaffold(
           appBar: AppBar(
+            toolbarHeight: size.height * 0.1,
             iconTheme: IconThemeData(color: Colors.black),
             title: Text(
               '어깨운동, 초급',
@@ -43,7 +45,13 @@ class ExerciseConfirm extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ExercisingScreen()),
+                    );
+                  },
                 ),
               ),
             ],
