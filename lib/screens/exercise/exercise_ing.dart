@@ -19,45 +19,85 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
         ),
         centerTitle: true,
         backgroundColor: Color(0xffF8F6F6),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () {},
-          ),
-        ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('벤치프레스   '),
-              Text('다음'),
-            ],
-          ),
-          Container(
-            width: 200,
-            height: 200,
-            color: Colors.blue,
-            child: Text('세트조정 카드'),
-          ),
-          Container(
-            width: 200,
-            height: 50,
-            color: Colors.green,
-            child: Text('벤치프레스 5 Set'),
-          ),
-          SizedBox(
-            height: size.height * 0.2,
-          ),
-          Container(
-            padding: EdgeInsets.only(bottom: size.height * 0.05),
-            child: Image.asset('assets/shaking.png'),
-          ),
-          Text('1세트의 운동이 끝날 때 마다'),
-          Text('핸드폰을 옆으로 흔드세요'),
-        ],
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: size.height * 0.1,
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      '벤치프레스',
+                      style: TextStyle(
+                          fontSize: size.height * 0.035,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: () {
+                        print('다음');
+                      },
+                      child: Container(
+                        height: size.height * 0.1,
+                        width: size.width * 0.25,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              '다음',
+                              style: TextStyle(fontSize: size.height * 0.025),
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: size.height * 0.035,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              height: size.height * 0.35,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 5,
+                child: Padding(
+                  padding: EdgeInsets.all(5),
+                  child: Text('고르는 부분'),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Container(
+              width: double.infinity,
+              height: size.height * 0.083,
+              color: Color(0xffCBDBF9),
+              child: Text('벤치프레스 5 Set'),
+            ),
+            SizedBox(height: size.height * 0.05),
+            Container(
+              padding: EdgeInsets.only(bottom: size.height * 0.05),
+              child: Image.asset('assets/shaking.png'),
+            ),
+            Text('1세트의 운동이 끝날 때 마다'),
+            Text('핸드폰을 옆으로 흔드세요'),
+          ],
+        ),
       ),
     );
   }
