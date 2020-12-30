@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
+import 'package:weighit/screens/routine/routine1.dart';
 
 
 class Routine extends StatefulWidget {
@@ -55,7 +56,7 @@ class _RoutineState extends State<Routine> {
           ),
           body: TabBarView(
             children: [
-              Text('가슴'),
+              Routine1(),
               Text('가슴'),
               Text('가슴'),
               Text('가슴'),

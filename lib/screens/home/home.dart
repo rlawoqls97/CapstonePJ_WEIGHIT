@@ -5,7 +5,7 @@ import 'package:weighit/models/user_info.dart';
 import 'package:weighit/screens/body_status/status.dart';
 import 'package:weighit/screens/camera/camera.dart';
 import 'package:weighit/screens/home/home_card_tile.dart';
-import 'package:weighit/screens/make_routine.dart';
+import 'package:weighit/screens/routine/make_routine.dart';
 import 'package:weighit/screens/test/test.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  final List<Widget> _children = [CardTile(), CardTile(), Status(), Test()];
+  final List<Widget> _children = [CardTile(), CameraScreen(), Status(), Test()];
   @override
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
