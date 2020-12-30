@@ -8,6 +8,8 @@ class ExercisingScreen extends StatefulWidget {
 
 class _ExercisingScreenState extends State<ExercisingScreen> {
   int _setNo = 0;
+  int _currentSet = 10;
+  int _currentWeight = 40;
 
   @override
   Widget build(BuildContext context) {
@@ -76,10 +78,72 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                elevation: 5,
+                elevation: 2,
+                color: Color(0xffDDF4F0),
                 child: Padding(
                   padding: EdgeInsets.all(5),
-                  child: Text('고르는 부분'),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            '전체 세트 동일 설정',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            '세트 별 다른 설정',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        '개수(reps)',
+                        style: TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
+                      Slider(
+                        value: _currentSet.toDouble(),
+                        activeColor: Color(0xff26E3BC),
+                        inactiveColor: Colors.white,
+                        min: 8,
+                        max: 12,
+                        divisions: 6,
+                        onChanged: (val) =>
+                            setState(() => _currentSet = val.round()),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        '무게(kg)',
+                        style: TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
+                      Slider(
+                        value: _currentSet.toDouble(),
+                        activeColor: Color(0xff26E3BC),
+                        inactiveColor: Colors.white,
+                        min: 8,
+                        max: 12,
+                        divisions: 6,
+                        onChanged: (val) =>
+                            setState(() => _currentSet = val.round()),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
