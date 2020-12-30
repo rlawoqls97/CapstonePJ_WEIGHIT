@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 
 class ExercisingScreen extends StatefulWidget {
   @override
@@ -6,6 +7,10 @@ class ExercisingScreen extends StatefulWidget {
 }
 
 class _ExercisingScreenState extends State<ExercisingScreen> {
+  int _setNo = 0;
+  int _currentSet = 10;
+  int _currentWeight = 40;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -73,21 +78,119 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                elevation: 5,
+                elevation: 2,
+                color: Color(0xffDDF4F0),
                 child: Padding(
                   padding: EdgeInsets.all(5),
-                  child: Text('고르는 부분'),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            '전체 세트 동일 설정',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            '세트 별 다른 설정',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        '개수(reps)',
+                        style: TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
+                      Slider(
+                        value: _currentSet.toDouble(),
+                        activeColor: Color(0xff26E3BC),
+                        inactiveColor: Colors.white,
+                        min: 8,
+                        max: 12,
+                        divisions: 6,
+                        onChanged: (val) =>
+                            setState(() => _currentSet = val.round()),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        '무게(kg)',
+                        style: TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
+                      Slider(
+                        value: _currentSet.toDouble(),
+                        activeColor: Color(0xff26E3BC),
+                        inactiveColor: Colors.white,
+                        min: 8,
+                        max: 12,
+                        divisions: 6,
+                        onChanged: (val) =>
+                            setState(() => _currentSet = val.round()),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
             SizedBox(
               height: 5,
             ),
-            Container(
-              width: double.infinity,
-              height: size.height * 0.083,
-              color: Color(0xffCBDBF9),
-              child: Text('벤치프레스 5 Set'),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  if (_setNo >= 5) {
+                    _setNo = 0;
+                  } else {
+                    _setNo++;
+                  }
+                });
+              },
+              child: Container(
+                width: double.infinity,
+                height: size.height * 0.1,
+                child: Card(
+                  color: Color(0xffCBDBF9),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('벤치프레스 5 Set'),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        FAProgressBar(
+                          changeColorValue: 5,
+                          progressColor: Colors.amber[100],
+                          changeProgressColor: Colors.amber[800],
+                          size: 15,
+                          backgroundColor: Colors.white,
+                          currentValue: _setNo, //current value는 0부터 max value까지
+                          maxValue: 5, //나중에 total number of set
+                          displayText: 'sets',
+                          displayTextStyle: TextStyle(color: Colors.black),
+                        ),
+                        //가능하다면 stack으로 set수만큼 공간을 나눈 뒤에 divider 제공
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
             SizedBox(height: size.height * 0.05),
             Container(
