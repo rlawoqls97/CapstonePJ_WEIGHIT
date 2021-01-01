@@ -10,6 +10,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
   int _setNo = 0;
   int _currentSet = 10;
   int _currentWeight = 40;
+  String happyNewYear = '새해 복 많이 받으세요!';
 
   @override
   Widget build(BuildContext context) {
