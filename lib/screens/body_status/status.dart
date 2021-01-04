@@ -29,14 +29,15 @@ class _StatusState extends State<Status> {
       barColor: charts.ColorUtil.fromDartColor(Color(0xff26E3BC)),
     )
   ];
+  @override
   Widget build(BuildContext context) {
-    List<charts.Series<StatusChart, String>> status =[
+    var status =<charts.Series<StatusChart, String>>[
       charts.Series(
-          id: 'Status',
-          data: data,
-          domainFn: (StatusChart series, _) => series.day,
-          measureFn: (StatusChart series, _) => series.reps,
-          colorFn: (StatusChart series, _) => series.barColor
+        id: 'Status',
+        data: data,
+        domainFn: (StatusChart series, _) => series.day,
+        measureFn: (StatusChart series, _) => series.reps,
+        colorFn: (StatusChart series, _) => series.barColor,
       )
     ];
     final user = Provider.of<TheUser>(context);
@@ -54,24 +55,44 @@ class _StatusState extends State<Status> {
         backgroundColor: Color(0xffF8F6F6),
       ),
       body: GridView.count(
-        crossAxisCount: 2,
-        padding: EdgeInsets.all(16.0),
-        childAspectRatio: 8.0 / 9.0,
-        children: [
-          Card(
-            child:Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Text('어깨'),
-                  Expanded(
-                    child: charts.BarChart(status, animate: true,),
-                  )
-                ],
+          crossAxisCount: 2,
+          padding: EdgeInsets.all(16.0),
+          childAspectRatio: 8.0 / 9.0,
+          children: [
+            Card(
+              color: Theme.of(context).primaryColor,
+              child:Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Text('어깨', style: TextStyle(color: Colors.white),),
+                    Expanded(
+                      child: charts.BarChart(
+                        status,
+                        animate: true,
+                        primaryMeasureAxis: charts.NumericAxisSpec(
+                          renderSpec: charts.GridlineRendererSpec(
+                            labelStyle: charts.TextStyleSpec(
+                              fontSize: 12,
+                              color: charts.MaterialPalette.white,
+                            ),
+                          ),
+                        ),
+                        domainAxis: charts.OrdinalAxisSpec(
+                            renderSpec: charts.GridlineRendererSpec(
+                                labelStyle: charts.TextStyleSpec(
+                                  fontSize: 12,
+                                  color: charts.MaterialPalette.white,
+                                )
+                            )
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          )
-        ]
+            )
+          ]
       ),
       resizeToAvoidBottomInset: false,
     );
