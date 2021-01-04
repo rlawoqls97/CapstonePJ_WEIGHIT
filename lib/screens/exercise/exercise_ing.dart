@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
+import 'package:weighit/models/user_info.dart';
 
 class ExercisingScreen extends StatefulWidget {
   @override
@@ -10,7 +11,13 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
   int _setNo = 0;
   int _currentSet = 10;
   int _currentWeight = 40;
-// HAPPY NEW YEAR!!
+  //list dynamic 안에 운동이름, 개수, 무개, 세트를 다 가져와야 함
+  List<UserExercise> exerciseList = [
+    UserExercise(name: '벤치프레스', part: '가슴', weight: 40, sets: 3, reps: 12),
+    UserExercise(name: '인버티드 로우', part: '등', weight: 60, sets: 5, reps: 10),
+  ];
+  int exerciseIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -37,7 +44,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      '벤치프레스',
+                      exerciseList[exerciseIndex].name,
                       style: TextStyle(
                           fontSize: size.height * 0.035,
                           fontWeight: FontWeight.bold),
@@ -170,7 +177,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('벤치프레스 5 Set'),
+                        Text('벤치프레스 ${exerciseList[exerciseIndex].sets} Set'),
                         SizedBox(
                           height: 5,
                         ),
@@ -181,7 +188,8 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                           size: 15,
                           backgroundColor: Colors.white,
                           currentValue: _setNo, //current value는 0부터 max value까지
-                          maxValue: 5, //나중에 total number of set
+                          maxValue: exerciseList[exerciseIndex]
+                              .sets, //나중에 total number of set
                           displayText: 'sets',
                           displayTextStyle: TextStyle(color: Colors.black),
                         ),

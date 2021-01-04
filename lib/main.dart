@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
     return ThemeData(
       // the default brightness and colors are DEFINED HERE
       brightness: Brightness.light,
-      primaryColor: Color(0xff001845),
+      primaryColor: Color(0xff09255B),
       accentColor: Color(0xff25E4BD),
 
       // the default font family are DEFINED HERE

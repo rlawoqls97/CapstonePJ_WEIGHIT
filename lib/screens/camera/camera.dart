@@ -68,9 +68,9 @@ class _CameraScreenState extends State<CameraScreen> {
       child: Align(
         alignment: Alignment.center,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
+            SizedBox(width: 20,),
             FloatingActionButton(
               child: Icon(
                 Icons.camera,
@@ -116,6 +116,9 @@ class _CameraScreenState extends State<CameraScreen> {
     );
   }
 
+  void gallery() {
+
+  }
   onCapture(context) async {
     try {
       final p = await getTemporaryDirectory();
@@ -184,7 +187,10 @@ class _CameraScreenState extends State<CameraScreen> {
                     children: <Widget>[
                       cameraToggle(),
                       cameraControl(context),
-                      Spacer(),
+                      FlatButton(
+                        onPressed: () {},
+                        child: Icon(Icons.photo_library, color: Colors.white,),
+                      ),
                     ],
                   ),
                 ),
