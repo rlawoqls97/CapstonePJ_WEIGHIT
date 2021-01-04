@@ -60,38 +60,41 @@ class _StatusState extends State<Status> {
           padding: EdgeInsets.all(16.0),
           childAspectRatio: 8.0 / 9.0,
           children: [
-            Card(
-              color: Theme.of(context).primaryColor,
-              child:Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Text('어깨', style: TextStyle(color: Colors.white),),
-                    Expanded(
-                      child: charts.BarChart(
-                        status,
-                        animate: true,
-                        primaryMeasureAxis: charts.NumericAxisSpec(
-                          renderSpec: charts.GridlineRendererSpec(
-                            labelStyle: charts.TextStyleSpec(
-                              fontSize: 12,
-                              color: charts.MaterialPalette.white,
+            InkWell(
+              onTap: () {},
+              child: Card(
+                color: Theme.of(context).primaryColor,
+                child:Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Text('어깨', style: TextStyle(color: Colors.white),),
+                      Expanded(
+                        child: charts.BarChart(
+                          status,
+                          animate: true,
+                          primaryMeasureAxis: charts.NumericAxisSpec(
+                            renderSpec: charts.GridlineRendererSpec(
+                              labelStyle: charts.TextStyleSpec(
+                                fontSize: 12,
+                                color: charts.MaterialPalette.white,
+                              ),
                             ),
                           ),
-                        ),
-                        domainAxis: charts.OrdinalAxisSpec(
-                            renderSpec: charts.GridlineRendererSpec(
-                                labelStyle: charts.TextStyleSpec(
-                                  fontSize: 12,
-                                  color: charts.MaterialPalette.white,
-                                )
-                            )
+                          domainAxis: charts.OrdinalAxisSpec(
+                              renderSpec: charts.GridlineRendererSpec(
+                                  labelStyle: charts.TextStyleSpec(
+                                    fontSize: 12,
+                                    color: charts.MaterialPalette.white,
+                                  )
+                              )
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
 
+                ),
               ),
             )
           ]
