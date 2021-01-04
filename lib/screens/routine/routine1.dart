@@ -23,40 +23,15 @@ class _Routine1State extends State<Routine1> {
     final userExercise = [1, 2];
     return CustomScrollView(
       slivers: [
-        StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('routine').snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return SliverToBoxAdapter(
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Text('It breaks before rendering this'),
-                    ),
-                  )
-              );
-            }
-            if ((snapshot.hasError) || (snapshot.data == null)) {
-              return SliverToBoxAdapter(
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(20),
-                      child: Text('It breaks before rendering this'),
-                  ),
-                )
-              );
-            }
-            final posts = _listTiles(context, snapshot.data.docs) ?? [];
-            return SliverList(
+        SliverList(
               delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    return _exerciseTile(context, posts[index]);
+                    return _exerciseTile(context);
                   },
                 childCount: userExercise.length,
               ),
-            );
-          },
-        ),
+            ),
+
         SliverFixedExtentList(
           itemExtent: size.height * 0.13,
           delegate: SliverChildListDelegate(
@@ -75,12 +50,13 @@ class _Routine1State extends State<Routine1> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(22.0),
                   ),
-                  color: Theme.of(context).accentColor,
+                  color: Color(0xff26E3BC),
                 ),
               ),
             ],
           ),
         ),
+
       ],
     );
   }
@@ -98,14 +74,14 @@ class _Routine1State extends State<Routine1> {
       }).toList();
     }
   }
-  Widget _exerciseTile(BuildContext context, TheUser user) {
+  Widget _exerciseTile(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 2),
       child: Card(
-        color: Theme.of(context).primaryColor,
+        color: Color(0xff09255B),
         child: ListTile(
           onTap: () {},
-          title: Text(user.routine),
+          title: Text('벤치프레스', style: TextStyle(color: Colors.white),),
         ),
       )
     );
