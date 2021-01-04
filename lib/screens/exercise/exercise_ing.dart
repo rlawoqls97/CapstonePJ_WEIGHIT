@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:weighit/models/user_info.dart';
+import 'package:weighit/screens/exercise/exercise_list.dart';
 
 class ExercisingScreen extends StatefulWidget {
   @override
@@ -54,7 +55,10 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                     alignment: Alignment.centerRight,
                     child: InkWell(
                       onTap: () {
-                        print('다음');
+                        setState(() {
+                          _setNo = 0;
+                          exerciseIndex++;
+                        });
                       },
                       child: Container(
                         height: size.height * 0.1,
@@ -160,8 +164,11 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
             GestureDetector(
               onTap: () {
                 setState(() {
-                  if (_setNo >= 5) {
+                  if (_setNo >= exerciseList[exerciseIndex].sets) {
                     _setNo = 0;
+                    if (exerciseList.length - 1 > exerciseIndex) {
+                      exerciseIndex++;
+                    }
                   } else {
                     _setNo++;
                   }
@@ -177,7 +184,8 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('벤치프레스 ${exerciseList[exerciseIndex].sets} Set'),
+                        Text(exerciseList[exerciseIndex].name +
+                            ' ${exerciseList[exerciseIndex].sets} Set'),
                         SizedBox(
                           height: 5,
                         ),
