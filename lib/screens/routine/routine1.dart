@@ -14,13 +14,13 @@ class Routine1 extends StatefulWidget {
 
 class _Routine1State extends State<Routine1> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  int setNo = 2;
+  int setNo = 3;
   @override
   Widget build(BuildContext context) {
     // final userExercise = Provider.of<List<UserExercise>>(context) ?? [];
     final _user = Provider.of<TheUser>(context);
     final size = MediaQuery.of(context).size;
-    final userExercise = [1, 2];
+    final userExercise = [1, 2, 3];
     return CustomScrollView(
       slivers: [
         SliverList(
@@ -33,12 +33,12 @@ class _Routine1State extends State<Routine1> {
             ),
 
         SliverFixedExtentList(
-          itemExtent: size.height * 0.13,
+          itemExtent: size.height * 0.12,
           delegate: SliverChildListDelegate(
             [
               Container(
                 padding: EdgeInsets.fromLTRB(size.width * 0.33,
-                    size.height * 0.025, size.width * 0.33, size.height * 0.05),
+                    size.height * 0.023, size.width * 0.33, size.height * 0.05),
                 child: FlatButton(
                   onPressed: () {
 
@@ -52,6 +52,37 @@ class _Routine1State extends State<Routine1> {
                   ),
                   color: Color(0xff26E3BC),
                 ),
+              ),
+              Container(
+                padding: EdgeInsets.only(bottom: size.height * 0.07),
+                child: Column(
+                  children: [
+                    Text('선택한 운동', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+                    Divider(color: Colors.black,),
+                  ],
+                ),
+              ),
+              Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(top: size.height * 0.264),
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: size.height * 0.1,
+                    child: FlatButton(
+                      color: Color(0xff09255B),
+                      child: Text(
+                        '새로운 루틴 만들기',
+                        style: TextStyle(
+                          fontSize: size.height * 0.03,
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: () {},
+                    ),
+                  )
+                ],
               ),
             ],
           ),
