@@ -10,7 +10,7 @@ class ExercisingScreen extends StatefulWidget {
 
 class _ExercisingScreenState extends State<ExercisingScreen> {
   int _setNo = 0;
-  int _currentSet = 10;
+  int _currentRep = 10;
   int _currentWeight = 40;
   //list dynamic 안에 운동이름, 개수, 무개, 세트를 다 가져와야 함
   List<UserExercise> exerciseList = [
@@ -18,6 +18,9 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
     UserExercise(name: '인버티드 로우', part: '등', weight: 60, sets: 5, reps: 10),
   ];
   int exerciseIndex = 0;
+  // 나중엔 snapshot으로 바꿔와서 바로 읽어야 할듯.
+  // _currentRep = exerciseList[exerciseIndex].reps;
+  //   _currentWeight = exerciseList[exerciseIndex].weight;
 
   @override
   Widget build(BuildContext context) {
@@ -125,17 +128,19 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                         ),
                       ),
                       Slider(
-                        value: _currentSet.toDouble(),
+                        value: _currentRep.toDouble(),
                         activeColor: Color(0xff26E3BC),
                         inactiveColor: Colors.white,
                         min: 8,
                         max: 12,
                         divisions: 6,
-                        onChanged: (val) =>
-                            setState(() => _currentSet = val.round()),
+                        onChanged: (val) => setState(() {
+                          _currentRep = val.round();
+                        }),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 20,
+                        child: Text('$_currentRep'),
                       ),
                       Text(
                         '무게(kg)',
@@ -144,14 +149,18 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                         ),
                       ),
                       Slider(
-                        value: _currentSet.toDouble(),
+                        value: _currentWeight.toDouble(),
                         activeColor: Color(0xff26E3BC),
                         inactiveColor: Colors.white,
-                        min: 8,
-                        max: 12,
+                        min: 30,
+                        max: 50,
                         divisions: 6,
                         onChanged: (val) =>
-                            setState(() => _currentSet = val.round()),
+                            setState(() => _currentWeight = val.round()),
+                      ),
+                      SizedBox(
+                        height: 20,
+                        child: Text('$_currentWeight'),
                       ),
                     ],
                   ),
