@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:weighit/custom_icon/custom_icons_icons.dart';
 import 'package:weighit/models/user_info.dart';
 import 'package:weighit/screens/body_status/status.dart';
 import 'package:weighit/screens/camera/camera.dart';
@@ -37,11 +38,11 @@ class _HomePageState extends State<HomePage> {
           },
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
+              icon: Icon(CustomIcons.home),
               label: '홈',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.camera_alt_outlined),
+              icon: Icon(CustomIcons.cam),
               label: '내 몸 어때?',
             ),
             BottomNavigationBarItem(
