@@ -10,14 +10,29 @@ class ExercisingScreen extends StatefulWidget {
 
 class _ExercisingScreenState extends State<ExercisingScreen> {
   int _setNo = 0;
-  int _currentSet = 10;
+  int _currentRep = 10;
   int _currentWeight = 40;
-  //list dynamic 안에 운동이름, 개수, 무개, 세트를 다 가져와야 함
-  List<UserExercise> exerciseList = [
-    UserExercise(name: '벤치프레스', part: '가슴', weight: 40, sets: 3, reps: 12),
-    UserExercise(name: '인버티드 로우', part: '등', weight: 60, sets: 5, reps: 10),
-  ];
-  int exerciseIndex = 0;
+
+  List<UserExercise> exerciseList;
+  int exerciseIndex;
+  bool isDifferentSet;
+
+  @override
+  void initState() {
+    //list <UserExercise> 안에 운동이름, 개수, 무개, 세트를 다 가져와야 함
+    exerciseList = [
+      UserExercise(name: '벤치프레스', part: '가슴', weight: 40, sets: 3, reps: 12),
+      UserExercise(name: '인버티드 로우', part: '등', weight: 60, sets: 5, reps: 10),
+    ];
+    exerciseIndex = 0;
+    //카드 클릭을 통해 ui 변화시키는 boolean variable
+    isDifferentSet = false;
+    super.initState();
+  }
+
+  // 나중엔 snapshot으로 바꿔와서 바로 읽어야 할듯.
+  // _currentRep = exerciseList[exerciseIndex].reps;
+  //   _currentWeight = exerciseList[exerciseIndex].weight;
 
   @override
   Widget build(BuildContext context) {
@@ -98,61 +113,33 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            '전체 세트 동일 설정',
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
+                          GestureDetector(
+                            onTap: () => setState(() => isDifferentSet = false),
+                            child: Text(
+                              '전체 세트 동일 설정',
+                              style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  color: isDifferentSet
+                                      ? Colors.grey
+                                      : Colors.black),
                             ),
                           ),
-                          Text(
-                            '세트 별 다른 설정',
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
+                          GestureDetector(
+                            onTap: () => setState(() => isDifferentSet = true),
+                            child: Text(
+                              '세트 별 다른 설정',
+                              style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  color: isDifferentSet
+                                      ? Colors.black
+                                      : Colors.grey),
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        '개수(reps)',
-                        style: TextStyle(
-                          fontSize: 17,
-                        ),
-                      ),
-                      Slider(
-                        value: _currentSet.toDouble(),
-                        activeColor: Color(0xff26E3BC),
-                        inactiveColor: Colors.white,
-                        min: 8,
-                        max: 12,
-                        divisions: 6,
-                        onChanged: (val) =>
-                            setState(() => _currentSet = val.round()),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        '무게(kg)',
-                        style: TextStyle(
-                          fontSize: 17,
-                        ),
-                      ),
-                      Slider(
-                        value: _currentSet.toDouble(),
-                        activeColor: Color(0xff26E3BC),
-                        inactiveColor: Colors.white,
-                        min: 8,
-                        max: 12,
-                        divisions: 6,
-                        onChanged: (val) =>
-                            setState(() => _currentSet = val.round()),
-                      ),
+                      isDifferentSet ? _differentSetCard(size) : _allSetCard(),
                     ],
                   ),
                 ),
@@ -218,6 +205,89 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _allSetCard() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          '개수(reps)',
+          style: TextStyle(
+            fontSize: 17,
+          ),
+        ),
+        Slider(
+          value: _currentRep.toDouble(),
+          activeColor: Color(0xff26E3BC),
+          inactiveColor: Colors.white,
+          min: 8,
+          max: 12,
+          divisions: 6,
+          onChanged: (val) => setState(() {
+            _currentRep = val.round();
+          }),
+        ),
+        SizedBox(
+          height: 20,
+          child: Text('$_currentRep'),
+        ),
+        Text(
+          '무게(kg)',
+          style: TextStyle(
+            fontSize: 17,
+          ),
+        ),
+        Slider(
+          value: _currentWeight.toDouble(),
+          activeColor: Color(0xff26E3BC),
+          inactiveColor: Colors.white,
+          min: 30,
+          max: 50,
+          divisions: 6,
+          onChanged: (val) => setState(() => _currentWeight = val.round()),
+        ),
+        SizedBox(
+          height: 20,
+          child: Text('$_currentWeight'),
+        ),
+      ],
+    );
+  }
+
+  Widget _differentSetCard(Size size) {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(bottom: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                width: size.width * 0.2,
+                height: size.height * 0.03,
+                color: Colors.red,
+              ),
+              Container(
+                width: size.width * 0.3,
+                height: size.height * 0.03,
+                color: Colors.blue,
+              ),
+              Container(
+                width: size.width * 0.3,
+                height: size.height * 0.03,
+                color: Colors.yellow,
+              ),
+            ],
+          ),
+        ),
+        // 이제 이 list.map을 통해서 set수만큼 iteration을 만들기 + padding과 사이즈 조절하기
+//         List<String> list = ['one', 'two', 'three', 'four'];
+// List<Widget> widgets = list.map((name) => new Text(name)).toList();
+      ],
     );
   }
 }
