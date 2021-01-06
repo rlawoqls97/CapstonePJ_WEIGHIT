@@ -10,8 +10,10 @@ class Routine extends StatefulWidget {
 }
 
 class _RoutineState extends State<Routine> {
+  final routineController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return MaterialApp(
       home: DefaultTabController(
         length: 6,
@@ -56,7 +58,68 @@ class _RoutineState extends State<Routine> {
           ),
           body: TabBarView(
             children: [
-              Routine1(),
+              Column(
+                children: [
+                  Expanded(child: Routine1()),
+                  SizedBox(
+                    width: double.infinity,
+                    height: size.height * 0.1,
+                    child: FlatButton(
+                      color: Color(0xff09255B),
+                      child: Text(
+                        '새로운 루틴 만들기',
+                        style: TextStyle(
+                          fontSize: size.height * 0.03,
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+
+                              ),
+                              title: Column(
+                                children: [
+                                  Text('새로운 루틴의 이름을 입력하세요'),
+                                ],
+                              ),
+                              content: TextField(
+                                cursorColor: Theme.of(context).accentColor,
+                                controller: routineController,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(vertical: 6),
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Ex)가슴운동, 월요일운동',
+
+                                ),
+                              ),
+                              actions: [
+                                Row(
+                                  children: [
+                                    FlatButton(
+                                      child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor),),
+                                      onPressed: () {Navigator.pop(context);},
+                                    ),
+                                    FlatButton(
+                                      child: Text('Ok', style: TextStyle(color: Theme.of(context).accentColor),),
+                                      onPressed: () {Navigator.pop(context);},
+                                    )
+                                  ],
+                                )
+                              ],
+                            );
+                          }
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
               Text('가슴'),
               Text('가슴'),
               Text('가슴'),
