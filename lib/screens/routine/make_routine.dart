@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:weighit/screens/routine/routine1.dart';
+import 'package:weighit/screens/routine/routine2.dart';
+import 'package:weighit/screens/routine/routine3.dart';
+import 'package:weighit/screens/routine/routine4.dart';
+import 'package:weighit/screens/routine/routine5.dart';
+import 'package:weighit/screens/routine/routine6.dart';
 
 
 class Routine extends StatefulWidget {
@@ -120,11 +125,316 @@ class _RoutineState extends State<Routine> {
                   ),
                 ],
               ),
-              Text('가슴'),
-              Text('가슴'),
-              Text('가슴'),
-              Text('가슴'),
-              Text('가슴'),
+              Column(
+                children: [
+                  Expanded(child: Routine2()),
+                  SizedBox(
+                    width: double.infinity,
+                    height: size.height * 0.1,
+                    child: FlatButton(
+                      color: Color(0xff09255B),
+                      child: Text(
+                        '새로운 루틴 만들기',
+                        style: TextStyle(
+                          fontSize: size.height * 0.03,
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+
+                                ),
+                                title: Column(
+                                  children: [
+                                    Text('새로운 루틴의 이름을 입력하세요'),
+                                  ],
+                                ),
+                                content: TextField(
+                                  cursorColor: Theme.of(context).accentColor,
+                                  controller: routineController,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(vertical: 6),
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Ex)가슴운동, 월요일운동',
+
+                                  ),
+                                ),
+                                actions: [
+                                  Row(
+                                    children: [
+                                      FlatButton(
+                                        child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor),),
+                                        onPressed: () {Navigator.pop(context);},
+                                      ),
+                                      FlatButton(
+                                        child: Text('Ok', style: TextStyle(color: Theme.of(context).accentColor),),
+                                        onPressed: () {Navigator.pop(context);},
+                                      )
+                                    ],
+                                  )
+                                ],
+                              );
+                            }
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Expanded(child: Routine3()),
+                  SizedBox(
+                    width: double.infinity,
+                    height: size.height * 0.1,
+                    child: FlatButton(
+                      color: Color(0xff09255B),
+                      child: Text(
+                        '새로운 루틴 만들기',
+                        style: TextStyle(
+                          fontSize: size.height * 0.03,
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+
+                                ),
+                                title: Column(
+                                  children: [
+                                    Text('새로운 루틴의 이름을 입력하세요'),
+                                  ],
+                                ),
+                                content: TextField(
+                                  cursorColor: Theme.of(context).accentColor,
+                                  controller: routineController,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(vertical: 6),
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Ex)가슴운동, 월요일운동',
+
+                                  ),
+                                ),
+                                actions: [
+                                  Row(
+                                    children: [
+                                      FlatButton(
+                                        child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor),),
+                                        onPressed: () {Navigator.pop(context);},
+                                      ),
+                                      FlatButton(
+                                        child: Text('Ok', style: TextStyle(color: Theme.of(context).accentColor),),
+                                        onPressed: () {Navigator.pop(context);},
+                                      )
+                                    ],
+                                  )
+                                ],
+                              );
+                            }
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Expanded(child: Routine4()),
+                  SizedBox(
+                    width: double.infinity,
+                    height: size.height * 0.1,
+                    child: FlatButton(
+                      color: Color(0xff09255B),
+                      child: Text(
+                        '새로운 루틴 만들기',
+                        style: TextStyle(
+                          fontSize: size.height * 0.03,
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+
+                                ),
+                                title: Column(
+                                  children: [
+                                    Text('새로운 루틴의 이름을 입력하세요'),
+                                  ],
+                                ),
+                                content: TextField(
+                                  cursorColor: Theme.of(context).accentColor,
+                                  controller: routineController,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(vertical: 6),
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Ex)가슴운동, 월요일운동',
+
+                                  ),
+                                ),
+                                actions: [
+                                  Row(
+                                    children: [
+                                      FlatButton(
+                                        child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor),),
+                                        onPressed: () {Navigator.pop(context);},
+                                      ),
+                                      FlatButton(
+                                        child: Text('Ok', style: TextStyle(color: Theme.of(context).accentColor),),
+                                        onPressed: () {Navigator.pop(context);},
+                                      )
+                                    ],
+                                  )
+                                ],
+                              );
+                            }
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Expanded(child: Routine5()),
+                  SizedBox(
+                    width: double.infinity,
+                    height: size.height * 0.1,
+                    child: FlatButton(
+                      color: Color(0xff09255B),
+                      child: Text(
+                        '새로운 루틴 만들기',
+                        style: TextStyle(
+                          fontSize: size.height * 0.03,
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+
+                                ),
+                                title: Column(
+                                  children: [
+                                    Text('새로운 루틴의 이름을 입력하세요'),
+                                  ],
+                                ),
+                                content: TextField(
+                                  cursorColor: Theme.of(context).accentColor,
+                                  controller: routineController,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(vertical: 6),
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Ex)가슴운동, 월요일운동',
+
+                                  ),
+                                ),
+                                actions: [
+                                  Row(
+                                    children: [
+                                      FlatButton(
+                                        child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor),),
+                                        onPressed: () {Navigator.pop(context);},
+                                      ),
+                                      FlatButton(
+                                        child: Text('Ok', style: TextStyle(color: Theme.of(context).accentColor),),
+                                        onPressed: () {Navigator.pop(context);},
+                                      )
+                                    ],
+                                  )
+                                ],
+                              );
+                            }
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Expanded(child: Routine6()),
+                  SizedBox(
+                    width: double.infinity,
+                    height: size.height * 0.1,
+                    child: FlatButton(
+                      color: Color(0xff09255B),
+                      child: Text(
+                        '새로운 루틴 만들기',
+                        style: TextStyle(
+                          fontSize: size.height * 0.03,
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+
+                                ),
+                                title: Column(
+                                  children: [
+                                    Text('새로운 루틴의 이름을 입력하세요'),
+                                  ],
+                                ),
+                                content: TextField(
+                                  cursorColor: Theme.of(context).accentColor,
+                                  controller: routineController,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(vertical: 6),
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Ex)가슴운동, 월요일운동',
+
+                                  ),
+                                ),
+                                actions: [
+                                  Row(
+                                    children: [
+                                      FlatButton(
+                                        child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor),),
+                                        onPressed: () {Navigator.pop(context);},
+                                      ),
+                                      FlatButton(
+                                        child: Text('Ok', style: TextStyle(color: Theme.of(context).accentColor),),
+                                        onPressed: () {Navigator.pop(context);},
+                                      )
+                                    ],
+                                  )
+                                ],
+                              );
+                            }
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
