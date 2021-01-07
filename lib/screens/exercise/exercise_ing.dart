@@ -262,60 +262,128 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
   }
 
   Widget _differentSetCard(Size size, int sets) {
+    var list = ['1', '2', '3'];
     return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(bottom: 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                width: size.width * 0.2,
-                height: size.height * 0.03,
-                child: Center(child: Text('세트')),
+        children: list
+            .map(
+              (val) => Padding(
+                padding: EdgeInsets.only(bottom: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                        width: size.width * 0.25,
+                        height: size.height * 0.04,
+                        child: Center(
+                          child: Text('세트' + val),
+                        )),
+                    Container(
+                      width: size.width * 0.3,
+                      height: size.height * 0.05,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        border: Border.all(color: Color(0xff26E3BC)),
+                      ),
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.remove),
+                              onPressed: () {
+                                setState(() {
+                                  // setNo--;
+                                });
+                              },
+                            ),
+                            Text(
+                              // 'setNo'
+                              '12',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () {
+                                setState(() {
+                                  // setNo++;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: size.width * 0.3,
+                      height: size.height * 0.05,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        border: Border.all(color: Color(0xff26E3BC)),
+                      ),
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.remove),
+                              onPressed: () {
+                                setState(() {
+                                  // setNo--;
+                                });
+                              },
+                            ),
+                            Text(
+                              // 'setNo'
+                              '40',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () {
+                                setState(() {
+                                  // setNo++;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              Container(
-                width: size.width * 0.3,
-                height: size.height * 0.03,
-                child: Center(child: Text('개수(회)')),
-              ),
-              Container(
-                width: size.width * 0.3,
-                height: size.height * 0.03,
-                child: Center(child: Text('무게(kg)')),
-              ),
-            ],
-          ),
-        ),
-
-        Padding(
-          padding: EdgeInsets.only(bottom: 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                width: size.width * 0.2,
-                height: size.height * 0.03,
-                color: Colors.red,
-              ),
-              Container(
-                width: size.width * 0.3,
-                height: size.height * 0.03,
-                color: Colors.blue,
-              ),
-              Container(
-                width: size.width * 0.3,
-                height: size.height * 0.03,
-                color: Colors.yellow,
-              ),
-            ],
-          ),
-        ),
+            )
+            .toList()
+        // Padding(
+        //   padding: EdgeInsets.only(bottom: 5),
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //     children: [
+        //       Container(
+        //         width: size.width * 0.2,
+        //         height: size.height * 0.03,
+        //         child: Center(child: Text('세트')),
+        //       ),
+        //       Container(
+        //         width: size.width * 0.3,
+        //         height: size.height * 0.03,
+        //         child: Center(child: Text('개수(회)')),
+        //       ),
+        //       Container(
+        //         width: size.width * 0.3,
+        //         height: size.height * 0.03,
+        //         child: Center(child: Text('무게(kg)')),
+        //       ),
+        //     ],
+        //   ),
+        // ),
 
         // 이제 이 list.map을 통해서 set수만큼 iteration을 만들기 + padding과 사이즈 조절하기
 //         List<String> list = ['one', 'two', 'three', 'four'];
 // List<Widget> widgets = list.map((name) => new Text(name)).toList();
-      ],
-    );
+
+        );
   }
 }
