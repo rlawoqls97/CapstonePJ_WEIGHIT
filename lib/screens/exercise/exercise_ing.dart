@@ -139,7 +139,10 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                           ),
                         ],
                       ),
-                      isDifferentSet ? _differentSetCard(size) : _allSetCard(),
+                      isDifferentSet
+                          ? _differentSetCard(
+                              size, exerciseList[exerciseIndex].sets)
+                          : _allSetCard(),
                     ],
                   ),
                 ),
@@ -258,9 +261,33 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
     );
   }
 
-  Widget _differentSetCard(Size size) {
+  Widget _differentSetCard(Size size, int sets) {
     return Column(
       children: [
+        Padding(
+          padding: EdgeInsets.only(bottom: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                width: size.width * 0.2,
+                height: size.height * 0.03,
+                child: Center(child: Text('세트')),
+              ),
+              Container(
+                width: size.width * 0.3,
+                height: size.height * 0.03,
+                child: Center(child: Text('개수(회)')),
+              ),
+              Container(
+                width: size.width * 0.3,
+                height: size.height * 0.03,
+                child: Center(child: Text('무게(kg)')),
+              ),
+            ],
+          ),
+        ),
+
         Padding(
           padding: EdgeInsets.only(bottom: 5),
           child: Row(
@@ -284,6 +311,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
             ],
           ),
         ),
+
         // 이제 이 list.map을 통해서 set수만큼 iteration을 만들기 + padding과 사이즈 조절하기
 //         List<String> list = ['one', 'two', 'three', 'four'];
 // List<Widget> widgets = list.map((name) => new Text(name)).toList();
