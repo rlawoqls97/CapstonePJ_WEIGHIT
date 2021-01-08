@@ -12,11 +12,12 @@ class Routine4 extends StatefulWidget {
   _Routine4State createState() => _Routine4State();
 }
 
-class _Routine4State extends State<Routine4> {
+class _Routine4State extends State<Routine4> with AutomaticKeepAliveClientMixin<Routine4>{
   int clicked = 0;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   int setNo = 3;
   @override
+  bool get wantKeepAlive => true;
   Widget build(BuildContext context) {
     // final userExercise = Provider.of<List<UserExercise>>(context) ?? [];
     final _user = Provider.of<TheUser>(context);
