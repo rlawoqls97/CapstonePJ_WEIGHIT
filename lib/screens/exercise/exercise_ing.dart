@@ -17,6 +17,8 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
   int exerciseIndex;
   bool isDifferentSet;
 
+  bool isDuringSet = true;
+
   @override
   void initState() {
     //list <UserExercise> 안에 운동이름, 개수, 무개, 세트를 다 가져와야 함
@@ -27,9 +29,15 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
     exerciseIndex = 0;
     //카드 클릭을 통해 ui 변화시키는 boolean variable
     isDifferentSet = false;
+    isDuringSet = true;
     super.initState();
   }
 
+  void _toggleUI() {
+    setState(() {
+      isDuringSet = !isDuringSet;
+    });
+  }
   // 나중엔 snapshot으로 바꿔와서 바로 읽어야 할듯.
   // _currentRep = exerciseList[exerciseIndex].reps;
   //   _currentWeight = exerciseList[exerciseIndex].weight;
@@ -151,60 +159,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
             SizedBox(
               height: 5,
             ),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  if (_setNo >= exerciseList[exerciseIndex].sets) {
-                    _setNo = 0;
-                    if (exerciseList.length - 1 > exerciseIndex) {
-                      exerciseIndex++;
-                    }
-                  } else {
-                    _setNo++;
-                  }
-                });
-              },
-              child: Container(
-                width: double.infinity,
-                height: size.height * 0.1,
-                child: Card(
-                  color: Color(0xffCBDBF9),
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(exerciseList[exerciseIndex].name +
-                            ' ${exerciseList[exerciseIndex].sets} Set'),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        FAProgressBar(
-                          changeColorValue: 5,
-                          progressColor: Colors.amber[100],
-                          changeProgressColor: Colors.amber[800],
-                          size: 15,
-                          backgroundColor: Colors.white,
-                          currentValue: _setNo, //current value는 0부터 max value까지
-                          maxValue: exerciseList[exerciseIndex]
-                              .sets, //나중에 total number of set
-                          displayText: 'sets',
-                          displayTextStyle: TextStyle(color: Colors.black),
-                        ),
-                        //가능하다면 stack으로 set수만큼 공간을 나눈 뒤에 divider 제공
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: size.height * 0.05),
-            Container(
-              padding: EdgeInsets.only(bottom: size.height * 0.05),
-              child: Image.asset('assets/shaking.png'),
-            ),
-            Text('1세트의 운동이 끝날 때 마다'),
-            Text('핸드폰을 옆으로 흔드세요'),
+            isDuringSet ? _setUI(size, _setNo) : Container()
           ],
         ),
       ),
@@ -385,5 +340,68 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
 // List<Widget> widgets = list.map((name) => new Text(name)).toList();
 
         );
+  }
+
+  Widget _setUI(Size size, int setNo) {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              if (_setNo >= exerciseList[exerciseIndex].sets) {
+                _setNo = 0;
+                if (exerciseList.length - 1 > exerciseIndex) {
+                  exerciseIndex++;
+                }
+              } else {
+                _toggleUI();
+
+                _setNo++;
+              }
+            });
+          },
+          child: Container(
+            width: double.infinity,
+            height: size.height * 0.1,
+            child: Card(
+              color: Color(0xffCBDBF9),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(exerciseList[exerciseIndex].name +
+                        ' ${exerciseList[exerciseIndex].sets} Set'),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    FAProgressBar(
+                      changeColorValue: 5,
+                      progressColor: Colors.amber[100],
+                      changeProgressColor: Colors.amber[800],
+                      size: 15,
+                      backgroundColor: Colors.white,
+                      currentValue: _setNo, //current value는 0부터 max value까지
+                      maxValue: exerciseList[exerciseIndex]
+                          .sets, //나중에 total number of set
+                      displayText: 'sets',
+                      displayTextStyle: TextStyle(color: Colors.black),
+                    ),
+                    //가능하다면 stack으로 set수만큼 공간을 나눈 뒤에 divider 제공
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: size.height * 0.05),
+        Container(
+          padding: EdgeInsets.only(bottom: size.height * 0.05),
+          child: Image.asset('assets/shaking.png'),
+        ),
+        Text('1세트의 운동이 끝날 때 마다'),
+        Text('핸드폰을 옆으로 흔드세요'),
+      ],
+    );
   }
 }
