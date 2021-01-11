@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:weighit/models/user_info.dart';
-import 'package:weighit/screens/exercise/exercise_confirm.dart';
-import 'package:weighit/screens/routine/make_routine.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 
@@ -12,11 +10,12 @@ class Routine1 extends StatefulWidget {
   _Routine1State createState() => _Routine1State();
 }
 
-class _Routine1State extends State<Routine1> {
+class _Routine1State extends State<Routine1> with AutomaticKeepAliveClientMixin<Routine1>{
   int clicked = 0;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   int setNo = 3;
   @override
+  bool get wantKeepAlive => true;
   Widget build(BuildContext context) {
     // final userExercise = Provider.of<List<UserExercise>>(context) ?? [];
     final _user = Provider.of<TheUser>(context);
