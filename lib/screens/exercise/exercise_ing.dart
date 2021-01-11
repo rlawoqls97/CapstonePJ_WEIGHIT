@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:weighit/models/user_info.dart';
 import 'package:weighit/screens/exercise/exercise_list.dart';
+import 'dart:async';
 
 class ExercisingScreen extends StatefulWidget {
   @override
@@ -19,6 +20,9 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
 
   bool isDuringSet = true;
 
+  Timer _timer;
+  int _start = 10;
+
   @override
   void initState() {
     //list <UserExercise> 안에 운동이름, 개수, 무개, 세트를 다 가져와야 함
@@ -31,6 +35,30 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
     isDifferentSet = false;
     isDuringSet = true;
     super.initState();
+  }
+
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (_start == 0) {
+          setState(() {
+            timer.cancel();
+          });
+        } else {
+          setState(() {
+            _start--;
+          });
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   void _toggleUI() {
@@ -159,7 +187,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
             SizedBox(
               height: 5,
             ),
-            isDuringSet ? _setUI(size, _setNo) : Container()
+            isDuringSet ? _setUI(size, _setNo) : _timerUI()
           ],
         ),
       ),
@@ -355,7 +383,6 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                 }
               } else {
                 _toggleUI();
-
                 _setNo++;
               }
             });
@@ -401,6 +428,24 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
         ),
         Text('1세트의 운동이 끝날 때 마다'),
         Text('핸드폰을 옆으로 흔드세요'),
+      ],
+    );
+  }
+
+  Widget _timerUI() {
+    return Column(
+      children: [
+        Container(
+          child: Text('timer'),
+        ),
+        Container(
+          color: Colors.grey,
+          child: FlatButton(
+            child: Text('넘기기'),
+            onPressed: () => startTimer(),
+          ),
+        ),
+        Text('$_start'),
       ],
     );
   }
