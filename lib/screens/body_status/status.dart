@@ -33,7 +33,6 @@ class _StatusState extends State<Status> {
   Widget build(BuildContext context) {
     var status =<charts.Series<StatusChart, String>>[
       charts.Series(
-
         id: 'Status',
         data: data,
         domainFn: (StatusChart series, _) => series.day,
@@ -43,6 +42,7 @@ class _StatusState extends State<Status> {
     ];
     final user = Provider.of<TheUser>(context);
     final size = MediaQuery.of(context).size;
+    final userExercise = [1, 2, 3];
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: size.height * 0.1,
@@ -56,6 +56,7 @@ class _StatusState extends State<Status> {
         backgroundColor: Color(0xffF8F6F6),
       ),
       body: GridView.count(
+          semanticChildCount: userExercise.length,
           crossAxisCount: 2,
           padding: EdgeInsets.all(16.0),
           childAspectRatio: 8.0 / 9.0,
