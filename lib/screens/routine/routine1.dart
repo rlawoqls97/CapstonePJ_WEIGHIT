@@ -16,6 +16,8 @@ class _Routine1State extends State<Routine1> with AutomaticKeepAliveClientMixin<
   int setNo = 3;
   @override
   bool get wantKeepAlive => true;
+  @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     // final userExercise = Provider.of<List<UserExercise>>(context) ?? [];
     final _user = Provider.of<TheUser>(context);
@@ -52,7 +54,7 @@ class _Routine1State extends State<Routine1> with AutomaticKeepAliveClientMixin<
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(22.0),
                   ),
-                  color: Color(0xff26E3BC),
+                  color: Theme.of(context).accentColor
                 ),
               ),
             ],
@@ -128,7 +130,7 @@ class _Routine1State extends State<Routine1> with AutomaticKeepAliveClientMixin<
     return Padding(
       padding: const EdgeInsets.only(top: 2),
       child: Card(
-        color: Color(0xff09255B),
+        color: Theme.of(context).primaryColor,
         child: ListTile(
           onTap: () {},
           title: Text('벤치프레스', style: TextStyle(color: Colors.white),),
