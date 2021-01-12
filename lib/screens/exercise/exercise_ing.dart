@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:weighit/models/user_info.dart';
@@ -22,6 +23,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
 
   Timer _timer;
   int _start = 10;
+  int selectedTime = 1;
 
   @override
   void initState() {
@@ -187,7 +189,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
             SizedBox(
               height: 5,
             ),
-            isDuringSet ? _setUI(size, _setNo) : _timerUI()
+            isDuringSet ? _setUI(size, _setNo) : _timerUI(size)
           ],
         ),
       ),
@@ -432,20 +434,29 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
     );
   }
 
-  Widget _timerUI() {
+  Widget _timerUI(Size size) {
     return Column(
       children: [
-        Container(
-          child: Text('timer'),
+        SizedBox(
+          height: size.height * 0.01,
         ),
         Container(
-          color: Colors.grey,
-          child: FlatButton(
-            child: Text('넘기기'),
-            onPressed: () => startTimer(),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+          ),
+          height: size.height * 0.3,
+          child: CupertinoPicker(
+            // magnification: 1.3,
+            children: [
+              Text('45.00', style: TextStyle(fontSize: size.height * 0.05)),
+              Text('60.00', style: TextStyle(fontSize: size.height * 0.05)),
+              Text('90.00', style: TextStyle(fontSize: size.height * 0.05)),
+            ],
+            itemExtent: size.height * 0.07,
+            looping: false,
+            onSelectedItemChanged: (index) => selectedTime = index,
           ),
         ),
-        Text('$_start'),
       ],
     );
   }
