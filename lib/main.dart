@@ -34,10 +34,24 @@ class MyApp extends StatelessWidget {
       brightness: Brightness.light,
       primaryColor: Color(0xff09255B),
       accentColor: Color(0xff25E4BD),
+      colorScheme: ColorScheme(
+        primary: Color(0xff09255B),
+        brightness: Brightness.light,
+        secondary: Color(0xff25E4BD),
+        error: Colors.red,
+        secondaryVariant: Color(0xff25E4BD),
+        onBackground: Color(0xff25E4BD),
+        surface: Color(0xff25E4BD),
+        onSurface: Color(0xff25E4BD),
+        onSecondary: Color(0xff25E4BD),
+        onPrimary: Color(0xff25E4BD),
+        primaryVariant: Color(0xff25E4BD),
+        onError: Color(0xff25E4BD),
+        background: Color(0xff25E4BD),
+      ),
 
       // the default font family are DEFINED HERE
-      // fontFamily: 'Medium',
-
+      // fontFamily: 'Medium'
       // Define the default TextTheme. Use this to specify the default
       // text styling for headlines, titles, bodies of text, and more.
       textTheme: TextTheme(
@@ -63,6 +77,7 @@ class MyApp extends StatelessWidget {
             color: Colors.white,
             fontFamily: 'Medium',
             fontWeight: FontWeight.bold),
+        bodyText1: TextStyle(fontSize: 14.0, color: Color(0xff26E3BC), fontFamily: 'Medium'),
         bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Medium'),
       ),
     );

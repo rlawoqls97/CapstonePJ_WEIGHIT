@@ -65,6 +65,7 @@ class _CardTileState extends State<CardTile> {
                       Container(
                         padding: EdgeInsets.only(left: size.width * 0.47),
                         child: FlatButton(
+
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -74,12 +75,14 @@ class _CardTileState extends State<CardTile> {
                           },
                           child: Text(
                             '새로운 루틴 만들기',
-                            style: TextStyle(color: Colors.white),
+                            style: Theme.of(context).textTheme.bodyText1,
                           ),
                           shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: Theme.of(context).accentColor
+                            ),
                             borderRadius: BorderRadius.circular(22.0),
                           ),
-                          color: Theme.of(context).accentColor,
                         ),
                       ),
                     ],
