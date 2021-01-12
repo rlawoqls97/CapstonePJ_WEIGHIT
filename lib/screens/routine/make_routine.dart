@@ -20,6 +20,7 @@ class _RoutineState extends State<Routine> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return MaterialApp(
+      theme: Theme.of(context),
       home: DefaultTabController(
         length: 6,
         child: Scaffold(
@@ -132,7 +133,7 @@ class _RoutineState extends State<Routine> {
                     width: double.infinity,
                     height: size.height * 0.1,
                     child: FlatButton(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).primaryColor,
                       child: Text(
                         '새로운 루틴 만들기',
                         style: TextStyle(
@@ -194,7 +195,7 @@ class _RoutineState extends State<Routine> {
                     width: double.infinity,
                     height: size.height * 0.1,
                     child: FlatButton(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).primaryColor,
                       child: Text(
                         '새로운 루틴 만들기',
                         style: TextStyle(
@@ -256,7 +257,7 @@ class _RoutineState extends State<Routine> {
                     width: double.infinity,
                     height: size.height * 0.1,
                     child: FlatButton(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).primaryColor,
                       child: Text(
                         '새로운 루틴 만들기',
                         style: TextStyle(
@@ -318,7 +319,7 @@ class _RoutineState extends State<Routine> {
                     width: double.infinity,
                     height: size.height * 0.1,
                     child: FlatButton(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).primaryColor,
                       child: Text(
                         '새로운 루틴 만들기',
                         style: TextStyle(
@@ -380,7 +381,7 @@ class _RoutineState extends State<Routine> {
                     width: double.infinity,
                     height: size.height * 0.1,
                     child: FlatButton(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).primaryColor,
                       child: Text(
                         '새로운 루틴 만들기',
                         style: TextStyle(
