@@ -23,7 +23,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
-        backgroundColor: Color(0xffF8F6F6),
+        backgroundColor: Theme.of(context).backgroundColor,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
@@ -38,9 +38,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                     alignment: Alignment.center,
                     child: Text(
                       '벤치프레스',
-                      style: TextStyle(
-                          fontSize: size.height * 0.035,
-                          fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.headline1.copyWith(fontSize: 25.0),
                     ),
                   ),
                   Align(
@@ -57,7 +55,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                           children: [
                             Text(
                               '다음',
-                              style: TextStyle(fontSize: size.height * 0.025),
+                              style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12.0),
                             ),
                             Icon(
                               Icons.arrow_forward_ios,
@@ -89,18 +87,11 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                         children: [
                           Text(
                             '전체 세트 동일 설정',
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black)
                           ),
                           Text(
                             '세트 별 다른 설정',
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
-                            ),
+                            style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black)
                           ),
                         ],
                       ),
@@ -109,9 +100,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                       ),
                       Text(
                         '개수(reps)',
-                        style: TextStyle(
-                          fontSize: 17,
-                        ),
+                        style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black)
                       ),
                       Slider(
                         value: _currentSet.toDouble(),
@@ -128,9 +117,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                       ),
                       Text(
                         '무게(kg)',
-                        style: TextStyle(
-                          fontSize: 17,
-                        ),
+                        style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black)
                       ),
                       Slider(
                         value: _currentSet.toDouble(),
@@ -170,7 +157,10 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('벤치프레스 5 Set'),
+                        Text(
+                            '벤치프레스 5 Set',
+                            style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black),
+                        ),
                         SizedBox(
                           height: 5,
                         ),
@@ -197,8 +187,8 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
               padding: EdgeInsets.only(bottom: size.height * 0.05),
               child: Image.asset('assets/shaking.png'),
             ),
-            Text('1세트의 운동이 끝날 때 마다'),
-            Text('핸드폰을 옆으로 흔드세요'),
+            Text('1세트의 운동이 끝날 때 마다', style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black),),
+            Text('핸드폰을 옆으로 흔드세요', style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black),),
           ],
         ),
       ),

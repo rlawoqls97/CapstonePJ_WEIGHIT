@@ -34,22 +34,22 @@ class _RoutineState extends State<Routine> {
               unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
               tabs: [
                 Tab(child: Container(
-                  child: Text('가슴', style: TextStyle(color: Colors.black),),
+                  child: Text('가슴', style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black)),
                 ),),
                 Tab(child: Container(
-                  child: Text('어깨', style: TextStyle(color: Colors.black),),
+                  child: Text('어깨', style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black)),
                 ),),
                 Tab(child: Container(
-                  child: Text('팔', style: TextStyle(color: Colors.black),),
+                  child: Text('팔', style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black),),
                 ),),
                 Tab(child: Container(
-                  child: Text('등', style: TextStyle(color: Colors.black),),
+                  child: Text('등', style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black)),
                 ),),
                 Tab(child: Container(
-                  child: Text('복부', style: TextStyle(color: Colors.black),),
+                  child: Text('복부', style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black)),
                 ),),
                 Tab(child: Container(
-                  child: Text('하체', style: TextStyle(color: Colors.black),),
+                  child: Text('하체', style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black)),
                 ),),
               ],
             ),
@@ -74,10 +74,7 @@ class _RoutineState extends State<Routine> {
                       color: Theme.of(context).primaryColor,
                       child: Text(
                         '새로운 루틴 만들기',
-                        style: TextStyle(
-                          fontSize: size.height * 0.03,
-                          color: Theme.of(context).accentColor,
-                        ),
+                        style: Theme.of(context).textTheme.headline3.copyWith(fontSize: 19.0)
                       ),
                       onPressed: () {
                         showDialog(

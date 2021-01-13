@@ -43,7 +43,7 @@ class _ExerciseListState extends State<ExerciseList> {
                   },
                   child: Text(
                     '운동 추가하기',
-                    style: TextStyle(color: Colors.white),
+                    style: Theme.of(context).textTheme.subtitle2
                   ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(22.0),
@@ -75,7 +75,7 @@ class _ExerciseListState extends State<ExerciseList> {
                 children: [
                   Text(
                     '딥스',
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                   Container(
                     width: size.width * 0.34,
