@@ -131,7 +131,7 @@ class _StatusState extends State<Status> {
       body: GridView.count(
         crossAxisCount: 2,
         padding: EdgeInsets.all(16.0),
-        childAspectRatio: 8.0 / 9.0,
+        childAspectRatio: 8.0 / 8.5,
         children: chartList,
       ),
       resizeToAvoidBottomInset: false,
