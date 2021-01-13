@@ -19,7 +19,7 @@ class ExerciseConfirm extends StatelessWidget {
             iconTheme: IconThemeData(color: Colors.black),
             title: Text(
               '어깨운동, 초급',
-              style: TextStyle(color: Colors.black),
+              style: Theme.of(context).textTheme.headline6,
             ),
             centerTitle: true,
             backgroundColor: Color(0xffF8F6F6),
@@ -40,10 +40,7 @@ class ExerciseConfirm extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                   child: Text(
                     '운동 시작하기',
-                    style: TextStyle(
-                      fontSize: size.height * 0.03,
-                      color: Colors.white,
-                    ),
+                    style: Theme.of(context).textTheme.headline3,
                   ),
                   onPressed: () {
                     Navigator.push(

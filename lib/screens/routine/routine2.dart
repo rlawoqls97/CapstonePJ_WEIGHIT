@@ -49,7 +49,7 @@ class _Routine2State extends State<Routine2> with AutomaticKeepAliveClientMixin<
                   },
                   child: Text(
                     '운동 추가하기',
-                    style: TextStyle(color: Colors.white),
+                    style: Theme.of(context).textTheme.subtitle2,
                   ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(22.0),
@@ -66,7 +66,7 @@ class _Routine2State extends State<Routine2> with AutomaticKeepAliveClientMixin<
               return Column(
                 children: [
                   Divider(color: Colors.black,),
-                  Text('선택한 운동'),
+                  Text('선택한 운동', style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black),),
                   Divider(color: Colors.black,),
                 ],
               );
@@ -81,7 +81,7 @@ class _Routine2State extends State<Routine2> with AutomaticKeepAliveClientMixin<
               if (clicked == 0) {
                 return Container(
                   child: Center(
-                    child: Text('루틴에 추가할 운동을 선택하세요'),
+                    child: Text('루틴에 추가할 운동을 선택하세요', style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black),),
                   ),
                 );
               }
@@ -118,7 +118,7 @@ class _Routine2State extends State<Routine2> with AutomaticKeepAliveClientMixin<
         color: Color(0xff09255B),
         child: ListTile(
           onTap: () {},
-          title: Text('숄더 프레스', style: TextStyle(color: Colors.white),),
+          title: Text('숄더 프레스', style: Theme.of(context).textTheme.subtitle2,),
           trailing: IconButton(icon: Icon(Icons.close, color: Colors.white,), onPressed: () { },),
         ),
       ),
@@ -133,7 +133,7 @@ class _Routine2State extends State<Routine2> with AutomaticKeepAliveClientMixin<
           color: Color(0xff09255B),
           child: ListTile(
             onTap: () {},
-            title: Text('숄더 프레스', style: TextStyle(color: Colors.white),),
+            title: Text('숄더 프레스', style: Theme.of(context).textTheme.subtitle2,),
           ),
         )
     );

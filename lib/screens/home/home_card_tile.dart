@@ -65,7 +65,6 @@ class _CardTileState extends State<CardTile> {
                       Container(
                         padding: EdgeInsets.only(left: size.width * 0.47),
                         child: FlatButton(
-
                           onPressed: () {
                             Navigator.push(
                               context,

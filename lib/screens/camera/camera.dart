@@ -125,7 +125,7 @@ class _CameraScreenState extends State<CameraScreen> {
       final name = DateTime.now();
       final path = "${p.path}/$name.png";
 
-      await cameraController.takePicture().then((value) {
+      await cameraController.takePicture(path).then((value) {
         print('here');
         print(path);
         Navigator.push(context, MaterialPageRoute(builder: (context) =>PreviewScreen(imgPath: path,fileName: "$name.png",)));
