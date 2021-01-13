@@ -467,30 +467,47 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                   onSelectedItemChanged: (index) => selectedTime = index,
                 ),
         ),
-        FlatButton(
-          color: Theme.of(context).accentColor,
-          child: Text(
-            '쉬기',
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          onPressed: () {
-            setState(() {
-              startTimer();
-              isTimerRunning = !isTimerRunning;
-              switch (selectedTime) {
-                case 0:
-                  _start = 1;
-                  break;
-                case 1:
-                  _start = 2;
-                  break;
-                case 2:
-                  _start = 3;
-                  break;
-              }
-            });
-          },
-        ),
+        isTimerRunning
+            ? FlatButton(
+                color: Theme.of(context).accentColor,
+                child: Text(
+                  '넘기기',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                onPressed: () {
+                  setState(() {
+                    _timer.cancel();
+                    isTimerRunning = !isTimerRunning;
+                    isDuringSet = !isDuringSet;
+                    selectedTime = 0;
+                  });
+                },
+              )
+            : FlatButton(
+                color: Theme.of(context).accentColor,
+                child: Text(
+                  '쉬기',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                onPressed: () {
+                  setState(() {
+                    startTimer();
+                    isTimerRunning = !isTimerRunning;
+                    switch (selectedTime) {
+                      case 0:
+                        _start = 1;
+                        break;
+                      case 1:
+                        _start = 2;
+                        break;
+                      case 2:
+                        _start = 3;
+                        break;
+                    }
+                    selectedTime = 0;
+                  });
+                },
+              ),
         Text('주어진 시간 동안 휴식하세요'),
       ],
     );

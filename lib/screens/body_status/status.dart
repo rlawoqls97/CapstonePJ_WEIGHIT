@@ -4,7 +4,6 @@ import 'package:weighit/models/user_info.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:weighit/screens/body_status/status_chart.dart';
 
-
 class Status extends StatefulWidget {
   @override
   _StatusState createState() => _StatusState();
@@ -12,7 +11,7 @@ class Status extends StatefulWidget {
 
 class _StatusState extends State<Status> {
   @override
-  final List<StatusChart> data =[
+  final List<StatusChart> data = [
     StatusChart(
       day: 'total',
       reps: 3000,
@@ -29,18 +28,45 @@ class _StatusState extends State<Status> {
       barColor: charts.ColorUtil.fromDartColor(Color(0xff26E3BC)),
     )
   ];
-  @override
-  Widget build(BuildContext context) {
-    var status =<charts.Series<StatusChart, String>>[
-      charts.Series(
+  var list = [2000, 1000, 500];
 
+  // 이 부분에서 넣어주는 parameter 'List<int> record'도 만약 db 연동에서 문제가 날 시 List<dynamic>으로 같이 변환한다.
+  List<charts.Series<StatusChart, String>> _buildSingleChart(List<int> record) {
+    var chartList = [
+      StatusChart(
+        day: 'total',
+        reps: record[0],
+        barColor: charts.ColorUtil.fromDartColor(Color(0xff26E3BC)),
+      ),
+      StatusChart(
+        day: 'week',
+        reps: record[1],
+        barColor: charts.ColorUtil.fromDartColor(Color(0xff26E3BC)),
+      ),
+      StatusChart(
+        day: 'today',
+        reps: record[2],
+        barColor: charts.ColorUtil.fromDartColor(Color(0xff26E3BC)),
+      )
+    ];
+    //일단 StatusChart list에 chart data들을 넣어주고, 이를 chart 전용 status값들로 바꿔준다.
+    return <charts.Series<StatusChart, String>>[
+      charts.Series(
         id: 'Status',
-        data: data,
+        data: chartList,
         domainFn: (StatusChart series, _) => series.day,
         measureFn: (StatusChart series, _) => series.reps,
         colorFn: (StatusChart series, _) => series.barColor,
       )
     ];
+  }
+
+  // List<InkWell> _buildCharts(BuildContext context) {
+  //   return
+  // }
+  @override
+  Widget build(BuildContext context) {
+    var status = _buildSingleChart(list);
     final user = Provider.of<TheUser>(context);
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -64,11 +90,14 @@ class _StatusState extends State<Status> {
               onTap: () {},
               child: Card(
                 color: Theme.of(context).primaryColor,
-                child:Padding(
+                child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
-                      Text('어깨', style: TextStyle(color: Colors.white),),
+                      Text(
+                        '어깨',
+                        style: TextStyle(color: Colors.white),
+                      ),
                       Expanded(
                         child: charts.BarChart(
                           status,
@@ -84,24 +113,18 @@ class _StatusState extends State<Status> {
                           domainAxis: charts.OrdinalAxisSpec(
                               renderSpec: charts.GridlineRendererSpec(
                                   labelStyle: charts.TextStyleSpec(
-                                    fontSize: 12,
-                                    color: charts.MaterialPalette.white,
-                                  )
-                              )
-                          ),
+                            fontSize: 12,
+                            color: charts.MaterialPalette.white,
+                          ))),
                         ),
                       ),
                     ],
                   ),
-
                 ),
               ),
             )
-          ]
-      ),
+          ]),
       resizeToAvoidBottomInset: false,
     );
   }
 }
-
-
