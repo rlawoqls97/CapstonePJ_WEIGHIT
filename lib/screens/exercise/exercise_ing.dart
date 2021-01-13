@@ -44,7 +44,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
     const oneSec = const Duration(seconds: 1);
     _timer = new Timer.periodic(
       oneSec,
-          (Timer timer) {
+      (Timer timer) {
         if (_start == 0) {
           setState(() {
             timer.cancel();
@@ -182,7 +182,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                       ),
                       isDifferentSet
                           ? _differentSetCard(
-                          size, exerciseList[exerciseIndex].sets)
+                              size, exerciseList[exerciseIndex].sets)
                           : _allSetCard(),
                     ],
                   ),
@@ -255,124 +255,124 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
         children: list
             .map(
               (val) => Padding(
-            padding: EdgeInsets.only(bottom: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                    width: size.width * 0.25,
-                    height: size.height * 0.04,
-                    child: Center(
-                      child: Text('세트' + val),
-                    )),
-                Container(
-                  width: size.width * 0.3,
-                  height: size.height * 0.05,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    border: Border.all(color: Color(0xff26E3BC)),
-                  ),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.remove),
-                          onPressed: () {
-                            setState(() {
-                              // setNo--;
-                            });
-                          },
+                padding: EdgeInsets.only(bottom: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                        width: size.width * 0.25,
+                        height: size.height * 0.04,
+                        child: Center(
+                          child: Text('세트' + val),
+                        )),
+                    Container(
+                      width: size.width * 0.3,
+                      height: size.height * 0.05,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        border: Border.all(color: Color(0xff26E3BC)),
+                      ),
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.remove),
+                              onPressed: () {
+                                setState(() {
+                                  // setNo--;
+                                });
+                              },
+                            ),
+                            Text(
+                              // 'setNo'
+                              '12',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () {
+                                setState(() {
+                                  // setNo++;
+                                });
+                              },
+                            ),
+                          ],
                         ),
-                        Text(
-                          // 'setNo'
-                          '12',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.add),
-                          onPressed: () {
-                            setState(() {
-                              // setNo++;
-                            });
-                          },
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                Container(
-                  width: size.width * 0.3,
-                  height: size.height * 0.05,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    border: Border.all(color: Color(0xff26E3BC)),
-                  ),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.remove),
-                          onPressed: () {
-                            setState(() {
-                              // setNo--;
-                            });
-                          },
+                    Container(
+                      width: size.width * 0.3,
+                      height: size.height * 0.05,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        border: Border.all(color: Color(0xff26E3BC)),
+                      ),
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.remove),
+                              onPressed: () {
+                                setState(() {
+                                  // setNo--;
+                                });
+                              },
+                            ),
+                            Text(
+                              // 'setNo'
+                              '40',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () {
+                                setState(() {
+                                  // setNo++;
+                                });
+                              },
+                            ),
+                          ],
                         ),
-                        Text(
-                          // 'setNo'
-                          '40',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.add),
-                          onPressed: () {
-                            setState(() {
-                              // setNo++;
-                            });
-                          },
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        )
+              ),
+            )
             .toList()
-      // Padding(
-      //   padding: EdgeInsets.only(bottom: 5),
-      //   child: Row(
-      //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //     children: [
-      //       Container(
-      //         width: size.width * 0.2,
-      //         height: size.height * 0.03,
-      //         child: Center(child: Text('세트')),
-      //       ),
-      //       Container(
-      //         width: size.width * 0.3,
-      //         height: size.height * 0.03,
-      //         child: Center(child: Text('개수(회)')),
-      //       ),
-      //       Container(
-      //         width: size.width * 0.3,
-      //         height: size.height * 0.03,
-      //         child: Center(child: Text('무게(kg)')),
-      //       ),
-      //     ],
-      //   ),
-      // ),
+        // Padding(
+        //   padding: EdgeInsets.only(bottom: 5),
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //     children: [
+        //       Container(
+        //         width: size.width * 0.2,
+        //         height: size.height * 0.03,
+        //         child: Center(child: Text('세트')),
+        //       ),
+        //       Container(
+        //         width: size.width * 0.3,
+        //         height: size.height * 0.03,
+        //         child: Center(child: Text('개수(회)')),
+        //       ),
+        //       Container(
+        //         width: size.width * 0.3,
+        //         height: size.height * 0.03,
+        //         child: Center(child: Text('무게(kg)')),
+        //       ),
+        //     ],
+        //   ),
+        // ),
 
-      // 이제 이 list.map을 통해서 set수만큼 iteration을 만들기 + padding과 사이즈 조절하기
+        // 이제 이 list.map을 통해서 set수만큼 iteration을 만들기 + padding과 사이즈 조절하기
 //         List<String> list = ['one', 'two', 'three', 'four'];
 // List<Widget> widgets = list.map((name) => new Text(name)).toList();
 
-    );
+        );
   }
 
   Widget _setUI(Size size, int setNo) {
@@ -448,66 +448,66 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
           height: size.height * 0.3,
           child: isTimerRunning
               ? Center(
-              child: Text(
-                '$_start',
-                style: TextStyle(fontSize: size.height * 0.05),
-              ))
+                  child: Text(
+                  '$_start',
+                  style: TextStyle(fontSize: size.height * 0.05),
+                ))
               : CupertinoPicker(
-            // magnification: 1.3,
-            children: [
-              Text('45.00',
-                  style: TextStyle(fontSize: size.height * 0.05)),
-              Text('60.00',
-                  style: TextStyle(fontSize: size.height * 0.05)),
-              Text('90.00',
-                  style: TextStyle(fontSize: size.height * 0.05)),
-            ],
-            itemExtent: size.height * 0.07,
-            looping: false,
-            onSelectedItemChanged: (index) => selectedTime = index,
-          ),
+                  // magnification: 1.3,
+                  children: [
+                    Text('45.00',
+                        style: TextStyle(fontSize: size.height * 0.05)),
+                    Text('60.00',
+                        style: TextStyle(fontSize: size.height * 0.05)),
+                    Text('90.00',
+                        style: TextStyle(fontSize: size.height * 0.05)),
+                  ],
+                  itemExtent: size.height * 0.07,
+                  looping: false,
+                  onSelectedItemChanged: (index) => selectedTime = index,
+                ),
         ),
         isTimerRunning
             ? FlatButton(
-          color: Theme.of(context).accentColor,
-          child: Text(
-            '넘기기',
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          onPressed: () {
-            setState(() {
-              _timer.cancel();
-              isTimerRunning = !isTimerRunning;
-              isDuringSet = !isDuringSet;
-              selectedTime = 0;
-            });
-          },
-        )
+                color: Theme.of(context).accentColor,
+                child: Text(
+                  '넘기기',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                onPressed: () {
+                  setState(() {
+                    _timer.cancel();
+                    isTimerRunning = !isTimerRunning;
+                    isDuringSet = !isDuringSet;
+                    selectedTime = 0;
+                  });
+                },
+              )
             : FlatButton(
-          color: Theme.of(context).accentColor,
-          child: Text(
-            '쉬기',
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          onPressed: () {
-            setState(() {
-              startTimer();
-              isTimerRunning = !isTimerRunning;
-              switch (selectedTime) {
-                case 0:
-                  _start = 1;
-                  break;
-                case 1:
-                  _start = 2;
-                  break;
-                case 2:
-                  _start = 3;
-                  break;
-              }
-              selectedTime = 0;
-            });
-          },
-        ),
+                color: Theme.of(context).accentColor,
+                child: Text(
+                  '쉬기',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                onPressed: () {
+                  setState(() {
+                    startTimer();
+                    isTimerRunning = !isTimerRunning;
+                    switch (selectedTime) {
+                      case 0:
+                        _start = 1;
+                        break;
+                      case 1:
+                        _start = 2;
+                        break;
+                      case 2:
+                        _start = 3;
+                        break;
+                    }
+                    selectedTime = 0;
+                  });
+                },
+              ),
         Text('주어진 시간 동안 휴식하세요'),
       ],
     );
