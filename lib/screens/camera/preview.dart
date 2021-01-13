@@ -24,6 +24,13 @@ class _PreviewScreenState extends State<PreviewScreen> {
           toolbarHeight: size.height * 0.1,
           title: Text('찍은 사진', style: Theme.of(context).textTheme.headline6,),
           centerTitle: true,
+          actions: [
+            IconButton(
+              color: Colors.black,
+              onPressed: () {},
+              icon: Icon(Icons.done),
+            )
+          ],
         ),
         body: Container(
           child: Column(
