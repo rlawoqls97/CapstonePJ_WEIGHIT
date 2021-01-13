@@ -11,25 +11,16 @@ class Status extends StatefulWidget {
 
 class _StatusState extends State<Status> {
   @override
-  final List<StatusChart> data = [
-    StatusChart(
-      day: 'total',
-      reps: 3000,
-      barColor: charts.ColorUtil.fromDartColor(Color(0xff26E3BC)),
-    ),
-    StatusChart(
-      day: 'week',
-      reps: 2000,
-      barColor: charts.ColorUtil.fromDartColor(Color(0xff26E3BC)),
-    ),
-    StatusChart(
-      day: 'today',
-      reps: 1200,
-      barColor: charts.ColorUtil.fromDartColor(Color(0xff26E3BC)),
-    )
-  ];
-  var list = [2000, 1000, 500];
+  UserRecord dummyRecord = UserRecord(
+    shoulder: [2000, 1000, 500],
+    arm: [500, 100, 500],
+    chest: [2000, 1000, 500],
+    abs: [300, 1000, 500],
+    back: [2000, 1000, 500],
+    leg: [200, 1000, 500],
+  );
 
+  // 이 function은 하나의 3 integer list를 chart로 변환해준다.
   // 이 부분에서 넣어주는 parameter 'List<int> record'도 만약 db 연동에서 문제가 날 시 List<dynamic>으로 같이 변환한다.
   List<charts.Series<StatusChart, String>> _buildSingleChart(List<int> record) {
     var chartList = [
@@ -61,12 +52,68 @@ class _StatusState extends State<Status> {
     ];
   }
 
-  // List<InkWell> _buildCharts(BuildContext context) {
+  // 위의 _buildSingleChart를 통해서 여섯 부위의 chart의 list를 만든다.
+  List<InkWell> _buildListChart(UserRecord record) {
+    return [
+      record.shoulder,
+      record.arm,
+      record.chest,
+      record.abs,
+      record.back,
+      record.leg,
+    ] //여기서 만든 6개의 chartlist를 InkWell Card로 바꿔준다.
+        .map((chart) {
+      return InkWell(
+        onTap: () {
+          print('tap');
+        },
+        child: Card(
+          elevation: 10,
+          color: Theme.of(context).primaryColor,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Text(
+                  '어깨',
+                  style: TextStyle(color: Colors.white),
+                ),
+                Expanded(
+                  child: charts.BarChart(
+                    _buildSingleChart(chart),
+                    animate: true,
+                    primaryMeasureAxis: charts.NumericAxisSpec(
+                      renderSpec: charts.GridlineRendererSpec(
+                        labelStyle: charts.TextStyleSpec(
+                          fontSize: 12,
+                          color: charts.MaterialPalette.white,
+                        ),
+                      ),
+                    ),
+                    domainAxis: charts.OrdinalAxisSpec(
+                        renderSpec: charts.GridlineRendererSpec(
+                            labelStyle: charts.TextStyleSpec(
+                      fontSize: 12,
+                      color: charts.MaterialPalette.white,
+                    ))),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }).toList();
+  }
+  // // 위의 _buildListChart를 통해 만든 6개의 chartlist를 InKWell
+  // List<InkWell> _buildChartCards(BuildContext context) {
+
   //   return
   // }
+
   @override
   Widget build(BuildContext context) {
-    var status = _buildSingleChart(list);
+    final chartList = _buildListChart(dummyRecord);
     final user = Provider.of<TheUser>(context);
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -82,48 +129,11 @@ class _StatusState extends State<Status> {
         backgroundColor: Color(0xffF8F6F6),
       ),
       body: GridView.count(
-          crossAxisCount: 2,
-          padding: EdgeInsets.all(16.0),
-          childAspectRatio: 8.0 / 9.0,
-          children: [
-            InkWell(
-              onTap: () {},
-              child: Card(
-                color: Theme.of(context).primaryColor,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        '어깨',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Expanded(
-                        child: charts.BarChart(
-                          status,
-                          animate: true,
-                          primaryMeasureAxis: charts.NumericAxisSpec(
-                            renderSpec: charts.GridlineRendererSpec(
-                              labelStyle: charts.TextStyleSpec(
-                                fontSize: 12,
-                                color: charts.MaterialPalette.white,
-                              ),
-                            ),
-                          ),
-                          domainAxis: charts.OrdinalAxisSpec(
-                              renderSpec: charts.GridlineRendererSpec(
-                                  labelStyle: charts.TextStyleSpec(
-                            fontSize: 12,
-                            color: charts.MaterialPalette.white,
-                          ))),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            )
-          ]),
+        crossAxisCount: 2,
+        padding: EdgeInsets.all(16.0),
+        childAspectRatio: 8.0 / 9.0,
+        children: chartList,
+      ),
       resizeToAvoidBottomInset: false,
     );
   }
