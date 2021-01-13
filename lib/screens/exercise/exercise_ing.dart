@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:weighit/models/user_info.dart';
@@ -22,7 +23,8 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
 
   Timer _timer;
   int _start = 10;
-
+  int selectedTime = 0;
+  bool isTimerRunning;
   @override
   void initState() {
     //list <UserExercise> 안에 운동이름, 개수, 무개, 세트를 다 가져와야 함
@@ -34,6 +36,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
     //카드 클릭을 통해 ui 변화시키는 boolean variable
     isDifferentSet = false;
     isDuringSet = true;
+    isTimerRunning = false;
     super.initState();
   }
 
@@ -45,6 +48,8 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
         if (_start == 0) {
           setState(() {
             timer.cancel();
+            isTimerRunning = false;
+            isDuringSet = true;
           });
         } else {
           setState(() {
@@ -187,7 +192,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
             SizedBox(
               height: 5,
             ),
-            isDuringSet ? _setUI(size, _setNo) : _timerUI()
+            isDuringSet ? _setUI(size, _setNo) : _timerUI(size, context)
           ],
         ),
       ),
@@ -432,20 +437,78 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
     );
   }
 
-  Widget _timerUI() {
+  Widget _timerUI(Size size, BuildContext context) {
     return Column(
       children: [
+        // Text('$_start'),
         Container(
-          child: Text('timer'),
-        ),
-        Container(
-          color: Colors.grey,
-          child: FlatButton(
-            child: Text('넘기기'),
-            onPressed: () => startTimer(),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+          ),
+          height: size.height * 0.3,
+          child: isTimerRunning
+              ? Center(
+              child: Text(
+                '$_start',
+                style: TextStyle(fontSize: size.height * 0.05),
+              ))
+              : CupertinoPicker(
+            // magnification: 1.3,
+            children: [
+              Text('45.00',
+                  style: TextStyle(fontSize: size.height * 0.05)),
+              Text('60.00',
+                  style: TextStyle(fontSize: size.height * 0.05)),
+              Text('90.00',
+                  style: TextStyle(fontSize: size.height * 0.05)),
+            ],
+            itemExtent: size.height * 0.07,
+            looping: false,
+            onSelectedItemChanged: (index) => selectedTime = index,
           ),
         ),
-        Text('$_start'),
+        isTimerRunning
+            ? FlatButton(
+          color: Theme.of(context).accentColor,
+          child: Text(
+            '넘기기',
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () {
+            setState(() {
+              _timer.cancel();
+              isTimerRunning = !isTimerRunning;
+              isDuringSet = !isDuringSet;
+              selectedTime = 0;
+            });
+          },
+        )
+            : FlatButton(
+          color: Theme.of(context).accentColor,
+          child: Text(
+            '쉬기',
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () {
+            setState(() {
+              startTimer();
+              isTimerRunning = !isTimerRunning;
+              switch (selectedTime) {
+                case 0:
+                  _start = 1;
+                  break;
+                case 1:
+                  _start = 2;
+                  break;
+                case 2:
+                  _start = 3;
+                  break;
+              }
+              selectedTime = 0;
+            });
+          },
+        ),
+        Text('주어진 시간 동안 휴식하세요'),
       ],
     );
   }
