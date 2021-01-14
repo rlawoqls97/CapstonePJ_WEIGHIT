@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:weighit/screens/body_status/status_chart.dart';
+import 'package:weighit/models/status_chart.dart';
+import 'package:weighit/screens/body_status/detailed_status.dart';
 
 class Status extends StatefulWidget {
   @override
@@ -52,7 +53,7 @@ class _StatusState extends State<Status> {
     ];
   }
 
-  // 위의 _buildSingleChart를 통해서 여섯 부위의 chart의 list를 만든다.
+  // 위의 _buildSingleChart를 통해서 여섯 부위의 chart list를 만든다.
   List<InkWell> _buildListChart(UserRecord record) {
     return [
       record.shoulder,
@@ -61,11 +62,16 @@ class _StatusState extends State<Status> {
       record.abs,
       record.back,
       record.leg,
-    ] //여기서 만든 6개의 chartlist를 InkWell Card로 바꿔준다.
+    ] //여기서 만든 6개의 integer list를 InkWell Card로 바꿔준다.
         .map((chart) {
       return InkWell(
         onTap: () {
-          print('tap');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => DetailedStatus(),
+            ),
+          );
         },
         child: Card(
           elevation: 10,
@@ -79,23 +85,26 @@ class _StatusState extends State<Status> {
                   style: TextStyle(color: Colors.white),
                 ),
                 Expanded(
-                  child: charts.BarChart(
-                    _buildSingleChart(chart),
-                    animate: true,
-                    primaryMeasureAxis: charts.NumericAxisSpec(
-                      renderSpec: charts.GridlineRendererSpec(
-                        labelStyle: charts.TextStyleSpec(
-                          fontSize: 12,
-                          color: charts.MaterialPalette.white,
+                  child: AbsorbPointer(
+                    absorbing: true,
+                    child: charts.BarChart(
+                      _buildSingleChart(chart),
+                      animate: true,
+                      primaryMeasureAxis: charts.NumericAxisSpec(
+                        renderSpec: charts.GridlineRendererSpec(
+                          labelStyle: charts.TextStyleSpec(
+                            fontSize: 12,
+                            color: charts.MaterialPalette.white,
+                          ),
                         ),
                       ),
+                      domainAxis: charts.OrdinalAxisSpec(
+                          renderSpec: charts.GridlineRendererSpec(
+                              labelStyle: charts.TextStyleSpec(
+                        fontSize: 12,
+                        color: charts.MaterialPalette.white,
+                      ))),
                     ),
-                    domainAxis: charts.OrdinalAxisSpec(
-                        renderSpec: charts.GridlineRendererSpec(
-                            labelStyle: charts.TextStyleSpec(
-                      fontSize: 12,
-                      color: charts.MaterialPalette.white,
-                    ))),
                   ),
                 ),
               ],
