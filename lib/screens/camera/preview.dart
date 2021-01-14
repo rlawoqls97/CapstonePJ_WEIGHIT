@@ -17,9 +17,13 @@ class PreviewScreen extends StatefulWidget {
 class _PreviewScreenState extends State<PreviewScreen> {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: true,
+          backgroundColor: Theme.of(context).backgroundColor,
+          toolbarHeight: size.height * 0.1,
+          title: Text('찍은 사진', style: Theme.of(context).textTheme.headline6,),
+          centerTitle: true,
         ),
         body: Container(
           child: Column(

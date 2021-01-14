@@ -119,6 +119,7 @@ class _StatusState extends State<Status> {
     final chartList = _buildListChart(dummyRecord);
     final user = Provider.of<TheUser>(context);
     final size = MediaQuery.of(context).size;
+    final userExercise = [1, 2, 3];
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: size.height * 0.1,
