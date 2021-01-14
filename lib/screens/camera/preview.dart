@@ -28,6 +28,13 @@ class _PreviewScreenState extends State<PreviewScreen> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).backgroundColor,
           toolbarHeight: size.height * 0.1,
+          leading: IconButton(
+            color: Colors.black,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back),
+          ),
           title: Text('찍은 사진', style: Theme.of(context).textTheme.headline6,),
           centerTitle: true,
           actions: [

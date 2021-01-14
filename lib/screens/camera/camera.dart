@@ -66,24 +66,15 @@ class _CameraScreenState extends State<CameraScreen> {
 
   Widget cameraControl(context) {
     return Expanded(
-      child: Align(
-        alignment: Alignment.center,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            SizedBox(width: 20,),
-            FloatingActionButton(
-              child: Icon(
-                Icons.camera,
-                color: Colors.black,
-              ),
-              backgroundColor: Colors.white,
-              onPressed: () {
-                onCapture(context);
-              },
-            )
-          ],
+      child: FloatingActionButton(
+        child: Icon(
+          Icons.camera,
+          color: Colors.black,
         ),
+        backgroundColor: Colors.white,
+        onPressed: () {
+          onCapture(context);
+        },
       ),
     );
   }
@@ -97,42 +88,30 @@ class _CameraScreenState extends State<CameraScreen> {
     CameraLensDirection lensDirection = selectedCamera.lensDirection;
 
     return Expanded(
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: FlatButton.icon(
-            onPressed: () {
-              onSwitchCamera();
-            },
-            icon: Icon(
-              getCameraLensIcons(lensDirection),
-              color: Colors.white,
-              size: 24,
-            ),
-            label: Text(
-              '${lensDirection.toString().substring(lensDirection.toString().indexOf('.') + 1).toUpperCase()}',
-              style:
-              TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-            )),
-      ),
+      child: IconButton(
+          onPressed: () {
+            onSwitchCamera();
+          },
+          icon: Icon(
+            getCameraLensIcons(lensDirection),
+            color: Colors.white,
+            size: 37,
+          ),),
     );
   }
 
-  void gallery() {
-
-  }
   onCapture(context) async {
     try {
       final p = await getTemporaryDirectory();
       final name = DateTime.now();
       final path = '${p.path}/$name.png';
-
       await cameraController.takePicture(path).then((value) {
         print('here');
         Navigator.push(context, MaterialPageRoute(builder: (context) => PreviewScreen(imgPath: path, fileName: '$name.png',)));
       });
 
     } catch (e) {
-      showCameraException(e);
+        showCameraException(e);
     }
   }
 
@@ -158,13 +137,19 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).backgroundColor,
+        toolbarHeight: size.height * 0.1,
+        title: Text('사진', style: Theme.of(context).textTheme.headline6,),
+        centerTitle: true,
+      ),
       backgroundColor: Colors.black,
       body: Container(
         child: Stack(
           children: <Widget>[
             Align(
-              alignment: Alignment.center,
               child: cameraPreview(),
             ),
             Container(
@@ -183,14 +168,11 @@ class _CameraScreenState extends State<CameraScreen> {
                   padding: EdgeInsets.all(15),
                   color: Colors.transparent,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      cameraToggle(),
+                      savedPhoto(),
                       cameraControl(context),
-                      FlatButton(
-                        onPressed: () {},
-                        child: Icon(Icons.photo_library, color: Colors.white,),
-                      ),
+                      cameraToggle(),
                     ],
                   ),
                 ),
@@ -199,6 +181,20 @@ class _CameraScreenState extends State<CameraScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget savedPhoto(){
+    return Expanded(
+      child: IconButton(
+        onPressed: () {
+          print('clicked');
+        },
+        icon: Icon(
+          Icons.photo_outlined,
+          color: Colors.white,
+          size: 40.0,
+        ),),
     );
   }
 
