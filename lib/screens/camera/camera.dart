@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'dart:ui';
 import 'package:camera/camera.dart';
@@ -17,8 +16,6 @@ class _CameraScreenState extends State<CameraScreen> {
   List cameras;
   int selectedCameraIndex;
   File imgPath;
-
-
 
   Future initCamera(CameraDescription cameraDescription) async {
     if (cameraController != null) {
@@ -89,16 +86,17 @@ class _CameraScreenState extends State<CameraScreen> {
 
     return Expanded(
       child: IconButton(
-          onPressed: () {
-            onSwitchCamera();
-          },
-          icon: Icon(
-            getCameraLensIcons(lensDirection),
-            color: Colors.white,
-            size: 37,
-          ),),
+        onPressed: () {
+          onSwitchCamera();
+        },
+        icon: Icon(
+          getCameraLensIcons(lensDirection),
+          color: Colors.white,
+          size: 37,
+        ),),
     );
   }
+
 
   onCapture(context) async {
     try {
@@ -107,11 +105,17 @@ class _CameraScreenState extends State<CameraScreen> {
       final path = '${p.path}/$name.png';
       await cameraController.takePicture(path).then((value) {
         print('here');
-        Navigator.push(context, MaterialPageRoute(builder: (context) => PreviewScreen(imgPath: path, fileName: '$name.png',)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    PreviewScreen(
+                      imgPath: path,
+                      fileName: '$name.png',
+                    )));
       });
-
     } catch (e) {
-        showCameraException(e);
+      showCameraException(e);
     }
   }
 
@@ -120,29 +124,34 @@ class _CameraScreenState extends State<CameraScreen> {
     super.initState();
     availableCameras().then((value) {
       cameras = value;
-      if(cameras.isNotEmpty){
+      if (cameras.isNotEmpty) {
         setState(() {
           selectedCameraIndex = 0;
         });
-        initCamera(cameras[selectedCameraIndex]).then((value) {
-
-        });
+        initCamera(cameras[selectedCameraIndex]).then((value) {});
       } else {
         print('No camera available');
       }
-    }).catchError((e){
+    }).catchError((e) {
       print('Error : ${e.code}');
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme
+            .of(context)
+            .backgroundColor,
         toolbarHeight: size.height * 0.1,
-        title: Text('사진', style: Theme.of(context).textTheme.headline6,),
+        title: Text('사진', style: Theme
+            .of(context)
+            .textTheme
+            .headline6,),
         centerTitle: true,
       ),
       backgroundColor: Colors.black,
@@ -156,7 +165,8 @@ class _CameraScreenState extends State<CameraScreen> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.fill,
-                  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.4), BlendMode.dstATop),
+                  colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.4), BlendMode.dstATop),
                   image: AssetImage('assets/body1.jpeg'),
                 ),
               ),
@@ -184,7 +194,7 @@ class _CameraScreenState extends State<CameraScreen> {
     );
   }
 
-  Widget savedPhoto(){
+  Widget savedPhoto() {
     return Expanded(
       child: IconButton(
         onPressed: () {

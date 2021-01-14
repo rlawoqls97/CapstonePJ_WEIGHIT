@@ -21,7 +21,10 @@ class _PreviewScreenState extends State<PreviewScreen> {
   @override
   Widget build(BuildContext context) {
     final _user = Provider.of<TheUser>(context);
-    var ref = firebase_storage.FirebaseStorage.instance.ref().child('${_user.username}').child('${widget.fileName}');
+    var ref = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('${_user.username}')
+        .child('${widget.fileName}');
     var imgFile = File(widget.imgPath);
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -35,25 +38,17 @@ class _PreviewScreenState extends State<PreviewScreen> {
             },
             icon: Icon(Icons.arrow_back),
           ),
-          title: Text('찍은 사진', style: Theme.of(context).textTheme.headline6,),
+          title: Text(
+            '찍은 사진',
+            style: Theme.of(context).textTheme.headline6,
+          ),
           centerTitle: true,
-          actions: [
-            IconButton(
-              color: Colors.black,
-              onPressed: () async {
-                await ref.putFile(imgFile);
-              },
-              icon: Icon(Icons.done),
-            )
-          ],
         ),
         body: Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Expanded(
-                flex: 2,
-                child: Image.file(imgFile)),
+              Expanded(flex: 2, child: Image.file(imgFile)),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
@@ -62,8 +57,11 @@ class _PreviewScreenState extends State<PreviewScreen> {
                   color: Colors.black,
                   child: Center(
                     child: IconButton(
-                      icon: Icon(Icons.share,color: Colors.white,),
-                      onPressed: (){
+                      icon: Icon(
+                        Icons.share,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
                         // getBytes().then((bytes) {
                         //   print('here now');
                         //   print(widget.imgPath);
@@ -77,8 +75,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
               )
             ],
           ),
-        )
-    );
+        ));
   }
 
 //   Future getBytes () async {
