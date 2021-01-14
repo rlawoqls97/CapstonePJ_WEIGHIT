@@ -29,12 +29,12 @@ class UserExercise {
 // 어차피 dynamic으로 해도 int 형태로 받아올 수 있다.
 class UserRecord {
   final int level;
-  final List<int> shoulder;
-  final List<int> arm;
-  final List<int> chest;
-  final List<int> abs;
-  final List<int> back;
-  final List<int> leg;
+  final List<dynamic> shoulder;
+  final List<dynamic> arm;
+  final List<dynamic> chest;
+  final List<dynamic> abs;
+  final List<dynamic> back;
+  final List<dynamic> leg;
 
   UserRecord(
       {this.level,

@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'dart:ui';
 import 'package:camera/camera.dart';
@@ -17,8 +16,6 @@ class _CameraScreenState extends State<CameraScreen> {
   List cameras;
   int selectedCameraIndex;
   File imgPath;
-
-
 
   Future initCamera(CameraDescription cameraDescription) async {
     if (cameraController != null) {
@@ -71,7 +68,9 @@ class _CameraScreenState extends State<CameraScreen> {
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            SizedBox(width: 20,),
+            SizedBox(
+              width: 20,
+            ),
             FloatingActionButton(
               child: Icon(
                 Icons.camera,
@@ -111,15 +110,13 @@ class _CameraScreenState extends State<CameraScreen> {
             label: Text(
               '${lensDirection.toString().substring(lensDirection.toString().indexOf('.') + 1).toUpperCase()}',
               style:
-              TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
             )),
       ),
     );
   }
 
-  void gallery() {
-
-  }
+  void gallery() {}
   onCapture(context) async {
     try {
       final p = await getTemporaryDirectory();
@@ -128,9 +125,14 @@ class _CameraScreenState extends State<CameraScreen> {
 
       await cameraController.takePicture(path).then((value) {
         print('here');
-        Navigator.push(context, MaterialPageRoute(builder: (context) => PreviewScreen(imgPath: path, fileName: '$name.png',)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => PreviewScreen(
+                      imgPath: path,
+                      fileName: '$name.png',
+                    )));
       });
-
     } catch (e) {
       showCameraException(e);
     }
@@ -141,17 +143,15 @@ class _CameraScreenState extends State<CameraScreen> {
     super.initState();
     availableCameras().then((value) {
       cameras = value;
-      if(cameras.isNotEmpty){
+      if (cameras.isNotEmpty) {
         setState(() {
           selectedCameraIndex = 0;
         });
-        initCamera(cameras[selectedCameraIndex]).then((value) {
-
-        });
+        initCamera(cameras[selectedCameraIndex]).then((value) {});
       } else {
         print('No camera available');
       }
-    }).catchError((e){
+    }).catchError((e) {
       print('Error : ${e.code}');
     });
   }
@@ -171,7 +171,8 @@ class _CameraScreenState extends State<CameraScreen> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.fill,
-                  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.4), BlendMode.dstATop),
+                  colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.4), BlendMode.dstATop),
                   image: AssetImage('assets/body1.jpeg'),
                 ),
               ),
@@ -189,7 +190,10 @@ class _CameraScreenState extends State<CameraScreen> {
                       cameraControl(context),
                       FlatButton(
                         onPressed: () {},
-                        child: Icon(Icons.photo_library, color: Colors.white,),
+                        child: Icon(
+                          Icons.photo_library,
+                          color: Colors.white,
+                        ),
                       ),
                     ],
                   ),
@@ -217,7 +221,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
   onSwitchCamera() {
     selectedCameraIndex =
-    selectedCameraIndex < cameras.length - 1 ? selectedCameraIndex + 1 : 0;
+        selectedCameraIndex < cameras.length - 1 ? selectedCameraIndex + 1 : 0;
     CameraDescription selectedCamera = cameras[selectedCameraIndex];
     initCamera(selectedCamera);
   }

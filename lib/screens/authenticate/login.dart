@@ -41,7 +41,7 @@ class _LogInState extends State<LogIn> {
     return Scaffold(
       backgroundColor: Color(0xff09255B),
       body: ListView(
-        physics: NeverScrollableScrollPhysics(),
+        // physics: NeverScrollableScrollPhysics(),
         children: [
           Stack(
             alignment: Alignment.center,
@@ -276,7 +276,8 @@ class _LogInState extends State<LogIn> {
   }
 
   Widget _signInForm(Size size) {
-    return Padding(
+    return Container(
+      // height: size.height * 0.45,
       padding: EdgeInsets.all(size.width * 0.05),
       child: Card(
         shape: RoundedRectangleBorder(
