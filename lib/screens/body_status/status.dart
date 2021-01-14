@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:weighit/screens/body_status/status_chart.dart';
+import 'package:weighit/models/status_chart.dart';
+import 'package:weighit/screens/body_status/detailed_status.dart';
 
 class Status extends StatefulWidget {
   @override
@@ -65,7 +66,12 @@ class _StatusState extends State<Status> {
         .map((chart) {
       return InkWell(
         onTap: () {
-          print('tap');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => DetailedStatus(),
+            ),
+          );
         },
         child: Card(
           elevation: 10,
