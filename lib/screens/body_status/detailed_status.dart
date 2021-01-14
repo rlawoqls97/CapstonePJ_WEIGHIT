@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'dart:math' as math;
 import 'package:weighit/models/status_chart.dart';
 
 class DetailedStatus extends StatelessWidget {
-  final List<dynamic> record;
+  List<dynamic> record;
 
   DetailedStatus({Key key, this.record}) : super(key: key);
 
@@ -15,11 +16,54 @@ class DetailedStatus extends StatelessWidget {
       slivers: <Widget>[
         SliverAppBar(
           elevation: 0,
-          pinned: true,
+          pinned: false,
           expandedHeight: size.height * 0.2,
           flexibleSpace: FlexibleSpaceBar(
             centerTitle: true,
             title: Text(record[0]),
+          ),
+        ),
+        SliverPersistentHeader(
+          pinned: true,
+          delegate: _SliverAppBarDelegate(
+            maxHeight: size.height * 0.1,
+            minHeight: size.height * 0.05,
+            child: Container(
+              color: Theme.of(context).primaryColor,
+              height: 500.0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    height: size.height * 0.049,
+                    child: Center(
+                      child: Text(
+                        'Daily',
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: size.height * 0.049,
+                    child: Center(
+                      child: Text(
+                        'Weekly',
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: size.height * 0.049,
+                    child: Center(
+                      child: Text(
+                        'Monthly',
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
         SliverList(
@@ -66,11 +110,20 @@ class DetailedStatus extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(color: Colors.purple, height: 300.0),
-              Container(color: Colors.green, height: 150.0),
+              Container(
+                color: Theme.of(context).primaryColor,
+                height: 500.0,
+                child: Text(
+                  '다른 정보들',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline1
+                      .copyWith(color: Colors.white),
+                ),
+              ),
             ],
           ),
-        )
+        ),
       ],
     );
   }
@@ -104,5 +157,32 @@ class DetailedStatus extends StatelessWidget {
         colorFn: (StatusChart series, _) => series.barColor,
       )
     ];
+  }
+}
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate({
+    @required this.minHeight,
+    @required this.maxHeight,
+    @required this.child,
+  });
+  final double minHeight;
+  final double maxHeight;
+  final Widget child;
+  @override
+  double get minExtent => minHeight;
+  @override
+  double get maxExtent => math.max(maxHeight, minHeight);
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return SizedBox(child: child);
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
   }
 }
