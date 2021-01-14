@@ -1,5 +1,6 @@
-import 'dart:ui';
 
+import 'dart:io';
+import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class _CameraScreenState extends State<CameraScreen> {
   CameraController cameraController;
   List cameras;
   int selectedCameraIndex;
-  String imgPath;
+  File imgPath;
 
 
 
@@ -123,12 +124,11 @@ class _CameraScreenState extends State<CameraScreen> {
     try {
       final p = await getTemporaryDirectory();
       final name = DateTime.now();
-      final path = "${p.path}/$name.png";
+      final path = '${p.path}/$name.png';
 
       await cameraController.takePicture(path).then((value) {
         print('here');
-        print(path);
-        Navigator.push(context, MaterialPageRoute(builder: (context) =>PreviewScreen(imgPath: path,fileName: "$name.png",)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => PreviewScreen(imgPath: path, fileName: '$name.png',)));
       });
 
     } catch (e) {

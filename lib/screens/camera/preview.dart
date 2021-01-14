@@ -1,9 +1,12 @@
 import 'dart:io';
 import 'dart:typed_data';
-
+import 'package:path_provider/path_provider.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:weighit/models/user_info.dart';
 
 class PreviewScreen extends StatefulWidget {
   final String imgPath;
@@ -17,6 +20,9 @@ class PreviewScreen extends StatefulWidget {
 class _PreviewScreenState extends State<PreviewScreen> {
   @override
   Widget build(BuildContext context) {
+    final _user = Provider.of<TheUser>(context);
+    var ref = firebase_storage.FirebaseStorage.instance.ref().child('${_user.username}').child('${widget.fileName}');
+    var imgFile = File(widget.imgPath);
     final size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
@@ -27,7 +33,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
           actions: [
             IconButton(
               color: Colors.black,
-              onPressed: () {},
+              onPressed: () async {
+                await ref.putFile(imgFile);
+              },
               icon: Icon(Icons.done),
             )
           ],
@@ -38,8 +46,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
             children: <Widget>[
               Expanded(
                 flex: 2,
-                child: Image.file(File(widget.imgPath),fit: BoxFit.cover,),
-              ),
+                child: Image.file(imgFile)),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
@@ -50,12 +57,12 @@ class _PreviewScreenState extends State<PreviewScreen> {
                     child: IconButton(
                       icon: Icon(Icons.share,color: Colors.white,),
                       onPressed: (){
-                        getBytes().then((bytes) {
-                          print('here now');
-                          print(widget.imgPath);
-                          print(bytes.buffer.asUint8List());
-                          Share.file('Share via', widget.fileName, bytes.buffer.asUint8List(), 'image/path');
-                        });
+                        // getBytes().then((bytes) {
+                        //   print('here now');
+                        //   print(widget.imgPath);
+                        //   print(bytes.buffer.asUint8List());
+                        //   Share.file('Share via', widget.fileName, bytes.buffer.asUint8List(), 'image/path');
+                        // });
                       },
                     ),
                   ),
@@ -67,9 +74,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
     );
   }
 
-  Future getBytes () async {
-    Uint8List bytes = File(widget.imgPath).readAsBytesSync() as Uint8List;
-//    print(ByteData.view(buffer))
-    return ByteData.view(bytes.buffer);
-  }
+//   Future getBytes () async {
+//     Uint8List bytes = file.readAsBytesSync() as Uint8List;
+// //    print(ByteData.view(buffer))
+//     return ByteData.view(bytes.buffer);
+//   }
 }
