@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Roboto',
             fontWeight: FontWeight.bold),
         subtitle2: TextStyle(
-            fontSize: 15.0,
+            fontSize: 15.1,
             color: Colors.white,
             fontFamily: 'Roboto',
             fontWeight: FontWeight.bold),

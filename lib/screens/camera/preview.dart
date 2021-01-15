@@ -43,6 +43,15 @@ class _PreviewScreenState extends State<PreviewScreen> {
             style: Theme.of(context).textTheme.headline6,
           ),
           centerTitle: true,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.done, color: Colors.black,),
+              onPressed: () async {
+                await ref.putFile(imgFile);
+              },
+
+            )
+          ],
         ),
         body: Container(
           child: Column(
