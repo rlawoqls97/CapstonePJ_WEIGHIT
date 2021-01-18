@@ -8,24 +8,44 @@ class ExerciseDB {
 
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('user');
+  final CollectionReference routineCollection =
+      FirebaseFirestore.instance.collection('routine');
   final CollectionReference exerciseCollection =
       FirebaseFirestore.instance.collection('exercise');
 
   //유저마다 가지고 있는 user collection에 있는 자신 전용 collection을 update하는 것
-  // index 추가 해야함
-  Future updateUserExerciseData(
-      String name, String part, int weight, int sets, int reps) async {
-    return await userCollection
+  Future updateUserExerciseData(String routineName, String exerciseName,
+      String part, int weight, int sets, int reps, int index) async {
+    return await routineCollection
         .doc(uid)
-        .collection('user_defined_routines')
-        .add({
-      'name': name,
+        .collection('userRoutines')
+        .doc(routineName)
+        .collection('userExercise')
+        .doc('$index')
+        .set({
+      'name': exerciseName,
       'part': part,
       'weight': weight,
       'sets': sets,
       'reps': reps,
     });
   }
+
+  //유저마다 가지고 있는 user collection에 있는 자신 전용 collection을 update하는 것
+  //수정해야함
+  // Future updateUserExerciseData(
+  //     String name, String part, int weight, int sets, int reps) async {
+  //   return await userCollection
+  //       .doc(uid)
+  //       .collection('user_defined_routines')
+  //       .add({
+  //     'name': name,
+  //     'part': part,
+  //     'weight': weight,
+  //     'sets': sets,
+  //     'reps': reps,
+  //   });
+  // }
 
   //전체 exercise collection update
   // index 추가 해야함
@@ -59,7 +79,8 @@ class ExerciseDB {
     }).toList();
   }
 
-  // get brews stream
+  // get userExercise stream
+  //
   Stream<List<UserExercise>> get userExercise {
     return userCollection
         .doc(uid)

@@ -1,10 +1,15 @@
+//
+// 들어있는 정보: <TheUser>, <UserExercise>, <UserRecord>, <UserRoutine>
+//
+
+// user의 신상 정보 및 랭크 관리
 class TheUser {
   final String uid;
 
   final String level;
   final String routine;
   String username;
-  String weight;
+  int weight;
   int workedDays;
   TheUser(
       {this.uid,
@@ -15,6 +20,7 @@ class TheUser {
       this.workedDays});
 }
 
+// user의 각 운동의 기록
 class UserExercise {
   final String name;
   final String part;
@@ -25,6 +31,7 @@ class UserExercise {
   UserExercise({this.name, this.part, this.weight, this.sets, this.reps});
 }
 
+// user의 각 부위 별 가해진 볼륨의 daily 기록
 // 만약 list int가 firebase와 호환되지 않는다면 List<dynamic>으로 교체해줄 것.
 // 어차피 dynamic으로 해도 int 형태로 받아올 수 있다.
 class UserRecord {
@@ -44,4 +51,12 @@ class UserRecord {
       this.abs,
       this.back,
       this.leg});
+}
+
+class UserRoutine {
+  final String routineName;
+  final String level;
+  final List<String> workoutList;
+
+  UserRoutine({this.routineName, this.level, this.workoutList});
 }

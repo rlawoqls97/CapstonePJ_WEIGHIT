@@ -78,8 +78,7 @@ class _CardTileState extends State<CardTile> {
                           ),
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
-                              color: Theme.of(context).accentColor
-                            ),
+                                color: Theme.of(context).accentColor),
                             borderRadius: BorderRadius.circular(22.0),
                           ),
                         ),
@@ -92,8 +91,11 @@ class _CardTileState extends State<CardTile> {
           ),
           SingleChildScrollView(
             child: StreamBuilder<QuerySnapshot>(
-              stream:
-                  FirebaseFirestore.instance.collection('routine').snapshots(),
+              stream: FirebaseFirestore.instance
+                  .collection('routine')
+                  .doc(_user.uid)
+                  .collection('userRoutines')
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
@@ -102,13 +104,13 @@ class _CardTileState extends State<CardTile> {
                 if ((snapshot.hasError) || (snapshot.data == null)) {
                   return Center(child: Text(snapshot.error.toString()));
                 }
-                final posts = _listTiles(context, snapshot.data.docs) ?? [];
+                final routines = _listTiles(context, snapshot.data.docs) ?? [];
                 return ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: posts.length,
+                  itemCount: routines.length,
                   itemBuilder: (context, index) {
-                    return _postTile(context, posts[index]);
+                    return _routineTile(context, routines[index]);
                   },
                 );
               },
@@ -119,22 +121,23 @@ class _CardTileState extends State<CardTile> {
     );
   }
 
-  List<TheUser> _listTiles(
+  List<UserRoutine> _listTiles(
       BuildContext context, List<DocumentSnapshot> snapshot) {
     if (snapshot == null) {
       return null;
     } else {
       return snapshot.map((doc) {
-        return TheUser(
-          uid: doc.get('uid') ?? '',
-          routine: doc.get('routine') ?? '',
-          level: doc.get('level') ?? '',
+        return UserRoutine(
+          routineName: doc.get('routineName') ?? '',
+          // 레벨도 나중에 받기
+          level: '중급',
+          workoutList: ['벤치프레스', '랫 풀 다운', '런지'],
         );
       }).toList();
     }
   }
 
-  Widget _postTile(BuildContext context, TheUser user) {
+  Widget _routineTile(BuildContext context, UserRoutine routine) {
     return Padding(
       padding: EdgeInsets.only(top: 2),
       child: Card(
@@ -146,9 +149,9 @@ class _CardTileState extends State<CardTile> {
               MaterialPageRoute(builder: (context) => ExerciseConfirm()),
             );
           },
-          title: Text(user.routine),
+          title: Text(routine.routineName),
           subtitle: Text(
-            user.level,
+            routine.level,
             style: TextStyle(color: Colors.white),
           ),
         ),
