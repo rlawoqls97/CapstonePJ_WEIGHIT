@@ -14,12 +14,12 @@ class Status extends StatefulWidget {
 class _StatusState extends State<Status> {
   @override
   UserRecord dummyRecord = UserRecord(
-    shoulder: ['어깨', 2000, 1000, 500],
-    arm: ['팔', 500, 100, 500],
-    chest: ['가슴', 2000, 1000, 500],
-    abs: ['복근', 300, 1000, 500],
-    back: ['등', 2000, 1000, 500],
-    leg: ['다리', 200, 1000, 500],
+    shoulder: ['어깨', 2000, 1000, 500, 4],
+    arm: ['팔', 500, 100, 500, 5],
+    chest: ['가슴', 2000, 1000, 500, 6],
+    abs: ['복근', 300, 1000, 500, 5],
+    back: ['등', 2000, 1000, 500, 3],
+    leg: ['다리', 200, 1000, 500, 2],
   );
 
   // 이 function은 하나의 3 integer list를 chart로 변환해준다.
@@ -88,9 +88,18 @@ class _StatusState extends State<Status> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  Text(
-                    record[0],
-                    style: TextStyle(color: Colors.white),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        record[0],
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      Text(
+                        'LV.${record[4]}',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
                   ),
                   Expanded(
                     child: AbsorbPointer(
