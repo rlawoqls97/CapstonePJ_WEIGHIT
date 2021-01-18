@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
+import 'package:weighit/screens/camera/gallery.dart';
 import 'package:weighit/screens/camera/preview.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -145,31 +146,16 @@ class _CameraScreenState extends State<CameraScreen> {
         .of(context)
         .size;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme
-            .of(context)
-            .backgroundColor,
-        toolbarHeight: size.height * 0.1,
-        title: Text('사진', style: Theme
-            .of(context)
-            .textTheme
-            .headline6,),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.done),
-            onPressed: () async {
-
-            },
-          )
-        ],
-      ),
       backgroundColor: Colors.black,
       body: Container(
         child: Stack(
           children: <Widget>[
-            Align(
-              child: cameraPreview(),
+            Container(
+              height: size.height - (size.height * 0.13 + size.height * 0.1),
+              width: size.width,
+              child: Align(
+                child: cameraPreview(),
+              ),
             ),
             Container(
               decoration: BoxDecoration(
@@ -183,10 +169,10 @@ class _CameraScreenState extends State<CameraScreen> {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
-                  height: 120,
+                  height: size.height * 0.13,
                   width: double.infinity,
                   padding: EdgeInsets.all(15),
-                  color: Colors.transparent,
+                  color: Colors.black,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -209,6 +195,9 @@ class _CameraScreenState extends State<CameraScreen> {
       child: IconButton(
         onPressed: () {
           print('clicked');
+          Navigator.push(context, MaterialPageRoute(
+              builder: (context) =>
+                  gallery()));
         },
         icon: Icon(
           Icons.photo_outlined,
