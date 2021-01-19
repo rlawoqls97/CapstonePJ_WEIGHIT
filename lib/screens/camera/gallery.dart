@@ -22,7 +22,7 @@ class _galleryState extends State<gallery> {
         child: AspectRatio(
           aspectRatio: 18 / 11,
           child: Image.network(
-          _user.url[1],
+          _user.url[0],
           fit: BoxFit.fill,
           ),
         ),
@@ -50,7 +50,7 @@ class _galleryState extends State<gallery> {
         title: Text('앨범', style: Theme.of(context).textTheme.headline6,),
         actions: [
           IconButton(
-            icon: Icon(Icons.play_circle_outline_sharp, color: Colors.black,),
+            icon: Icon(Icons.delete, color: Colors.black,),
             onPressed: () {},
           )
         ],
@@ -69,8 +69,8 @@ class _galleryState extends State<gallery> {
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 crossAxisCount: 3,
-                padding: EdgeInsets.all(16.0),
-                childAspectRatio: 8.0/9.0,
+                padding: EdgeInsets.all(6.0),
+                childAspectRatio: 8.0 / 9.0,
                 children: _buildGridCards(
                    context, snapshot.data.docs),
               ),

@@ -20,6 +20,7 @@ class _RoutineState extends State<Routine> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: Theme.of(context),
       home: DefaultTabController(
         length: 6,
