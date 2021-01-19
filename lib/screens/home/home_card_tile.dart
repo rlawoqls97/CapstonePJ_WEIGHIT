@@ -104,7 +104,8 @@ class _CardTileState extends State<CardTile> {
                 if ((snapshot.hasError) || (snapshot.data == null)) {
                   return Center(child: Text(snapshot.error.toString()));
                 }
-                final routines = _listTiles(context, snapshot.data.docs) ?? [];
+                final routines = _listRoutine(context, snapshot.data.docs);
+
                 return ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -121,14 +122,16 @@ class _CardTileState extends State<CardTile> {
     );
   }
 
-  List<UserRoutine> _listTiles(
+  List<UserRoutine> _listRoutine(
       BuildContext context, List<DocumentSnapshot> snapshot) {
     if (snapshot == null) {
       return null;
     } else {
       return snapshot.map((doc) {
+        print('yes snapshot');
         return UserRoutine(
-          routineName: doc.get('routineName') ?? '',
+          routineName: doc.get('routineName'),
+
           // 레벨도 나중에 받기
           level: '중급',
           workoutList: ['벤치프레스', '랫 풀 다운', '런지'],
@@ -151,7 +154,7 @@ class _CardTileState extends State<CardTile> {
           },
           title: Text(routine.routineName),
           subtitle: Text(
-            routine.level,
+            routine.level ?? '',
             style: TextStyle(color: Colors.white),
           ),
         ),

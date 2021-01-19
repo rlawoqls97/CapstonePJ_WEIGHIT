@@ -118,6 +118,18 @@ class InputInformation extends StatelessWidget {
                               .then((value) => print('Item added'))
                               .catchError(
                                   (error) => print('Failed add Item : $error'));
+                          await FirebaseFirestore.instance
+                              .collection('routine')
+                              .doc(user.uid)
+                              .collection('userRoutines')
+                              .doc('전 독일 역도 선수 운동법! GVT (등)')
+                              .set({'routineName': '전 독일 역도 선수 운동법! GVT (등)'});
+                          await FirebaseFirestore.instance
+                              .collection('routine')
+                              .doc(user.uid)
+                              .collection('userRoutines')
+                              .doc('전 독일 역도 선수 운동법! GVT (하체)')
+                              .set({'routineName': '전 독일 역도 선수 운동법! GVT (하체)'});
                           await exerciseDB.updateUserExerciseData(
                               '전 독일 역도 선수 운동법! GVT (등)',
                               '랫 풀 다운',
