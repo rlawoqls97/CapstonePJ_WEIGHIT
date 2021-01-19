@@ -10,21 +10,24 @@ class gallery extends StatefulWidget {
 }
 
 class _galleryState extends State<gallery> {
-  List<Card>_buildbuildGridCards(BuildContext context){
+  Stream<QuerySnapshot> photoStream = FirebaseFirestore.instance.collection('user').snapshots();
+  List<Card>_buildGridCards(BuildContext context, List<DocumentSnapshot> snapshot){
     final _user = Provider.of<TheUser>(context);
-    if(firebase_storage.FirebaseStorage == null){
+    if(snapshot.isEmpty){
       return const <Card>[];
     }
+    return snapshot.map((item) {
       return Card(
         clipBehavior: Clip.antiAlias,
         child: AspectRatio(
           aspectRatio: 18 / 11,
           child: Image.network(
-            ,
-            fit: BoxFit.fill,
+          _user.url[1],
+          fit: BoxFit.fill,
           ),
         ),
       );
+    }).toList();
 
   }
   @override
@@ -53,21 +56,27 @@ class _galleryState extends State<gallery> {
         ],
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: GridView.count(
-            physics: ScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            crossAxisCount: 3,
-            padding: EdgeInsets.all(16.0),
-            childAspectRatio: 8.0/9.0,
-            children: [
-              _buildGridCards(
-              context),
-            ],
-          ),
-        ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: photoStream,
+        builder: (context, snapshot) {
+          if(!snapshot.hasData || snapshot.data.docs.isEmpty) {
+            return Center(child: Text('사진이 없습니다.'),);
+          }
+          return SingleChildScrollView(
+            child: Center(
+              child: GridView.count(
+                physics: ScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                crossAxisCount: 3,
+                padding: EdgeInsets.all(16.0),
+                childAspectRatio: 8.0/9.0,
+                children: _buildGridCards(
+                   context, snapshot.data.docs),
+              ),
+            ),
+          );
+        }
       ),
     );
   }
