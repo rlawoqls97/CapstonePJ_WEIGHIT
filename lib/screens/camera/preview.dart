@@ -17,7 +17,9 @@ class PreviewScreen extends StatefulWidget {
   @override
   _PreviewScreenState createState() => _PreviewScreenState();
 }
+
 int index = 0;
+
 class _PreviewScreenState extends State<PreviewScreen> {
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,10 @@ class _PreviewScreenState extends State<PreviewScreen> {
           centerTitle: true,
           actions: [
             IconButton(
-              icon: Icon(Icons.done, color: Colors.black,),
+              icon: Icon(
+                Icons.done,
+                color: Colors.black,
+              ),
               onPressed: () async {
                 await ref.putFile(imgFile);
                 var url = (await ref.getDownloadURL()).toString();
@@ -54,10 +59,10 @@ class _PreviewScreenState extends State<PreviewScreen> {
                 _user.url.add(url);
                 print(url);
                 await FirebaseFirestore.instance
-                    .collection('user').doc(_user.uid).update({'url': 1});
-                //updateFirebase
+                    .collection('user')
+                    .doc(_user.uid)
+                    .update({'url': _user.url});
               },
-
             )
           ],
         ),

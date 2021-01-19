@@ -128,7 +128,6 @@ class _CardTileState extends State<CardTile> {
       return null;
     } else {
       return snapshot.map((doc) {
-        print('yes snapshot');
         return UserRoutine(
           routineName: doc.get('routineName'),
 
