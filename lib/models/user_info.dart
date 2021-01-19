@@ -5,7 +5,7 @@
 // user의 신상 정보 및 랭크 관리
 class TheUser {
   final String uid;
-  List<dynamic> url;
+  List<dynamic> url = [];
   final String level;
   final String routine;
   String username;
