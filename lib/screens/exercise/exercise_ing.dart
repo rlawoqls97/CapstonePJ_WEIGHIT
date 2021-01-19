@@ -29,8 +29,18 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
   void initState() {
     //list <UserExercise> 안에 운동이름, 개수, 무개, 세트를 다 가져와야 함
     exerciseList = [
-      UserExercise(name: '벤치프레스', part: '가슴', weight: 40, sets: 3, reps: 12),
-      UserExercise(name: '인버티드 로우', part: '등', weight: 60, sets: 5, reps: 10),
+      UserExercise(
+          name: '벤치프레스',
+          part: '가슴',
+          weight: [40, 40, 40],
+          sets: 3,
+          reps: [12, 12, 12]),
+      UserExercise(
+          name: '인버티드 로우',
+          part: '등',
+          weight: [60, 60, 60],
+          sets: 5,
+          reps: [10, 10, 10]),
     ];
     exerciseIndex = 0;
     //카드 클릭을 통해 ui 변화시키는 boolean variable
@@ -199,6 +209,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
     );
   }
 
+  //운동의 모든 세트의 반복횟수와 무게가 같은 경우 보여주는 카드
   Widget _allSetCard() {
     return Column(
       children: [
@@ -249,6 +260,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
     );
   }
 
+  // 운동의 각 세트 별 무게와 반복횟수가 다른 경우 저장하는 것.
   Widget _differentSetCard(Size size, int sets) {
     var list = ['1', '2', '3'];
     return Column(

@@ -155,15 +155,15 @@ class InputInformation extends StatelessWidget {
                               '하체',
                               70,
                               4,
-                              1,
+                              12,
                               1);
                           await exerciseDB.updateUserExerciseData(
                               '전 독일 역도 선수 운동법! GVT (하체)',
                               '런지',
                               '하체',
                               user.weight,
-                              10,
-                              10,
+                              4,
+                              12,
                               2);
                         }
                       },

@@ -16,6 +16,13 @@ class ExerciseDB {
   //유저마다 가지고 있는 user collection에 있는 자신 전용 collection을 update하는 것
   Future updateUserExerciseData(String routineName, String exerciseName,
       String part, int weight, int sets, int reps, int index) async {
+    List<dynamic> weightList = [];
+    List<dynamic> repsList = [];
+
+    for (int i = 1; i < sets; i++) {
+      weightList.add(weight);
+      repsList.add(reps);
+    }
     return await routineCollection
         .doc(uid)
         .collection('userRoutines')
@@ -25,9 +32,9 @@ class ExerciseDB {
         .set({
       'name': exerciseName,
       'part': part,
-      'weight': weight,
+      'weight': weightList,
       'sets': sets,
-      'reps': reps,
+      'reps': repsList,
     });
   }
 

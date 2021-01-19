@@ -24,9 +24,9 @@ class TheUser {
 class UserExercise {
   final String name;
   final String part;
-  final int weight;
+  final List<int> weight;
   final int sets;
-  final int reps;
+  final List<int> reps;
 
   UserExercise({this.name, this.part, this.weight, this.sets, this.reps});
 }
