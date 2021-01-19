@@ -113,6 +113,7 @@ class InputInformation extends StatelessWidget {
                                     FirebaseAuth.instance.currentUser.email ??
                                         '',
                                 'workedDays': 0,
+                                'url': [],
                               })
                               .then((value) => print('Item added'))
                               .catchError(
