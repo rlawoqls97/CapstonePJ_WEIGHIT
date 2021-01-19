@@ -52,8 +52,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
                 var url = (await ref.getDownloadURL()).toString();
                 // _user.url[index] = url;
                 _user.url.add(url);
+                print(url);
                 await FirebaseFirestore.instance
-                    .collection('user').doc(_user.uid).update({'url': url});
+                    .collection('user').doc(_user.uid).update({'url': 1});
                 //updateFirebase
               },
 
