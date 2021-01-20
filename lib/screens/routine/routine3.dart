@@ -1,141 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:weighit/models/exercise_type.dart';
 import 'package:weighit/models/user_info.dart';
 import 'package:weighit/screens/exercise/exercise_confirm.dart';
 import 'package:weighit/screens/routine/make_routine.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:weighit/services/Exercise_database.dart';
 
 class Routine3 extends StatefulWidget {
   @override
   _Routine3State createState() => _Routine3State();
 }
 
-class _Routine3State extends State<Routine3> with AutomaticKeepAliveClientMixin<Routine3>{
-  int clicked = 0;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  int setNo = 3;
+class _Routine3State extends State<Routine3>
+    with AutomaticKeepAliveClientMixin<Routine3> {
   @override
   bool get wantKeepAlive => true;
+  @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
-    // final userExercise = Provider.of<List<UserExercise>>(context) ?? [];
-    final _user = Provider.of<TheUser>(context);
+    final exerciseList = Provider.of<List<Exercise>>(context)
+            .where((element) => element.part == '팔')
+            .toList() ??
+        [];
     final size = MediaQuery.of(context).size;
-    final userExercise = [1, 2, 3];
 
-    return CustomScrollView(
-      slivers: [
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-                (context, index) {
-              return _exerciseTile(context);
-            },
-            childCount: userExercise.length,
-          ),
-        ),
-        SliverFixedExtentList(
-          itemExtent: size.height * 0.12,
-          delegate: SliverChildListDelegate(
-            [
-              Container(
-                padding: EdgeInsets.fromLTRB(size.width * 0.33,
-                    size.height * 0.023, size.width * 0.33, size.height * 0.05),
-                child: FlatButton(
-                  onPressed: () {
-                    setState(() {
-                      clicked = clicked + 1;
-                    });
-                  },
-                  child: Text(
-                    '운동 추가하기',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(22.0),
-                  ),
-                  color: Color(0xff26E3BC),
-                ),
-              ),
-            ],
-          ),
-        ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-                (context, index){
-              return Column(
-                children: [
-                  Divider(color: Colors.black,),
-                  Text('선택한 운동', style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black),),
-                  Divider(color: Colors.black,),
-                ],
-              );
-            },
-            childCount: 1,
-          ),
-        ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            // ignore: missing_return
-                (context, index) {
-              if (clicked == 0) {
-                return Container(
-                  child: Center(
-                    child: Text('루틴에 추가할 운동을 선택하세요', style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black),),
-                  ),
-                );
-              }
-              if (clicked > 0) {
-                return _chooseExerciseTile(context);
-              }
-            },
-            childCount: 1,
-          ),
-        ),
-      ],
-    );
-  }
-
-  List<TheUser> _listTiles(BuildContext context, List<DocumentSnapshot> snapshot) {
-    if(snapshot == null) {
-      return null;
-    } else {
-      return snapshot.map((doc) {
-        return TheUser(
-          uid: doc.get('uid') ?? '',
-          routine: doc.get('routine') ?? '',
-          level: doc.get('level') ?? '',
-        );
-      }).toList();
-    }
-  }
-
-
-  Widget _chooseExerciseTile(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 2),
-      child: Card(
-        color: Color(0xff09255B),
-        child: ListTile(
-          onTap: () {},
-          title: Text('이지 바 컬', style: Theme.of(context).textTheme.subtitle2,),
-          trailing: IconButton(icon: Icon(Icons.close, color: Colors.white,), onPressed: () { },),
-        ),
+    return Container(
+      height: size.height * 0.39,
+      child: ListView(
+        shrinkWrap: true,
+        children:
+            exerciseList.map((val) => _exerciseTile(context, val)).toList(),
       ),
     );
   }
 
-
-  Widget _exerciseTile(BuildContext context) {
+  Widget _exerciseTile(BuildContext context, Exercise exercise) {
     return Padding(
         padding: const EdgeInsets.only(top: 2),
         child: Card(
-          color: Color(0xff09255B),
+          color: Theme.of(context).primaryColor,
           child: ListTile(
-            onTap: () {},
-            title: Text('이지 바 컬', style: Theme.of(context).textTheme.subtitle2,),
+            onTap: () async {
+              await ExerciseDB(part: '팔').updateNewExerciseData(exercise.name);
+            },
+            title: Text(
+              exercise.name,
+              style: Theme.of(context).textTheme.subtitle2,
+            ),
           ),
-        )
-    );
+        ));
   }
 }

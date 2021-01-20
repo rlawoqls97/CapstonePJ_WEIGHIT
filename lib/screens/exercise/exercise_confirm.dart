@@ -30,7 +30,11 @@ class ExerciseConfirm extends StatelessWidget {
           actions: [
             IconButton(
               icon: Icon(Icons.delete),
-              onPressed: () {},
+              onPressed: () {
+                ExerciseDB(uid: user.uid, routineName: routineName)
+                    .deleteUserRoutineData();
+                Navigator.pop(context);
+              },
             ),
           ],
         ),

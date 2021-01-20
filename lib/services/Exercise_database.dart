@@ -4,8 +4,9 @@ import 'package:weighit/models/user_info.dart';
 
 class ExerciseDB {
   final String uid;
-  final String routineName;
-  ExerciseDB({this.uid, this.routineName});
+  final String routineName; //루틴이름을 통해 루틴 정보를 가져올 떄
+  final String part; // 부위이름을 통해 운동 정보를 가져올 때
+  ExerciseDB({this.uid, this.routineName, this.part});
 
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('user');
@@ -21,6 +22,14 @@ class ExerciseDB {
         .collection('userRoutines')
         .doc(routineName)
         .set({'routineName': routineName});
+  }
+
+  Future deleteUserRoutineData() async {
+    return await routineCollection
+        .doc(uid)
+        .collection('userRoutines')
+        .doc(routineName)
+        .delete();
   }
 
   //유저마다 가지고 있는 routine->uid->userRoutines->routineName->userExercise에 새로운
@@ -161,11 +170,21 @@ class ExerciseDB {
 
   //전체 exercise collection update
   // index 추가 해야함
-  Future updateExerciseData(String name, String part) async {
-    return await exerciseCollection.add({
+  Future updateNewExerciseData(String name) async {
+    return await FirebaseFirestore.instance
+        .collection('newRoutine')
+        .doc(name)
+        .set({
       'name': name,
       'part': part,
     });
+  }
+
+  Future deleteNewExerciseData(String name) async {
+    return await FirebaseFirestore.instance
+        .collection('newRoutine')
+        .doc(name)
+        .delete();
   }
 
   // UserRoutine list from snapshot
@@ -227,6 +246,14 @@ class ExerciseDB {
 
   Stream<List<Exercise>> get exercise {
     return exerciseCollection.snapshots().map(_exerciseListFromSnapshot);
+    // exerciseCollection.where('part', '==', part).get()
+  }
+
+  Stream<List<Exercise>> get newExercise {
+    return FirebaseFirestore.instance
+        .collection('newRoutine')
+        .snapshots()
+        .map(_exerciseListFromSnapshot);
     // exerciseCollection.where('part', '==', part).get()
   }
 }
