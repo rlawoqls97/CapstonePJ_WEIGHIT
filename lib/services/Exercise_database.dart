@@ -24,7 +24,7 @@ class ExerciseDB {
   }
 
   //유저마다 가지고 있는 routine->uid->userRoutines->routineName->userExercise에 새로운
-  // 운동을 추가하는 행위. update와 다른점: weight와 reps를 int로 받아서 list로 바꿔 저장한다.
+  //운동을 추가하는 행위. update와 다른점: weight와 reps를 int로 받아서 list로 바꿔 저장한다.
   Future addNewUserExerciseData(String exerciseName, String part, int weight,
       int sets, int reps, int index) async {
     List<dynamic> weightList = [];
@@ -94,6 +94,68 @@ class ExerciseDB {
       'weight': weightList,
       'sets': sets,
       'reps': repsList,
+    });
+  }
+
+  //특정 세트의 반복횟수를 바꾸면 Firebase에 update하기
+  Future updateUserExerciseReps(UserExercise userExercise) async {
+    return await routineCollection
+        .doc(uid)
+        .collection('userRoutines')
+        .doc(routineName)
+        .collection('userExercise')
+        .doc('${userExercise.index}')
+        .update({
+      'reps': userExercise.reps,
+    });
+  }
+
+  //특정 세트의 무게를 바꾸면 Firebase에 update하기
+  Future updateUserExerciseWeight(UserExercise userExercise) async {
+    return await routineCollection
+        .doc(uid)
+        .collection('userRoutines')
+        .doc(routineName)
+        .collection('userExercise')
+        .doc('${userExercise.index}')
+        .update({
+      'weight': userExercise.weight,
+    });
+  }
+
+  Future updateUserExerciseAllReps(UserExercise userExercise) async {
+    List<dynamic> repsList = [];
+
+    for (int i = 0; i < userExercise.sets; i++) {
+      repsList.add(userExercise.reps[0]);
+      print(repsList);
+    }
+
+    return await routineCollection
+        .doc(uid)
+        .collection('userRoutines')
+        .doc(routineName)
+        .collection('userExercise')
+        .doc('${userExercise.index}')
+        .update({
+      'reps': repsList,
+    });
+  }
+
+  Future updateUserExerciseAllWeight(UserExercise userExercise) async {
+    List<dynamic> weightList = [];
+
+    for (int i = 0; i < userExercise.sets; i++) {
+      weightList.add(userExercise.weight[0]);
+    }
+    return await routineCollection
+        .doc(uid)
+        .collection('userRoutines')
+        .doc(routineName)
+        .collection('userExercise')
+        .doc('${userExercise.index}')
+        .update({
+      'weight': weightList,
     });
   }
 

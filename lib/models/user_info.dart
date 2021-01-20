@@ -6,11 +6,14 @@
 class TheUser {
   final String uid;
   List<dynamic> url = [];
+  // level이랑 routine 부분 routine page고치고 바로 빼기
   final String level;
   final String routine;
+  ///////////////////////
   String username;
   int weight;
   int workedDays;
+
   TheUser(
       {this.uid,
       this.level,
@@ -27,7 +30,7 @@ class UserExercise {
   final String part;
   final List<dynamic> weight;
   int sets;
-  final List<dynamic> reps;
+  List<dynamic> reps;
   final int index;
 
   UserExercise(

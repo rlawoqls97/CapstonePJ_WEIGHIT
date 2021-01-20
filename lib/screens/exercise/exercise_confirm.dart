@@ -18,52 +18,56 @@ class ExerciseConfirm extends StatelessWidget {
       create: (_) =>
           ExerciseDB(uid: user.uid, routineName: routineName).userExercise,
       child: Scaffold(
-          appBar: AppBar(
-            toolbarHeight: size.height * 0.1,
-            iconTheme: IconThemeData(color: Colors.black),
-            title: Text(
-              routineName,
-              style: TextStyle(color: Colors.black),
-            ),
-            centerTitle: true,
-            backgroundColor: Color(0xffF8F6F6),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {},
-              ),
-            ],
+        appBar: AppBar(
+          toolbarHeight: size.height * 0.1,
+          iconTheme: IconThemeData(color: Colors.black),
+          title: Text(
+            routineName,
+            style: TextStyle(color: Colors.black),
           ),
-          body: Column(
-            children: [
-              Expanded(
-                child: ExerciseList(
-                  routineName: routineName,
-                ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: size.height * 0.1,
-                child: FlatButton(
-                  color: Theme.of(context).primaryColor,
-                  child: Text(
-                    '운동 시작하기',
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ExercisingScreen(
-                          routineName: routineName,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          )),
+          centerTitle: true,
+          backgroundColor: Color(0xffF8F6F6),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {},
+            ),
+          ],
+        ),
+        body: ExerciseList(
+          routineName: routineName,
+        ),
+        // Column(
+        //   children: [
+        //     Expanded(
+        //       child: ExerciseList(
+        //         routineName: routineName,
+        //       ),
+        //     ),
+        //     SizedBox(
+        //       width: double.infinity,
+        //       height: size.height * 0.1,
+        //       child: FlatButton(
+        //         color: Theme.of(context).primaryColor,
+        //         child: Text(
+        //           '운동 시작하기',
+        //           style: Theme.of(context).textTheme.headline3,
+        //         ),
+        //         onPressed: () {
+        //           Navigator.push(
+        //             context,
+        //             MaterialPageRoute(
+        //               builder: (context) => ExercisingScreen(
+        //                 routineName: routineName,
+        //               ),
+        //             ),
+        //           );
+        //         },
+        //       ),
+        //     ),
+        //   ],
+        // ),
+      ),
     );
   }
 }

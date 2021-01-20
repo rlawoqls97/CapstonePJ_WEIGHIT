@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
+import 'package:weighit/screens/exercise/exercise_ing.dart';
 import 'package:weighit/screens/routine/make_routine.dart';
 import 'package:weighit/services/Exercise_database.dart';
 
@@ -20,41 +21,70 @@ class _ExerciseListState extends State<ExerciseList> {
     final exerciseDB =
         ExerciseDB(uid: user.uid, routineName: widget.routineName);
     final size = MediaQuery.of(context).size;
-    print('routine name :' + widget.routineName);
-    return CustomScrollView(
-      slivers: [
-        // 루틴에 있는 운동목록을 stream으로 받아와서 list로 만들기
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              return _exerciseTile(size, userExercise[index], exerciseDB);
-            },
-            childCount: userExercise.length,
-          ),
-        ),
-        SliverFixedExtentList(
-          itemExtent: size.height * 0.13,
-          delegate: SliverChildListDelegate(
-            [
-              Container(
-                padding: EdgeInsets.fromLTRB(size.width * 0.33,
-                    size.height * 0.025, size.width * 0.33, size.height * 0.05),
-                child: FlatButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Routine()),
-                    );
-                  },
-                  child: Text('운동 추가하기',
-                      style: Theme.of(context).textTheme.subtitle2),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(22.0),
-                  ),
-                  color: Theme.of(context).accentColor,
-                ),
+
+    return Column(
+      children: [
+        Expanded(
+            child: CustomScrollView(
+          slivers: [
+            // 루틴에 있는 운동목록을 stream으로 받아와서 list로 만들기
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  return _exerciseTile(size, userExercise[index], exerciseDB);
+                },
+                childCount: userExercise.length,
               ),
-            ],
+            ),
+            SliverFixedExtentList(
+              itemExtent: size.height * 0.13,
+              delegate: SliverChildListDelegate(
+                [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(
+                        size.width * 0.33,
+                        size.height * 0.025,
+                        size.width * 0.33,
+                        size.height * 0.05),
+                    child: FlatButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Routine()),
+                        );
+                      },
+                      child: Text('운동 추가하기',
+                          style: Theme.of(context).textTheme.subtitle2),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(22.0),
+                      ),
+                      color: Theme.of(context).accentColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        )),
+        SizedBox(
+          width: double.infinity,
+          height: size.height * 0.1,
+          child: FlatButton(
+            color: Theme.of(context).primaryColor,
+            child: Text(
+              '운동 시작하기',
+              style: Theme.of(context).textTheme.headline3,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ExercisingScreen(
+                      routineName: widget.routineName,
+                      exerciseList: userExercise),
+                ),
+              );
+            },
           ),
         ),
       ],
