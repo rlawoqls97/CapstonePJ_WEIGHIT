@@ -17,7 +17,7 @@ class TheUser {
       this.routine,
       this.username,
       this.weight,
-        this.url,
+      this.url,
       this.workedDays});
 }
 
@@ -25,15 +25,17 @@ class TheUser {
 class UserExercise {
   final String name;
   final String part;
-  final List<int> weight;
-  final int sets;
-  final List<int> reps;
+  final List<dynamic> weight;
+  int sets;
+  final List<dynamic> reps;
+  final int index;
 
-  UserExercise({this.name, this.part, this.weight, this.sets, this.reps});
+  UserExercise(
+      {this.name, this.part, this.weight, this.sets, this.reps, this.index});
 }
 
 // user의 각 부위 별 가해진 볼륨의 daily 기록
-// 만약 list int가 firebase와 호환되지 않는다면 List<dynamic>으로 교체해줄 것.
+// 만약 list int가 firebase와 호환되지 않는다면 List<dynamic>으로 교체해줄 것 -> 수정완료
 // 어차피 dynamic으로 해도 int 형태로 받아올 수 있다.
 class UserRecord {
   final int level;

@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
@@ -7,19 +6,24 @@ import 'package:weighit/screens/exercise/exercise_list.dart';
 import 'package:weighit/services/Exercise_database.dart';
 
 class ExerciseConfirm extends StatelessWidget {
+  final String routineName;
+  ExerciseConfirm({Key key, this.routineName}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<TheUser>(context);
     final size = MediaQuery.of(context).size;
+
     return StreamProvider<List<UserExercise>>(
-      create: (_) => ExerciseDB(uid: user.uid).userExercise,
+      create: (_) =>
+          ExerciseDB(uid: user.uid, routineName: routineName).userExercise,
       child: Scaffold(
           appBar: AppBar(
             toolbarHeight: size.height * 0.1,
             iconTheme: IconThemeData(color: Colors.black),
             title: Text(
-              '어깨운동, 초급',
-              style: Theme.of(context).textTheme.headline6,
+              routineName,
+              style: TextStyle(color: Colors.black),
             ),
             centerTitle: true,
             backgroundColor: Color(0xffF8F6F6),
@@ -32,7 +36,11 @@ class ExerciseConfirm extends StatelessWidget {
           ),
           body: Column(
             children: [
-              Expanded(child: ExerciseList()),
+              Expanded(
+                child: ExerciseList(
+                  routineName: routineName,
+                ),
+              ),
               SizedBox(
                 width: double.infinity,
                 height: size.height * 0.1,
@@ -46,7 +54,10 @@ class ExerciseConfirm extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ExercisingScreen()),
+                        builder: (context) => ExercisingScreen(
+                          routineName: routineName,
+                        ),
+                      ),
                     );
                   },
                 ),

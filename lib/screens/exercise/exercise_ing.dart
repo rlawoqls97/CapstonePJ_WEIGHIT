@@ -1,11 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
 import 'package:weighit/screens/exercise/exercise_list.dart';
 import 'dart:async';
 
+import 'package:weighit/services/Exercise_database.dart';
+
 class ExercisingScreen extends StatefulWidget {
+  final String routineName;
+  final List<UserExercise> userExercise;
+  ExercisingScreen({Key key, this.routineName, this.userExercise})
+      : super(key: key);
+
   @override
   _ExercisingScreenState createState() => _ExercisingScreenState();
 }
@@ -47,6 +55,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
     isDifferentSet = false;
     isDuringSet = true;
     isTimerRunning = false;
+
     super.initState();
   }
 
@@ -72,7 +81,9 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    if (isTimerRunning) {
+      _timer.cancel();
+    }
     super.dispose();
   }
 
@@ -87,126 +98,148 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.routineName);
+    final user = Provider.of<TheUser>(context);
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: size.height * 0.1,
-        iconTheme: IconThemeData(color: Colors.black),
-        title: Text(
-          '어깨운동, 초급',
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
-        backgroundColor: Color(0xffF8F6F6),
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              height: size.height * 0.1,
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      exerciseList[exerciseIndex].name,
-                      style: TextStyle(
-                          fontSize: size.height * 0.035,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          _setNo = 0;
-                          exerciseIndex++;
-                        });
-                      },
-                      child: Container(
-                        height: size.height * 0.1,
-                        width: size.width * 0.25,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              '다음',
-                              style: TextStyle(fontSize: size.height * 0.025),
-                            ),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              size: size.height * 0.035,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              height: size.height * 0.35,
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+    return StreamBuilder<List<UserExercise>>(
+        stream: ExerciseDB(uid: user.uid, routineName: widget.routineName)
+            .userExercise,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting ||
+              !snapshot.hasData ||
+              snapshot.data == null) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            List<UserExercise> userExercise = snapshot.data;
+            return Scaffold(
+              appBar: AppBar(
+                toolbarHeight: size.height * 0.1,
+                iconTheme: IconThemeData(color: Colors.black),
+                title: Text(
+                  widget.routineName,
+                  style: TextStyle(color: Colors.black),
                 ),
-                elevation: 2,
-                color: Color(0xffDDF4F0),
-                child: Padding(
-                  padding: EdgeInsets.all(5),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                centerTitle: true,
+                backgroundColor: Color(0xffF8F6F6),
+              ),
+              body: Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: size.height * 0.1,
+                      child: Stack(
                         children: [
-                          GestureDetector(
-                            onTap: () => setState(() => isDifferentSet = false),
+                          Align(
+                            alignment: Alignment.center,
                             child: Text(
-                              '전체 세트 동일 설정',
+                              userExercise[exerciseIndex].name,
                               style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                  color: isDifferentSet
-                                      ? Colors.grey
-                                      : Colors.black),
+                                  fontSize: size.height * 0.035,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () => setState(() => isDifferentSet = true),
-                            child: Text(
-                              '세트 별 다른 설정',
-                              style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                  color: isDifferentSet
-                                      ? Colors.black
-                                      : Colors.grey),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  if (userExercise.length - 1 > exerciseIndex) {
+                                    _setNo = 0;
+                                    exerciseIndex++;
+                                  }
+                                });
+                              },
+                              child: Container(
+                                height: size.height * 0.1,
+                                width: size.width * 0.25,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      '다음',
+                                      style: TextStyle(
+                                          fontSize: size.height * 0.025),
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: size.height * 0.035,
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ],
                       ),
-                      isDifferentSet
-                          ? _differentSetCard(
-                              size, exerciseList[exerciseIndex].sets)
-                          : _allSetCard(),
-                    ],
-                  ),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: size.height * 0.35,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 2,
+                        color: Color(0xffDDF4F0),
+                        child: Padding(
+                          padding: EdgeInsets.all(5),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () =>
+                                        setState(() => isDifferentSet = false),
+                                    child: Text(
+                                      '전체 세트 동일 설정',
+                                      style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.bold,
+                                          color: isDifferentSet
+                                              ? Colors.grey
+                                              : Colors.black),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () =>
+                                        setState(() => isDifferentSet = true),
+                                    child: Text(
+                                      '세트 별 다른 설정',
+                                      style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.bold,
+                                          color: isDifferentSet
+                                              ? Colors.black
+                                              : Colors.grey),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              isDifferentSet
+                                  ? _differentSetCard(
+                                      size, userExercise[exerciseIndex].sets)
+                                  : _allSetCard(),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    isDuringSet
+                        ? _setUI(size, _setNo, userExercise)
+                        : _timerUI(size, context)
+                  ],
                 ),
               ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            isDuringSet ? _setUI(size, _setNo) : _timerUI(size, context)
-          ],
-        ),
-      ),
-    );
+            );
+          }
+        });
   }
 
   //운동의 모든 세트의 반복횟수와 무게가 같은 경우 보여주는 카드
@@ -387,15 +420,15 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
         );
   }
 
-  Widget _setUI(Size size, int setNo) {
+  Widget _setUI(Size size, int setNo, List<UserExercise> userExercises) {
     return Column(
       children: [
         GestureDetector(
           onTap: () {
             setState(() {
-              if (_setNo >= exerciseList[exerciseIndex].sets) {
+              if (_setNo >= userExercises[exerciseIndex].sets) {
                 _setNo = 0;
-                if (exerciseList.length - 1 > exerciseIndex) {
+                if (userExercises.length - 1 > exerciseIndex) {
                   exerciseIndex++;
                 }
               } else {
@@ -414,8 +447,8 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(exerciseList[exerciseIndex].name +
-                        ' ${exerciseList[exerciseIndex].sets} Set'),
+                    Text(userExercises[exerciseIndex].name +
+                        ' ${userExercises[exerciseIndex].sets} Set'),
                     SizedBox(
                       height: 5,
                     ),
@@ -426,8 +459,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                       size: 15,
                       backgroundColor: Colors.white,
                       currentValue: _setNo, //current value는 0부터 max value까지
-                      maxValue: exerciseList[exerciseIndex]
-                          .sets, //나중에 total number of set
+                      maxValue: userExercises[exerciseIndex].sets,
                       displayText: 'sets',
                       displayTextStyle: TextStyle(color: Colors.black),
                     ),

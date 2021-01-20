@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
 import 'package:weighit/screens/routine/make_routine.dart';
+import 'package:weighit/services/Exercise_database.dart';
 
 class ExerciseList extends StatefulWidget {
+  final String routineName;
+  ExerciseList({Key key, this.routineName}) : super(key: key);
   @override
   _ExerciseListState createState() => _ExerciseListState();
 }
@@ -12,17 +15,19 @@ class _ExerciseListState extends State<ExerciseList> {
   int setNo = 5;
   @override
   Widget build(BuildContext context) {
-    // final userExercise = Provider.of<List<UserExercise>>(context) ?? [];
+    final user = Provider.of<TheUser>(context);
+    final userExercise = Provider.of<List<UserExercise>>(context) ?? [];
+    final exerciseDB =
+        ExerciseDB(uid: user.uid, routineName: widget.routineName);
     final size = MediaQuery.of(context).size;
-
-    final userExercise = [1, 2];
+    print('routine name :' + widget.routineName);
     return CustomScrollView(
       slivers: [
         // 루틴에 있는 운동목록을 stream으로 받아와서 list로 만들기
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
-              return _exerciseTile(size);
+              return _exerciseTile(size, userExercise[index], exerciseDB);
             },
             childCount: userExercise.length,
           ),
@@ -41,10 +46,8 @@ class _ExerciseListState extends State<ExerciseList> {
                       MaterialPageRoute(builder: (context) => Routine()),
                     );
                   },
-                  child: Text(
-                    '운동 추가하기',
-                    style: Theme.of(context).textTheme.subtitle2
-                  ),
+                  child: Text('운동 추가하기',
+                      style: Theme.of(context).textTheme.subtitle2),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(22.0),
                   ),
@@ -58,7 +61,8 @@ class _ExerciseListState extends State<ExerciseList> {
     );
   }
 
-  Widget _exerciseTile(Size size) {
+  Widget _exerciseTile(
+      Size size, UserExercise userExercise, ExerciseDB exerciseDB) {
     return Column(
       children: [
         InkWell(
@@ -74,11 +78,11 @@ class _ExerciseListState extends State<ExerciseList> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '딥스',
+                    userExercise.name,
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   Container(
-                    width: size.width * 0.34,
+                    width: size.width * 0.36,
                     height: size.height * 0.05,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -98,22 +102,26 @@ class _ExerciseListState extends State<ExerciseList> {
                         children: [
                           IconButton(
                             icon: Icon(Icons.remove),
-                            onPressed: () {
-                              setState(() {
-                                setNo--;
-                              });
+                            onPressed: () async {
+                              var sets = userExercise.sets - 1;
+                              print('set : $sets');
+
+                              await exerciseDB.updateUserExerciseSet(
+                                  userExercise, sets);
                             },
                           ),
                           Text(
-                            '$setNo set',
+                            '${userExercise.sets} set',
                             style: TextStyle(fontSize: 16),
                           ),
                           IconButton(
                             icon: Icon(Icons.add),
-                            onPressed: () {
-                              setState(() {
-                                setNo++;
-                              });
+                            onPressed: () async {
+                              var sets = userExercise.sets + 1;
+                              print('set : $sets');
+
+                              await exerciseDB.updateUserExerciseSet(
+                                  userExercise, sets);
                             },
                           ),
                         ],
