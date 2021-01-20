@@ -41,36 +41,6 @@ class ExerciseConfirm extends StatelessWidget {
         body: ExerciseList(
           routineName: routineName,
         ),
-        // Column(
-        //   children: [
-        //     Expanded(
-        //       child: ExerciseList(
-        //         routineName: routineName,
-        //       ),
-        //     ),
-        //     SizedBox(
-        //       width: double.infinity,
-        //       height: size.height * 0.1,
-        //       child: FlatButton(
-        //         color: Theme.of(context).primaryColor,
-        //         child: Text(
-        //           '운동 시작하기',
-        //           style: Theme.of(context).textTheme.headline3,
-        //         ),
-        //         onPressed: () {
-        //           Navigator.push(
-        //             context,
-        //             MaterialPageRoute(
-        //               builder: (context) => ExercisingScreen(
-        //                 routineName: routineName,
-        //               ),
-        //             ),
-        //           );
-        //         },
-        //       ),
-        //     ),
-        //   ],
-        // ),
       ),
     );
   }

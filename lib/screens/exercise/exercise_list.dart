@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
+import 'package:weighit/screens/exercise/add_routine/add_routine.dart';
 import 'package:weighit/screens/exercise/exercise_ing.dart';
 import 'package:weighit/screens/routine/make_routine.dart';
 import 'package:weighit/services/Exercise_database.dart';
@@ -50,7 +51,11 @@ class _ExerciseListState extends State<ExerciseList> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Routine()),
+                          MaterialPageRoute(
+                              builder: (context) => AddRoutine(
+                                    exerciseList: userExercise,
+                                    routineName: widget.routineName,
+                                  )),
                         );
                       },
                       child: Text('운동 추가하기',

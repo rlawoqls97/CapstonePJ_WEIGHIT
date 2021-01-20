@@ -9,41 +9,6 @@ import 'package:weighit/models/user_info.dart';
 import 'package:weighit/services/Exercise_database.dart';
 import 'package:weighit/widgets/sliver_header.dart';
 
-// ONSHAKE: () =>
-// {
-//             setState(() {
-//               // 나중엔 차트에 넣기위한 userRecord에도 넣기
-//               if (_setNo >= userExercises[exerciseIndex].sets) {
-//                 _setNo = 0;
-//                 // 만약 slider를 통해 전체 세트 동일 설정으로 반복횟수를 움직였다면 db에 반영하기
-//                 if (_currentReps != null) {
-//                   userExercises[exerciseIndex].reps[0] = _currentReps;
-//                   _currentReps = null;
-
-//                   exerciseDB
-//                       .updateUserExerciseAllReps(userExercises[exerciseIndex]);
-//                 }
-//                 // 만약 slider를 통해 전체 세트 동일 설정으로 무게를 움직였다면 db에 반영하기
-//                 if (_currentWeight != null) {
-//                   userExercises[exerciseIndex].weight[0] = _currentWeight;
-
-//                   _currentWeight = null;
-
-//                   exerciseDB.updateUserExerciseAllWeight(
-//                       userExercises[exerciseIndex]);
-//                 }
-//                 // 전체 exercise의 인덱스를 넘지 않는다면 다음 운동index로 움직임
-//                 if (userExercises.length - 1 > exerciseIndex) {
-//                   exerciseIndex++;
-//                 } else {
-//                   Navigator.pop(context);
-//                   Navigator.pop(context);
-//                 }
-//               } else {
-//                 _toggleUI();
-//                 _setNo++;
-//               }
-//             });
 class ExercisingScreen extends StatefulWidget {
   final String routineName;
   final List<UserExercise> exerciseList;
