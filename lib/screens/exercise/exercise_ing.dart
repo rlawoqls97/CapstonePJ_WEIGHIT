@@ -1,13 +1,49 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_shake_plugin/flutter_shake_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:weighit/models/user_info.dart';
 import 'dart:async';
 
+import 'package:weighit/models/user_info.dart';
 import 'package:weighit/services/Exercise_database.dart';
 import 'package:weighit/widgets/sliver_header.dart';
 
+// ONSHAKE: () =>
+// {
+//             setState(() {
+//               // 나중엔 차트에 넣기위한 userRecord에도 넣기
+//               if (_setNo >= userExercises[exerciseIndex].sets) {
+//                 _setNo = 0;
+//                 // 만약 slider를 통해 전체 세트 동일 설정으로 반복횟수를 움직였다면 db에 반영하기
+//                 if (_currentReps != null) {
+//                   userExercises[exerciseIndex].reps[0] = _currentReps;
+//                   _currentReps = null;
+
+//                   exerciseDB
+//                       .updateUserExerciseAllReps(userExercises[exerciseIndex]);
+//                 }
+//                 // 만약 slider를 통해 전체 세트 동일 설정으로 무게를 움직였다면 db에 반영하기
+//                 if (_currentWeight != null) {
+//                   userExercises[exerciseIndex].weight[0] = _currentWeight;
+
+//                   _currentWeight = null;
+
+//                   exerciseDB.updateUserExerciseAllWeight(
+//                       userExercises[exerciseIndex]);
+//                 }
+//                 // 전체 exercise의 인덱스를 넘지 않는다면 다음 운동index로 움직임
+//                 if (userExercises.length - 1 > exerciseIndex) {
+//                   exerciseIndex++;
+//                 } else {
+//                   Navigator.pop(context);
+//                   Navigator.pop(context);
+//                 }
+//               } else {
+//                 _toggleUI();
+//                 _setNo++;
+//               }
+//             });
 class ExercisingScreen extends StatefulWidget {
   final String routineName;
   final List<UserExercise> exerciseList;
@@ -21,7 +57,7 @@ class ExercisingScreen extends StatefulWidget {
 //총 운동시간, 쉬는 시간 끝나고 보여주는 기능 후에 추가
 //
 class _ExercisingScreenState extends State<ExercisingScreen> {
-  int _setNo = 0;
+  int _setNo;
   int _currentReps;
   int _currentWeight;
 
@@ -35,14 +71,20 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
   int selectedTime = 0;
   bool isTimerRunning;
 
+  FlutterShakePlugin _shakePlugin; //shaking기능을 위한 플러그인 오브젝트
+
   @override
   void initState() {
     exerciseIndex = 0;
+    _setNo = 0;
     //카드 클릭을 통해 ui 변화시키는 boolean variable
     isDifferentSet = false;
     isDuringSet = true;
     isTimerRunning = false;
-
+    _shakePlugin = FlutterShakePlugin(onPhoneShaken: () {
+      _toggleUI();
+    })
+      ..startListening();
     super.initState();
   }
 
@@ -54,6 +96,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
       (Timer timer) {
         if (_time == 0) {
           setState(() {
+            _shakePlugin..startListening();
             timer.cancel();
             isTimerRunning = false;
             isDuringSet = true;
@@ -554,6 +597,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                 ),
                 onPressed: () {
                   setState(() {
+                    _shakePlugin..stopListening();
                     startTimer();
                     isTimerRunning = !isTimerRunning;
                     switch (selectedTime) {

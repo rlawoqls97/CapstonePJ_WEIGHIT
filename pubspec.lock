@@ -244,6 +244,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.9"
+  flutter_shake_plugin:
+    dependency: "direct main"
+    description:
+      name: flutter_shake_plugin
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -429,6 +436,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.5"
+  sensors:
+    dependency: transitive
+    description:
+      name: sensors
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.2+6"
   sign_in_with_apple:
     dependency: "direct main"
     description:
@@ -497,6 +511,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0-nullsafety.5"
+  vibration:
+    dependency: transitive
+    description:
+      name: vibration
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.7.3"
+  vibration_web:
+    dependency: transitive
+    description:
+      name: vibration_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.6.2"
   win32:
     dependency: transitive
     description:
