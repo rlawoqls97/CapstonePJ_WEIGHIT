@@ -12,7 +12,8 @@ import 'package:weighit/models/user_info.dart';
 class PreviewScreen extends StatefulWidget {
   final String imgPath;
   final String fileName;
-  PreviewScreen({this.imgPath, this.fileName});
+  final String pickedTime;
+  PreviewScreen({this.imgPath, this.fileName, this.pickedTime});
 
   @override
   _PreviewScreenState createState() => _PreviewScreenState();
@@ -21,6 +22,7 @@ class PreviewScreen extends StatefulWidget {
 int index = 0;
 
 class _PreviewScreenState extends State<PreviewScreen> {
+
   @override
   Widget build(BuildContext context) {
     final _user = Provider.of<TheUser>(context);
@@ -55,12 +57,13 @@ class _PreviewScreenState extends State<PreviewScreen> {
               onPressed: () async {
                 await ref.putFile(imgFile);
                 var url = (await ref.getDownloadURL()).toString();
-                // _user.url[index] = url;
                 _user.url.add(url);
+                _user.pickTime.add(widget.pickedTime);
                 await FirebaseFirestore.instance
                     .collection('user')
                     .doc(_user.uid)
-                    .update({'url': _user.url});
+                    .update({'url': _user.url, 'pickTime': _user.pickTime});
+                Navigator.pop(context);
               },
             )
           ],

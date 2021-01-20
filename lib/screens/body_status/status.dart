@@ -34,7 +34,7 @@ class _StatusState extends State<Status> {
         iconTheme: IconThemeData(color: Colors.black),
         title: Text(
           '몸 상태',
-          style: TextStyle(color: Colors.black),
+            style: Theme.of(context).textTheme.headline6,
         ),
         automaticallyImplyLeading: false,
         centerTitle: true,

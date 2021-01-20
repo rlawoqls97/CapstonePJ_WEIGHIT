@@ -5,6 +5,7 @@
 // user의 신상 정보 및 랭크 관리
 class TheUser {
   final String uid;
+  List<dynamic> pickTime = [];
   List<dynamic> url = [];
   // level이랑 routine 부분 routine page고치고 바로 빼기
   final String level;
@@ -15,13 +16,15 @@ class TheUser {
   int workedDays;
 
   TheUser(
-      {this.uid,
-      this.level,
-      this.routine,
-      this.username,
-      this.weight,
-      this.url,
-      this.workedDays});
+      { this.uid,
+        this.level,
+        this.routine,
+        this.username,
+        this.weight,
+        this.url,
+        this.workedDays,
+        this.pickTime
+      });
 }
 
 // user의 각 운동의 기록

@@ -34,6 +34,7 @@ class Wrapper extends StatelessWidget {
             user.weight = snapshot.data.get('weight');
             user.workedDays = snapshot.data.get('workedDays');
             user.url = snapshot.data.get('url');
+            user.pickTime = snapshot.data.get('pickTime');
 
             return HomePage();
           } else {

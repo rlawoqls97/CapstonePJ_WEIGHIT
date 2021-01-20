@@ -18,8 +18,9 @@ class InputInformation extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xffCBDBF9),
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text('회원 정보 입력'),
+        toolbarHeight: size.height * 0.1,
         centerTitle: true,
         actions: [],
       ),
@@ -113,6 +114,7 @@ class InputInformation extends StatelessWidget {
                                         '',
                                 'workedDays': 0,
                                 'url': [],
+                                'pickTime': [],
                                 'isExercising': false,
                               })
                               .then((value) => print('Item added'))

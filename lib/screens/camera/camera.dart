@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
@@ -104,8 +105,9 @@ class _CameraScreenState extends State<CameraScreen> {
   onCapture(context) async {
     try {
       final p = await getTemporaryDirectory();
-      final name = DateTime.now();
-      final path = '${p.path}/$name.png';
+      var now = DateTime.now();
+      var formattedDate = DateFormat('yy-MM-dd HH:mm:ss').format(now);
+      final path = '${p.path}/$now.png';
       await cameraController.takePicture(path).then((value) {
         print('here');
         Navigator.push(
@@ -114,7 +116,8 @@ class _CameraScreenState extends State<CameraScreen> {
                 builder: (context) =>
                     PreviewScreen(
                       imgPath: path,
-                      fileName: '$name.png',
+                      fileName: '$formattedDate.png',
+                      pickedTime: '$formattedDate',
                     )));
       });
     } catch (e) {
