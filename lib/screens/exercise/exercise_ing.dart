@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
-import 'package:weighit/screens/exercise/exercise_list.dart';
 import 'dart:async';
 
 import 'package:weighit/services/Exercise_database.dart';
@@ -19,19 +18,20 @@ class ExercisingScreen extends StatefulWidget {
   _ExercisingScreenState createState() => _ExercisingScreenState();
 }
 
+//총 운동시간, 쉬는 시간 끝나고 보여주는 기능 후에 추가
+//
 class _ExercisingScreenState extends State<ExercisingScreen> {
   int _setNo = 0;
   int _currentReps;
   int _currentWeight;
 
-  //
   int exerciseIndex;
   bool isDifferentSet;
 
   bool isDuringSet = true;
 
   Timer _timer;
-  int _start = 10;
+  var _time; //실제 줄어들 시간
   int selectedTime = 0;
   bool isTimerRunning;
 
@@ -47,11 +47,12 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
   }
 
   void startTimer() {
-    const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
-      oneSec,
+    // timer의 duration을 정해주는 역할. 0.01초 단위로 보여줄거니까 duration은 10millisecond로 했다.
+    const duration = Duration(milliseconds: 10);
+    _timer = Timer.periodic(
+      duration,
       (Timer timer) {
-        if (_start == 0) {
+        if (_time == 0) {
           setState(() {
             timer.cancel();
             isTimerRunning = false;
@@ -59,7 +60,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
           });
         } else {
           setState(() {
-            _start--;
+            _time--;
           });
         }
       },
@@ -68,9 +69,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
 
   @override
   void dispose() {
-    if (isTimerRunning) {
-      _timer.cancel();
-    }
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -122,14 +121,27 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                     child: InkWell(
                       onTap: () {
                         setState(() {
-                          // userExercise.reps[0] = _currentReps;
-                          // currentReps = null;
+                          // 나중엔 차트에 넣기위한 userRecord에도 넣기
                           //exerciseDB.updateALL(userExercise[exerciseIndex]
                           if (userExercise.length - 1 > exerciseIndex) {
                             _setNo = 0;
                             exerciseIndex++;
+                            if (!isDuringSet) {
+                              _toggleUI(); //만약 bar card ui가 아닐 때 다음을 눌러서 운동을 바꾸면, 이걸로 toggle시켜줌
+                            }
+                            // 만약 slider를 통해 개수나 무게를 움직였다면 db에 반영하기
+                            if (_currentReps != null) {
+                              // userExercise[exerciseIndex].reps[0] = _currentReps;
+                              _currentReps = null;
+                            }
+                            if (_currentWeight != null) {
+                              _currentWeight = null;
+                            }
+                          } else {
+                            Navigator.pop(context);
+
+                            Navigator.pop(context);
                           }
-                          // else {gotomainpage}
                         });
                       },
                       child: Container(
@@ -210,7 +222,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
               height: 5,
             ),
             isDuringSet
-                ? _setUI(size, _setNo, userExercise)
+                ? _setUI(size, userExercise, exerciseDB)
                 : _timerUI(size, context)
           ],
         ),
@@ -269,7 +281,6 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
   // 운동의 각 세트 별 무게와 반복횟수가 다른 경우 저장하는 것.
   Widget _differentSetCard(Size size, UserExercise userExercise,
       BuildContext context, ExerciseDB exerciseDB) {
-    var list = userExercise.reps;
     return Expanded(
       child: CustomScrollView(
         slivers: [
@@ -328,7 +339,6 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                                     },
                                   ),
                                   Text(
-                                    // 'setNo'
                                     ('${userExercise.reps[index]}'),
                                     style: TextStyle(fontSize: 16),
                                   ),
@@ -370,7 +380,6 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                                     },
                                   ),
                                   Text(
-                                    // 'setNo'
                                     ('${userExercise.weight[index]}'),
                                     style: TextStyle(fontSize: 16),
                                   ),
@@ -398,16 +407,39 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
     );
   }
 
-  Widget _setUI(Size size, int setNo, List<UserExercise> userExercises) {
+  Widget _setUI(
+      Size size, List<UserExercise> userExercises, ExerciseDB exerciseDB) {
     return Column(
       children: [
         GestureDetector(
           onTap: () {
             setState(() {
+              // 나중엔 차트에 넣기위한 userRecord에도 넣기
               if (_setNo >= userExercises[exerciseIndex].sets) {
                 _setNo = 0;
+                // 만약 slider를 통해 전체 세트 동일 설정으로 반복횟수를 움직였다면 db에 반영하기
+                if (_currentReps != null) {
+                  userExercises[exerciseIndex].reps[0] = _currentReps;
+                  _currentReps = null;
+
+                  exerciseDB
+                      .updateUserExerciseAllReps(userExercises[exerciseIndex]);
+                }
+                // 만약 slider를 통해 전체 세트 동일 설정으로 무게를 움직였다면 db에 반영하기
+                if (_currentWeight != null) {
+                  userExercises[exerciseIndex].weight[0] = _currentWeight;
+
+                  _currentWeight = null;
+
+                  exerciseDB.updateUserExerciseAllWeight(
+                      userExercises[exerciseIndex]);
+                }
+                // 전체 exercise의 인덱스를 넘지 않는다면 다음 운동index로 움직임
                 if (userExercises.length - 1 > exerciseIndex) {
                   exerciseIndex++;
+                } else {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
                 }
               } else {
                 _toggleUI();
@@ -470,9 +502,18 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
           height: size.height * 0.3,
           child: isTimerRunning
               ? Center(
-                  child: Text(
-                  '$_start',
-                  style: TextStyle(fontSize: size.height * 0.05),
+                  child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${_time ~/ 100}', //초
+                      style: TextStyle(fontSize: size.height * 0.05),
+                    ),
+                    Text(
+                      '.${_time % 100}'.padLeft(2, '0'), //소숫점 시간
+                      style: TextStyle(fontSize: size.height * 0.03),
+                    ),
+                  ],
                 ))
               : CupertinoPicker(
                   // magnification: 1.3,
@@ -517,16 +558,18 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                     isTimerRunning = !isTimerRunning;
                     switch (selectedTime) {
                       case 0:
-                        _start = 1;
+                        _time = 300;
+
                         break;
                       case 1:
-                        _start = 2;
+                        _time = 600;
                         break;
                       case 2:
-                        _start = 3;
+                        _time = 900;
                         break;
                     }
-                    selectedTime = 0;
+
+                    selectedTime = 0; //다시 45초 타이머로 돌려놓기
                   });
                 },
               ),

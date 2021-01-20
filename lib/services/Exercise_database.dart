@@ -159,22 +159,6 @@ class ExerciseDB {
     });
   }
 
-  //유저마다 가지고 있는 user collection에 있는 자신 전용 collection을 update하는 것
-  //수정해야함
-  // Future updateUserExerciseData(
-  //     String name, String part, int weight, int sets, int reps) async {
-  //   return await userCollection
-  //       .doc(uid)
-  //       .collection('user_defined_routines')
-  //       .add({
-  //     'name': name,
-  //     'part': part,
-  //     'weight': weight,
-  //     'sets': sets,
-  //     'reps': reps,
-  //   });
-  // }
-
   //전체 exercise collection update
   // index 추가 해야함
   Future updateExerciseData(String name, String part) async {
