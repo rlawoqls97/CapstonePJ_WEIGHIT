@@ -115,6 +115,7 @@ class InputInformation extends StatelessWidget {
                                 'workedDays': 0,
                                 'url': [],
                                 'pickTime': [],
+                                'isExercising': false,
                               })
                               .then((value) => print('Item added'))
                               .catchError(

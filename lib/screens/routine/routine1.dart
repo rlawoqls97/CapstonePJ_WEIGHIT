@@ -4,13 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:weighit/models/user_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 class Routine1 extends StatefulWidget {
   @override
   _Routine1State createState() => _Routine1State();
 }
 
-class _Routine1State extends State<Routine1> with AutomaticKeepAliveClientMixin<Routine1>{
+class _Routine1State extends State<Routine1>
+    with AutomaticKeepAliveClientMixin<Routine1> {
   int clicked = 0;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   int setNo = 3;
@@ -27,34 +27,40 @@ class _Routine1State extends State<Routine1> with AutomaticKeepAliveClientMixin<
     return CustomScrollView(
       slivers: [
         SliverList(
-              delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return _exerciseTile(context);
-                  },
-                childCount: userExercise.length,
-              ),
-            ),
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return _exerciseTile(context);
+            },
+            childCount: userExercise.length,
+          ),
+        ),
         SliverFixedExtentList(
           itemExtent: size.height * 0.12,
           delegate: SliverChildListDelegate(
             [
               Container(
-                padding: EdgeInsets.fromLTRB(size.width * 0.33,
-                    size.height * 0.023, size.width * 0.33, size.height * 0.05),
-                child: FlatButton(
-                  onPressed: () {
-                    setState(() {
-                      clicked = clicked + 1;
-                    });
-                  },
-                  child: Text(
-                    '운동 추가하기',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(22.0),
-                  ),
-                  color: Theme.of(context).accentColor
+                padding: EdgeInsets.only(
+                    top: size.height * 0.023, bottom: size.height * 0.05),
+                child: Column(
+                  children: [
+                    // Center(child: Text('원하시는 운동이 없으시다면..')),
+                    Center(
+                      child: FlatButton(
+                          onPressed: () {
+                            setState(() {
+                              clicked = clicked + 1;
+                            });
+                          },
+                          child: Text(
+                            '운동 추가하기',
+                            style: Theme.of(context).textTheme.subtitle2,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(22.0),
+                          ),
+                          color: Theme.of(context).accentColor),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -62,42 +68,59 @@ class _Routine1State extends State<Routine1> with AutomaticKeepAliveClientMixin<
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
-              (context, index){
-                return Column(
-                  children: [
-                    Divider(color: Colors.black,),
-                    Text('선택한 운동', style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black),),
-                    Divider(color: Colors.black,),
-                  ],
-                );
-              },
+            (context, index) {
+              return Column(
+                children: [
+                  Divider(
+                    color: Colors.black,
+                  ),
+                  Text(
+                    '선택한 운동',
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle2
+                        .copyWith(color: Colors.black),
+                  ),
+                  Divider(
+                    color: Colors.black,
+                  ),
+                ],
+              );
+            },
             childCount: 1,
           ),
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
-                // ignore: missing_return
-                (context, index) {
-                  if (clicked == 0) {
-                    return Container(
-                      child: Center(
-                        child: Text('루틴에 추가할 운동을 선택하세요', style: Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.black),),
-                      ),
-                    );
-                  }
-                  if (clicked > 0) {
-                    return _chooseExerciseTile(context);
-                  }
-                },
-                childCount: 1,
+            // ignore: missing_return
+            (context, index) {
+              if (clicked == 0) {
+                return Container(
+                  child: Center(
+                    child: Text(
+                      '루틴에 추가할 운동을 선택하세요',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2
+                          .copyWith(color: Colors.black),
+                    ),
+                  ),
+                );
+              }
+              if (clicked > 0) {
+                return _chooseExerciseTile(context);
+              }
+            },
+            childCount: 1,
           ),
         ),
       ],
     );
   }
 
-  List<TheUser> _listTiles(BuildContext context, List<DocumentSnapshot> snapshot) {
-    if(snapshot == null) {
+  List<TheUser> _listTiles(
+      BuildContext context, List<DocumentSnapshot> snapshot) {
+    if (snapshot == null) {
       return null;
     } else {
       return snapshot.map((doc) {
@@ -110,7 +133,6 @@ class _Routine1State extends State<Routine1> with AutomaticKeepAliveClientMixin<
     }
   }
 
-
   Widget _chooseExerciseTile(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 2),
@@ -118,30 +140,34 @@ class _Routine1State extends State<Routine1> with AutomaticKeepAliveClientMixin<
         color: Color(0xff09255B),
         child: ListTile(
           onTap: () {},
-          title: Text('벤치프레스', style: Theme.of(context).textTheme.subtitle2,),
+          title: Text(
+            '벤치프레스',
+            style: Theme.of(context).textTheme.subtitle2,
+          ),
           trailing: IconButton(
-            icon: Icon(Icons.close,
+            icon: Icon(
+              Icons.close,
               color: Colors.white,
             ),
-            onPressed: () {
-
-          },),
+            onPressed: () {},
+          ),
         ),
       ),
     );
   }
 
-
   Widget _exerciseTile(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 2),
-      child: Card(
-        color: Theme.of(context).primaryColor,
-        child: ListTile(
-          onTap: () {},
-          title: Text('벤치프레스', style: Theme.of(context).textTheme.subtitle2,),
-        ),
-      )
-    );
+        padding: const EdgeInsets.only(top: 2),
+        child: Card(
+          color: Theme.of(context).primaryColor,
+          child: ListTile(
+            onTap: () {},
+            title: Text(
+              '벤치프레스',
+              style: Theme.of(context).textTheme.subtitle2,
+            ),
+          ),
+        ));
   }
 }

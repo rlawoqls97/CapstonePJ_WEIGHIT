@@ -29,11 +29,13 @@ class Wrapper extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Scaffold(body: Center(child: CircularProgressIndicator()));
           } else if (snapshot.hasData && snapshot.data.data() != null) {
+            // 이하 네줄 ExerciseDB에 메소드 하나로 정리하기
             user.username = snapshot.data.get('username');
             user.weight = snapshot.data.get('weight');
             user.workedDays = snapshot.data.get('workedDays');
             user.url = snapshot.data.get('url');
             user.pickTime = snapshot.data.get('pickTime');
+
             return HomePage();
           } else {
             //만약 유저의 data가 없으면 최초 정보 입력 화면으로 간다.
