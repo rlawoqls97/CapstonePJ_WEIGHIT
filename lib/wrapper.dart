@@ -33,6 +33,7 @@ class Wrapper extends StatelessWidget {
             user.weight = snapshot.data.get('weight');
             user.workedDays = snapshot.data.get('workedDays');
             user.url = snapshot.data.get('url');
+            user.pickTime = snapshot.data.get('pickTime');
             return HomePage();
           } else {
             //만약 유저의 data가 없으면 최초 정보 입력 화면으로 간다.

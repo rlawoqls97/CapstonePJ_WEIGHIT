@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
+import 'package:weighit/screens/camera/gallery_tap.dart';
 import 'package:weighit/screens/camera/preview.dart';
 
 class gallery extends StatefulWidget {
@@ -76,35 +77,29 @@ class _galleryState extends State<gallery> {
           }
           // final cards = _buildGridCards(context, snapshot.data.docs) ?? [];
           return SingleChildScrollView(
-            child: Center(
-              child:
-              // GridView.builder(
-              //   physics: ScrollPhysics(),
-              //   scrollDirection: Axis.vertical,
-              //   shrinkWrap: true,
-              //   itemCount: _user.url.length,
-              //   // ignore: missing_return
-              //   itemBuilder: (context, index){
-              //     _cardTiles(context, cards[index]);
-              //   },
-              //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              //     crossAxisCount: 3,
-              //     crossAxisSpacing: 1.0,
-              //     mainAxisSpacing: 1.0,
-              //   ),
-              // ),
-              GridView.count(
-                physics: ScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                crossAxisCount: (snapshot.data.docs.length <= 3) ? snapshot.data.docs.length : 3,
-                padding: EdgeInsets.all(6.0),
-                childAspectRatio: 8.0 / 9.0,
-                children: List.generate(_user.url.length, (index) {
-                  return _cardTiles(context, _user, index);
-                })
+            child: Column(
+              children: [
+                Center(
+                  child: GridView.count(
+                    physics: ScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    crossAxisCount: (snapshot.data.docs.length <= 3) ? snapshot.data.docs.length : 3,
+                    padding: EdgeInsets.all(6.0),
+                    childAspectRatio: 8.0 / 9.0,
+                    children: List.generate(_user.url.length, (index) {
+                      return _cardTiles(context, _user, index);
+                    })
 
-              ),
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text('${_user.url.length}장의 사진', style: Theme.of(context).textTheme.headline4.copyWith(fontSize: 22.0),),
+                  ],
+                ),
+              ],
             ),
           );
         }
@@ -112,17 +107,22 @@ class _galleryState extends State<gallery> {
     );
   }
   Widget _cardTiles(BuildContext context, TheUser user, int index){
-    // print(user.url);
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: AspectRatio(
-        aspectRatio: 18 / 11,
-        child: Image.network(
-          user.url[index],
-          fit: BoxFit.fill,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) =>
+                galleryTap(name: [user.pickTime[index]], url: user.url[index], allUrl: user.url, index: index,)));
+      },
+       child: Card(
+          clipBehavior: Clip.antiAlias,
+          child: AspectRatio(
+            aspectRatio: 18 / 11,
+            child: Image.network(
+              user.url[index],
+              fit: BoxFit.fill,
+            ),
+          ),
         ),
-      ),
     );
   }
-
 }
