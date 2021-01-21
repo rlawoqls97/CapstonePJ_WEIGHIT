@@ -226,7 +226,7 @@ class _RoutineState extends State<Routine> with SingleTickerProviderStateMixin {
                                                     routineController.text);
                                             int index = 0;
                                             await dataService
-                                                .updateUserRoutineData();
+                                                .updateRoutineData();
 
                                             await newExercise
                                                 .forEach((ex) async {
