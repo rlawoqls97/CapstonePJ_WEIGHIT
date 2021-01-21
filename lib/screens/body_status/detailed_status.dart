@@ -86,7 +86,8 @@ class DetailedStatus extends StatelessWidget {
                               absorbing: true,
                               child: charts.BarChart(
                                 _buildSingleChart(record),
-                                animate: true,
+                                  animate: true,
+                                defaultRenderer: charts.BarRendererConfig(strokeWidthPx: 5),
                                 primaryMeasureAxis: charts.NumericAxisSpec(
                                   renderSpec: charts.GridlineRendererSpec(
                                     labelStyle: charts.TextStyleSpec(
