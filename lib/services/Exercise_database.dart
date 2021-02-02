@@ -15,13 +15,22 @@ class ExerciseDB {
   final CollectionReference exerciseCollection =
       FirebaseFirestore.instance.collection('exercise');
 
-  // 새로운 루틴의 이름을 업데이트 할 때
+  // 새로운 루틴의 이름만 업데이트 할 때
   Future updateUserRoutineData() async {
     return await routineCollection
         .doc(uid)
         .collection('userRoutines')
         .doc(routineName)
-        .set({'routineName': routineName});
+        .set({'routineName': routineName, 'level': '중급'});
+  }
+
+  // 새로운 루틴의 정보를 업데이트 할 때
+  Future updateRoutineData() async {
+    return await routineCollection
+        .doc(uid)
+        .collection('userRoutines')
+        .doc(routineName)
+        .set({'routineName': routineName, 'level': '사용자 지정 루틴'});
   }
 
   Future deleteUserRoutineData() async {
@@ -193,7 +202,7 @@ class ExerciseDB {
       return UserRoutine(
         routineName: doc.get('routineName'),
         // 레벨도 나중에 받기
-        level: '중급',
+        level: doc.get('level') ?? '중급',
         workoutList: ['벤치프레스', '랫 풀 다운', '런지'],
       );
     }).toList();
