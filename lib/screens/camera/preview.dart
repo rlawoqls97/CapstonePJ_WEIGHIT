@@ -65,7 +65,16 @@ class _PreviewScreenState extends State<PreviewScreen> {
                     .update({'url': _user.url, 'pickTime': _user.pickTime});
                 Navigator.pop(context);
               },
-            )
+            ),
+            // IconButton(
+            //   icon: Icon(
+            //     Icons.assignment_ind,
+            //     color: Colors.black,
+            //   ),
+            //   onPressed: () async {
+            //
+            //   },
+            // )
           ],
         ),
         body: Container(

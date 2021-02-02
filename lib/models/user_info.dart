@@ -7,6 +7,7 @@ class TheUser {
   final String uid;
   List<dynamic> pickTime = [];
   List<dynamic> url = [];
+  String pickedUrl;
   // level이랑 routine 부분 routine page고치고 바로 빼기
   final String level;
   final String routine;
@@ -22,6 +23,7 @@ class TheUser {
         this.username,
         this.weight,
         this.url,
+        this.pickedUrl,
         this.workedDays,
         this.pickTime
       });

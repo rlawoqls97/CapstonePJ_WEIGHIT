@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
+import 'package:weighit/screens/camera/camera.dart';
 import 'package:weighit/screens/camera/gallery_tap.dart';
 import 'package:weighit/screens/camera/preview.dart';
 
@@ -64,7 +65,9 @@ class _galleryState extends State<gallery> {
         actions: [
           IconButton(
             icon: Icon(Icons.delete, color: Colors.black,),
-            onPressed: () {},
+            onPressed: () {
+
+            },
           )
         ],
         centerTitle: true,
@@ -112,6 +115,13 @@ class _galleryState extends State<gallery> {
         Navigator.push(context, MaterialPageRoute(
             builder: (context) =>
                 galleryTap(name: [user.pickTime[index]], url: user.url[index], allUrl: user.url, index: index,)));
+      },
+      onLongPress: () {
+        setState(() {
+          user.pickedUrl = user.url[index];
+          FirebaseFirestore.instance.collection('user').doc(user.uid).update({'pickedUrl': user.pickedUrl});
+        });
+        Navigator.pop(context);
       },
        child: Card(
           clipBehavior: Clip.antiAlias,
