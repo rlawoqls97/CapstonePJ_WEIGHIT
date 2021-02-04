@@ -22,7 +22,6 @@ class _galleryTapState extends State<galleryTap> {
   bool first = true;
   @override
   Widget build(BuildContext context) {
-    print(widget.name);
     var reference = FirebaseFirestore.instance.collection('user');
     final _user = Provider.of<TheUser>(context);
     var val = [];
