@@ -16,15 +16,14 @@ class TheUser {
   int workedDays;
 
   TheUser(
-      { this.uid,
-        this.level,
-        this.routine,
-        this.username,
-        this.weight,
-        this.url,
-        this.workedDays,
-        this.pickTime
-      });
+      {this.uid,
+      this.level,
+      this.routine,
+      this.username,
+      this.weight,
+      this.url,
+      this.workedDays,
+      this.pickTime});
 }
 
 // user의 각 운동의 기록
@@ -62,6 +61,7 @@ class UserRecord {
       this.leg});
 }
 
+//
 class UserRoutine {
   final String routineName;
   final String level;

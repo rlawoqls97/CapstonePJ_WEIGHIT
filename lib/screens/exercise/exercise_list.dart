@@ -23,6 +23,13 @@ class _ExerciseListState extends State<ExerciseList> {
         ExerciseDB(uid: user.uid, routineName: widget.routineName);
     final size = MediaQuery.of(context).size;
 
+    // void _onReorder(int oldIndex, int newIndex) {
+    //   setState(() {
+    //     var row = userExercise.removeAt(oldIndex);
+    //     _rows.insert(newIndex, row);
+    //   });
+    // }
+
     return Column(
       children: [
         Expanded(

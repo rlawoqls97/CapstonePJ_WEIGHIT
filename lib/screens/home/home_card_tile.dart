@@ -19,6 +19,7 @@ class _CardTileState extends State<CardTile> {
     final size = MediaQuery.of(context).size;
     final _user = Provider.of<TheUser>(context);
     final _routines = Provider.of<List<UserRoutine>>(context) ?? [];
+    if (_routines == null) {}
     return SafeArea(
       child: ListView(
         children: [

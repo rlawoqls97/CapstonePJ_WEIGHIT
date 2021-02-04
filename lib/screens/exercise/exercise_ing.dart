@@ -41,7 +41,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
   @override
   void initState() {
     exerciseIndex = 0;
-    _setNo = 0;
+    _setNo = 1;
     //카드 클릭을 통해 ui 변화시키는 boolean variable
     isDifferentSet = false;
     isDuringSet = true;
@@ -53,7 +53,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
     super.initState();
   }
 
-  void startTimer() {
+  void startTimer(List<UserExercise> userExercises, BuildContext context) {
     // timer의 duration을 정해주는 역할. 0.01초 단위로 보여줄거니까 duration은 10millisecond로 했다.
     const duration = Duration(milliseconds: 10);
     _timer = Timer.periodic(
@@ -61,8 +61,16 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
       (Timer timer) {
         if (_time == 0) {
           setState(() {
-            _shakePlugin..startListening();
             timer.cancel();
+            // 전체 exercise의 인덱스를 넘지 않는다면 다음 운동index로 움직임
+            if (_setNo == 1) {
+              if (userExercises.length - 1 > exerciseIndex) {
+                exerciseIndex++;
+              } else {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              }
+            }
             isTimerRunning = false;
             isDuringSet = true;
           });
@@ -78,6 +86,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
   @override
   void dispose() {
     _timer?.cancel();
+    _shakePlugin..stopListening();
     super.dispose();
   }
 
@@ -132,7 +141,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                           // 나중엔 차트에 넣기위한 userRecord에도 넣기
                           //exerciseDB.updateALL(userExercise[exerciseIndex]
                           if (userExercise.length - 1 > exerciseIndex) {
-                            _setNo = 0;
+                            _setNo = 1;
                             exerciseIndex++;
                             if (!isDuringSet) {
                               _toggleUI(); //만약 bar card ui가 아닐 때 다음을 눌러서 운동을 바꾸면, 이걸로 toggle시켜줌
@@ -230,8 +239,8 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
               height: 5,
             ),
             isDuringSet
-                ? _setUI(size, userExercise, exerciseDB)
-                : _timerUI(size, context)
+                ? _setUI(size, userExercise)
+                : _timerUI(size, context, userExercise, exerciseDB)
           ],
         ),
       ),
@@ -415,44 +424,14 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
     );
   }
 
-  Widget _setUI(
-      Size size, List<UserExercise> userExercises, ExerciseDB exerciseDB) {
+  Widget _setUI(Size size, List<UserExercise> userExercises) {
     return Column(
       children: [
         GestureDetector(
           onTap: () {
             setState(() {
               // 나중엔 차트에 넣기위한 userRecord에도 넣기
-              if (_setNo >= userExercises[exerciseIndex].sets) {
-                _setNo = 0;
-                // 만약 slider를 통해 전체 세트 동일 설정으로 반복횟수를 움직였다면 db에 반영하기
-                if (_currentReps != null) {
-                  userExercises[exerciseIndex].reps[0] = _currentReps;
-                  _currentReps = null;
-
-                  exerciseDB
-                      .updateUserExerciseAllReps(userExercises[exerciseIndex]);
-                }
-                // 만약 slider를 통해 전체 세트 동일 설정으로 무게를 움직였다면 db에 반영하기
-                if (_currentWeight != null) {
-                  userExercises[exerciseIndex].weight[0] = _currentWeight;
-
-                  _currentWeight = null;
-
-                  exerciseDB.updateUserExerciseAllWeight(
-                      userExercises[exerciseIndex]);
-                }
-                // 전체 exercise의 인덱스를 넘지 않는다면 다음 운동index로 움직임
-                if (userExercises.length - 1 > exerciseIndex) {
-                  exerciseIndex++;
-                } else {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                }
-              } else {
-                _toggleUI();
-                _setNo++;
-              }
+              _toggleUI();
             });
           },
           child: Container(
@@ -499,7 +478,8 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
     );
   }
 
-  Widget _timerUI(Size size, BuildContext context) {
+  Widget _timerUI(Size size, BuildContext context,
+      List<UserExercise> userExercises, ExerciseDB exerciseDB) {
     return Column(
       children: [
         // Text('$_start'),
@@ -547,7 +527,19 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                 ),
                 onPressed: () {
                   setState(() {
+                    ///////////////////////////////////////
+                    ///timer를 캔슬 시키고, 다음 운동으로 넘기는 기능
                     _timer.cancel();
+                    // 전체 exercise의 인덱스를 넘지 않는다면 다음 운동index로 움직임
+                    if (_setNo == 1) {
+                      if (userExercises.length - 1 > exerciseIndex) {
+                        exerciseIndex++;
+                      } else {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      }
+                    }
+
                     isTimerRunning = !isTimerRunning;
                     isDuringSet = !isDuringSet;
                     selectedTime = 0;
@@ -562,8 +554,29 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                 ),
                 onPressed: () {
                   setState(() {
-                    _shakePlugin..stopListening();
-                    startTimer();
+                    if (_setNo >= userExercises[exerciseIndex].sets) {
+                      _setNo = 1;
+                      // 만약 slider를 통해 전체 세트 동일 설정으로 반복횟수를 움직였다면 db에 반영하기
+                      if (_currentReps != null) {
+                        userExercises[exerciseIndex].reps[0] = _currentReps;
+                        _currentReps = null;
+
+                        exerciseDB.updateUserExerciseAllReps(
+                            userExercises[exerciseIndex]);
+                      }
+                      // 만약 slider를 통해 전체 세트 동일 설정으로 무게를 움직였다면 db에 반영하기
+                      if (_currentWeight != null) {
+                        userExercises[exerciseIndex].weight[0] = _currentWeight;
+
+                        _currentWeight = null;
+
+                        exerciseDB.updateUserExerciseAllWeight(
+                            userExercises[exerciseIndex]);
+                      }
+                    } else {
+                      _setNo++;
+                    }
+                    startTimer(userExercises, context);
                     isTimerRunning = !isTimerRunning;
                     switch (selectedTime) {
                       case 0:

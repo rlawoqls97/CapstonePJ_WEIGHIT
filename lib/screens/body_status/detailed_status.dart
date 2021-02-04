@@ -15,6 +15,7 @@ class DetailedStatus extends StatelessWidget {
     return CustomScrollView(
       slivers: <Widget>[
         SliverAppBar(
+          backgroundColor: Colors.grey,
           elevation: 0,
           pinned: false,
           expandedHeight: size.height * 0.2,
@@ -86,8 +87,9 @@ class DetailedStatus extends StatelessWidget {
                               absorbing: true,
                               child: charts.BarChart(
                                 _buildSingleChart(record),
-                                  animate: true,
-                                defaultRenderer: charts.BarRendererConfig(strokeWidthPx: 5),
+                                animate: false,
+                                defaultRenderer:
+                                    charts.BarRendererConfig(strokeWidthPx: 5),
                                 primaryMeasureAxis: charts.NumericAxisSpec(
                                   renderSpec: charts.GridlineRendererSpec(
                                     labelStyle: charts.TextStyleSpec(

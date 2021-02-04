@@ -5,42 +5,42 @@ class Exercise {
   Exercise({this.name, this.part});
 }
 
-class ShoulderExercise extends Exercise {
+class ShoulderExercise {
   final String name;
   final String part;
 
   ShoulderExercise({this.name, this.part});
 }
 
-class ArmExercise extends Exercise {
+class ArmExercise {
   final String name;
   final String part;
 
   ArmExercise({this.name, this.part});
 }
 
-class ChestExercise extends Exercise {
+class ChestExercise {
   final String name;
   final String part;
 
   ChestExercise({this.name, this.part});
 }
 
-class AbsExercise extends Exercise {
+class AbsExercise {
   final String name;
   final String part;
 
   AbsExercise({this.name, this.part});
 }
 
-class BackExercise extends Exercise {
+class BackExercise {
   final String name;
   final String part;
 
   BackExercise({this.name, this.part});
 }
 
-class LegExercise extends Exercise {
+class LegExercise {
   final String name;
   final String part;
 
