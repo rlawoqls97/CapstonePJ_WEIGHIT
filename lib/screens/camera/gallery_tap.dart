@@ -6,6 +6,7 @@ import 'package:weighit/screens/camera/preview.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+
 // ignore: must_be_immutable
 class galleryTap extends StatefulWidget {
   List<dynamic> name = [];
@@ -29,40 +30,43 @@ class _galleryTapState extends State<galleryTap> {
         .ref()
         .child('${_user.username}')
         .child('${widget.name}.png');
-    final size = MediaQuery
-        .of(context)
-        .size;
+    final size = MediaQuery.of(context).size;
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('user').snapshots(),
-      builder: (context, snapshot) {
-        return Scaffold(
-          appBar: AppBar(
-            actions: [
-              IconButton(
-                icon: Icon(Icons.delete, color: Colors.black,),
+        stream: FirebaseFirestore.instance.collection('user').snapshots(),
+        builder: (context, snapshot) {
+          return Scaffold(
+            appBar: AppBar(
+              actions: [
+                IconButton(
+                  icon: Icon(
+                    Icons.delete,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    // reference.doc(_user.uid).delete();
+                    // photoUrl.remove(widget.url);
+                  },
+                )
+              ],
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
+                ),
                 onPressed: () {
-                  // reference.doc(_user.uid).delete();
-                  // photoUrl.remove(widget.url);
-
+                  Navigator.pop(context);
                 },
-              )
-            ],
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.black,),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              ),
+              backgroundColor: Theme.of(context).backgroundColor,
+              toolbarHeight: size.height * 0.1,
+              centerTitle: true,
+              // Text('${widget.name}', style: Theme.of(context).textTheme.headline6,),
             ),
-            backgroundColor: Theme.of(context).backgroundColor,
-            toolbarHeight: size.height * 0.1,
-            centerTitle: true,
-            // Text('${widget.name}', style: Theme.of(context).textTheme.headline6,),
-          ),
-          body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    CarouselSlider.builder(
-                      options: CarouselOptions(
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  CarouselSlider.builder(
+                    options: CarouselOptions(
                         reverse: false,
                         height: size.height * 0.8,
                         initialPage: widget.index,
@@ -71,51 +75,54 @@ class _galleryTapState extends State<galleryTap> {
                         enlargeCenterPage: false,
                         enableInfiniteScroll: false,
                         autoPlayCurve: Curves.fastOutSlowIn,
-                        onPageChanged: (index, reason){
+                        onPageChanged: (index, reason) {
                           setState(() {
                             _currentIndex = index;
                             first = false;
                             print(_currentIndex);
                           });
-                        }
-                      ),
-                      itemBuilder: (context, index) {
-                        return Container(
-                            height: size.height * 0.7,
-                            width: size.width ,
-                            child: Image.network(widget.allUrl[index], fit: BoxFit.fitWidth,)
-                        );
-                      },
-                      itemCount: widget.allUrl.length,
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                       mainAxisAlignment: MainAxisAlignment.center,
-                        children: widget.allUrl.map((url) {
-                          var index = widget.allUrl.indexOf(url);
-                          return InkWell(
-                            onTap: () {
-
-                            },
-                            child: Container(
-                              width: (_currentIndex == index) ? size.width * 0.1 : size.width * 0.08,
-                              height: (_currentIndex == index) ? size.height * 0.1 : size.height * 0.07,
-                              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                              child: Image.network(widget.allUrl[index]),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.rectangle,
-                              ),
+                        }),
+                    itemBuilder: (context, index) {
+                      return Container(
+                          height: size.height * 0.7,
+                          width: size.width,
+                          child: Image.network(
+                            widget.allUrl[index],
+                            fit: BoxFit.fitWidth,
+                          ));
+                    },
+                    itemCount: widget.allUrl.length,
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: widget.allUrl.map((url) {
+                        var index = widget.allUrl.indexOf(url);
+                        return InkWell(
+                          onTap: () {},
+                          child: Container(
+                            width: (_currentIndex == index)
+                                ? size.width * 0.1
+                                : size.width * 0.08,
+                            height: (_currentIndex == index)
+                                ? size.height * 0.1
+                                : size.height * 0.07,
+                            margin: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 2.0),
+                            child: Image.network(widget.allUrl[index]),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
                             ),
-                          );
-                        }).toList(),
-                      ),
+                          ),
+                        );
+                      }).toList(),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-        );
-      }
-    );
+            ),
+          );
+        });
   }
 }

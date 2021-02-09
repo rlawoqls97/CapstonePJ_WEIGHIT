@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+
 import 'package:weighit/models/user_info.dart';
 import 'package:weighit/services/user_record_DB.dart';
 
@@ -16,30 +18,19 @@ class _StatusState extends State<Status> {
   // chartMaker는 차트를 만들어주는 클래스이며, widget folder의 chart_maker.dart에 정의 돼있다.
   ChartMaker chartMaker = ChartMaker();
 
-  final threedaysbefore =
-      DateTime.now().subtract(Duration(days: 3)).toUtc().millisecondsSinceEpoch;
+  UserRecord dummyRecord = UserRecord(
+    shoulder: ['어깨', 300, 200, 500, 4],
+    chest: ['가슴', 500, 400, 300, 2],
+    abs: ['복부', 150, 160, 170, 2],
+    arm: ['팔', 200, 210, 205, 3],
+    leg: ['하체', 500, 550, 570, 6],
+    back: ['등', 400, 420, 450, 3],
+  );
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<TheUser>(context);
     final size = MediaQuery.of(context).size;
-
-    FirebaseFirestore.instance
-        .collection('record')
-        .doc(user.uid)
-        .collection('Overall')
-        .where('timestamp', isGreaterThan: threedaysbefore)
-        .get()
-        .catchError((onError) => print('Error'))
-        .then((QuerySnapshot snapshot) => {
-              snapshot.docs.forEach((doc) {
-                // userRecord에다가 적절한 값 집어넣기
-                print(doc.get('dummy'));
-              })
-            })
-        .catchError((onError) {
-      print('Error');
-    });
 
     var recordService = RecordDB(uid: user.uid);
     var chartList;
@@ -100,7 +91,7 @@ class _StatusState extends State<Status> {
   }
 
   Future<UserRecord> _fetchRecord(String uid) async {
-    UserRecord userRecord = UserRecord(
+    var userRecord = UserRecord(
       shoulder: ['어깨'],
       arm: ['팔'],
       chest: ['가슴'],
@@ -108,26 +99,55 @@ class _StatusState extends State<Status> {
       back: ['등'],
       leg: ['하체'],
     );
-    var snapshot = await FirebaseFirestore.instance
-        .collection('record')
-        .doc(uid)
-        .collection('Overall')
-        .orderBy('timestamp', descending: true)
-        .limitToLast(3)
-        .get();
+    var recordservice = RecordDB(uid: uid);
 
-    snapshot.docs.forEach((doc) {
-      // userRecord에다가 적절한 값 집어넣기
-      // print(doc.get('dummy'));
-      userRecord.shoulder.add(doc.get('어깨') ?? 0);
-      userRecord.arm.add(doc.get('팔') ?? 0);
-      userRecord.chest.add(doc.get('가슴') ?? 0);
-      userRecord.abs.add(doc.get('복부') ?? 0);
-      userRecord.back.add(doc.get('등') ?? 0);
-      userRecord.leg.add(doc.get('하체') ?? 0);
-      // print(userRecord.shoulder);
-    });
+    // 이틀전 데이터 가져오기
+    userRecord = await recordservice.bringRecord(userRecord, 2);
+    // 하루전 데이터 가져오기
+    userRecord = await recordservice.bringRecord(userRecord, 1);
+    // 오늘 데이터 가져오기
+    userRecord = await recordservice.bringRecord(userRecord, 0);
 
     return userRecord;
+    //    지금 현재 시간을 기준으로 3일 전까지의 QuerySnapshot을 전부 가져오는 코드
+    //    만약 4일 전에 한 운동이라도 -72시간에 한 운동이라면 같이 포함되서 사용하지 않는다.
+    // final threedaysbefore = DateTime.now().subtract(Duration(days: 3));
+    // FirebaseFirestore.instance
+    //     .collection('record')
+    //     .doc(user.uid)
+    //     .collection('Overall')
+    //     .where('timestamp', isGreaterThan: threedaysbefore)
+    //     .get()
+    //     .catchError((onError) => print('Error'))
+    //     .then((QuerySnapshot snapshot) => {
+    //           snapshot.docs.forEach((doc) {
+    //             // userRecord에다가 적절한 값 집어넣기
+    //             print('Query Dummy: ' + doc.get('dummy'));
+    //           })
+    //         })
+    //     .catchError((onError) {
+    //   print('Error');
+    // });
+
+    //    그냥 QuerySnapshot으로 최근 3개를 일자 순으로 가져오는 코드.
+    //    최근 3개가 아니라 최근 3일을 기준으로 가져와야 해서 사용하지 않는다.
+    // var snapshot = await FirebaseFirestore.instance
+    //     .collection('record')
+    //     .doc(uid)
+    //     .collection('Overall')
+    //     .orderBy('timestamp', descending: false)
+    //     .limitToLast(3)
+    //     .get();
+    // snapshot.docs.forEach((doc) {
+    //   // userRecord에다가 적절한 값 집어넣기
+    //   print(doc.get('dummy'));
+    //   userRecord.shoulder.add(doc.get('어깨') ?? 0);
+    //   userRecord.arm.add(doc.get('팔') ?? 0);
+    //   userRecord.chest.add(doc.get('가슴') ?? 0);
+    //   userRecord.abs.add(doc.get('복부') ?? 0);
+    //   userRecord.back.add(doc.get('등') ?? 0);
+    //   userRecord.leg.add(doc.get('하체') ?? 0);
+    //   // print(userRecord.shoulder);
+    // });
   }
 }

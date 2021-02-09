@@ -12,7 +12,7 @@ class ChartMaker {
   var dminus2 = DateTime.now().subtract(Duration(days: 2));
 
   // 이 function은 하나의 3 integer list를 chart로 변환해준다.
-  // 이 부분에서 넣어주는 parameter 'List<int> record'도 db 연동에서 문제가 나서 List<dynamic>으로 변환했다.
+  // 이 부분에서 넣어주는 parameter 'List<int> record'가 db 연동에서 문제가 나서 List<dynamic>으로 변환했다.
   List<charts.Series<StatusChart, String>> _buildSingleChart(
       List<dynamic> record) {
     var chartList = [
@@ -120,5 +120,43 @@ class ChartMaker {
         ),
       );
     }).toList();
+  }
+
+  Widget buildChartThreeDays(List<dynamic> record) {
+    return Card(
+      elevation: 10,
+      color: Colors.white, //Theme.of(context).primaryColor,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: AbsorbPointer(
+                absorbing: true,
+                child: charts.BarChart(
+                  _buildSingleChart(record),
+                  animate: false,
+                  defaultRenderer: charts.BarRendererConfig(strokeWidthPx: 5),
+                  primaryMeasureAxis: charts.NumericAxisSpec(
+                    renderSpec: charts.GridlineRendererSpec(
+                      labelStyle: charts.TextStyleSpec(
+                        fontSize: 12,
+                        color: charts.MaterialPalette.black,
+                      ),
+                    ),
+                  ),
+                  domainAxis: charts.OrdinalAxisSpec(
+                      renderSpec: charts.GridlineRendererSpec(
+                          labelStyle: charts.TextStyleSpec(
+                    fontSize: 12,
+                    color: charts.MaterialPalette.black,
+                  ))),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
