@@ -18,10 +18,14 @@ class galleryTap extends StatefulWidget {
 }
 
 class _galleryTapState extends State<galleryTap> {
-  int _currentIndex;
+  var _currentIndex;
+  var indexCh;
   bool first = true;
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      indexCh = _currentIndex;
+    });
     var reference = FirebaseFirestore.instance.collection('user');
     final _user = Provider.of<TheUser>(context);
     var val = [];
@@ -32,18 +36,23 @@ class _galleryTapState extends State<galleryTap> {
     final size = MediaQuery
         .of(context)
         .size;
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('user').snapshots(),
-      builder: (context, snapshot) {
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance.collection('user').doc(_user.uid).snapshots(),
+      builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (!snapshot.hasData ||
+            snapshot.data == null) {
+          return Center(child: CircularProgressIndicator());
+        }
         return Scaffold(
           appBar: AppBar(
+            title: snapshot.hasData == null ? Text('잠시만 기다려 주세요') : Text('${snapshot.data.get('pickTime')[indexCh]}', style: TextStyle(color: Colors.black),),
             actions: [
               IconButton(
                 icon: Icon(Icons.delete, color: Colors.black,),
                 onPressed: () {
+                  print(snapshot.data.data().values);
                   // reference.doc(_user.uid).delete();
                   // photoUrl.remove(widget.url);
-
                 },
               )
             ],
@@ -75,7 +84,6 @@ class _galleryTapState extends State<galleryTap> {
                           setState(() {
                             _currentIndex = index;
                             first = false;
-                            print(_currentIndex);
                           });
                         }
                       ),
