@@ -137,6 +137,16 @@ Widget _chooseGraph(Time time, List<dynamic> record) {
         ),
       );
       break;
+    case Time.Weekly:
+      return Container(
+        child: Text('Weekly'),
+      );
+      break;
+    case Time.Monthly:
+      return Container(
+        child: Text('Monthly'),
+      );
+      break;
     default:
   }
 }
