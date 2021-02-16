@@ -51,11 +51,14 @@ class _galleryTapState extends State<galleryTap> {
             actions: [
               IconButton(
                 icon: Icon(Icons.delete, color: Colors.black,),
-                onPressed: () async {
+                onPressed: () {
                   // print(snapshot.data.data().values);
-                  await reference.doc(_user.uid).update({
-                    'url': FieldValue.arrayRemove([0]),
-                  });
+                  List photoUrl = snapshot.data.get('url');
+                  List pickTime = snapshot.data.get('pickTime');
+                  photoUrl.removeAt(widget.index);
+                  pickTime.removeAt(widget.index);
+                  reference.doc(_user.uid).update({'url': photoUrl, 'pickTime': pickTime});
+                  Navigator.pop(context);
                   // photoUrl.remove(widget.url);
                 },
               ),
