@@ -62,4 +62,27 @@ class RecordDB {
 
     return userRecord;
   }
+
+  Future<List<dynamic>> bringPartialRecord(
+      List<dynamic> userRecord, int days, String part) async {
+    await FirebaseFirestore.instance
+        .collection('record')
+        .doc(uid)
+        .collection('Overall')
+        .doc(DateFormat('yy-MM-dd')
+            .format(DateTime.now().subtract(Duration(days: days))))
+        .get()
+        .then((DocumentSnapshot doc) {
+      if (doc.exists) {
+        doc.get(part) != null
+            ? userRecord.add(doc.get(part))
+            : userRecord.add(0);
+      } else {
+        print('record없음');
+        userRecord.add(0);
+      }
+    });
+
+    return userRecord;
+  }
 }
