@@ -33,6 +33,7 @@ class _RoutineState extends State<Routine> with SingleTickerProviderStateMixin {
     return StreamProvider(
       create: (_) => ExerciseDB().exercise,
       child: StreamBuilder<List<Exercise>>(
+          // 여기서 쓰는 stream을 Exercise_database.dart에서 변경시키기
           stream: ExerciseDB().newExercise,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting ||

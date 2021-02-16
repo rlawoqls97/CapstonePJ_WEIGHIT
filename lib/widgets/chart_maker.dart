@@ -3,26 +3,31 @@ import 'package:weighit/models/status_chart.dart';
 import 'package:weighit/models/user_info.dart';
 import 'package:weighit/screens/body_status/detailed_status.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:intl/intl.dart';
 
 // 이 클래스는 UserRecord 오브젝트를 InkWell of Hero of chart로 변환해주는 메소드를 제공한다.
 class ChartMaker {
+  var dateTime = DateTime.now();
+  var dminus1 = DateTime.now().subtract(Duration(days: 1));
+  var dminus2 = DateTime.now().subtract(Duration(days: 2));
+
   // 이 function은 하나의 3 integer list를 chart로 변환해준다.
-  // 이 부분에서 넣어주는 parameter 'List<int> record'도 db 연동에서 문제가 나서 List<dynamic>으로 변환했다.
+  // 이 부분에서 넣어주는 parameter 'List<int> record'가 db 연동에서 문제가 나서 List<dynamic>으로 변환했다.
   List<charts.Series<StatusChart, String>> _buildSingleChart(
       List<dynamic> record) {
     var chartList = [
       StatusChart(
-        day: 'total',
+        day: '${dminus2.month}/${dminus2.day}',
         reps: record[1],
         barColor: charts.ColorUtil.fromDartColor(Color(0xff26E3BC)),
       ),
       StatusChart(
-        day: 'week',
+        day: '${dminus1.month}/${dminus1.day}',
         reps: record[2],
         barColor: charts.ColorUtil.fromDartColor(Color(0xff26E3BC)),
       ),
       StatusChart(
-        day: 'today',
+        day: '${dateTime.month}/${dateTime.day}',
         reps: record[3],
         barColor: charts.ColorUtil.fromDartColor(Color(0xff26E3BC)),
       )
@@ -80,7 +85,7 @@ class ChartMaker {
                         style: TextStyle(color: Colors.white),
                       ),
                       Text(
-                        'LV.${record[4]}',
+                        'LV.없음',
                         style: TextStyle(color: Colors.white),
                       ),
                     ],
@@ -115,5 +120,43 @@ class ChartMaker {
         ),
       );
     }).toList();
+  }
+
+  Widget buildChartThreeDays(List<dynamic> record) {
+    return Card(
+      elevation: 10,
+      color: Colors.white, //Theme.of(context).primaryColor,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: AbsorbPointer(
+                absorbing: true,
+                child: charts.BarChart(
+                  _buildSingleChart(record),
+                  animate: false,
+                  defaultRenderer: charts.BarRendererConfig(strokeWidthPx: 5),
+                  primaryMeasureAxis: charts.NumericAxisSpec(
+                    renderSpec: charts.GridlineRendererSpec(
+                      labelStyle: charts.TextStyleSpec(
+                        fontSize: 12,
+                        color: charts.MaterialPalette.black,
+                      ),
+                    ),
+                  ),
+                  domainAxis: charts.OrdinalAxisSpec(
+                      renderSpec: charts.GridlineRendererSpec(
+                          labelStyle: charts.TextStyleSpec(
+                    fontSize: 12,
+                    color: charts.MaterialPalette.black,
+                  ))),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

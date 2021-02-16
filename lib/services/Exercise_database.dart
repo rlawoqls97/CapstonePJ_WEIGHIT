@@ -258,6 +258,8 @@ class ExerciseDB {
     // exerciseCollection.where('part', '==', part).get()
   }
 
+  // 이 path를 routine의 doc(uid).collection('newRoutine') 아래에 생성 시켜서 각 유저마다 다르게 할 수 있게.
+
   Stream<List<Exercise>> get newExercise {
     return FirebaseFirestore.instance
         .collection('newRoutine')
