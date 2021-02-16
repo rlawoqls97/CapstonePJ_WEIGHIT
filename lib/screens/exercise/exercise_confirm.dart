@@ -4,7 +4,6 @@ import 'package:weighit/models/user_info.dart';
 import 'package:weighit/screens/exercise/exercise_ing.dart';
 import 'package:weighit/screens/exercise/exercise_list.dart';
 import 'package:weighit/services/Exercise_database.dart';
-import 'package:reorderables/reorderables.dart';
 
 class ExerciseConfirm extends StatelessWidget {
   final String routineName;

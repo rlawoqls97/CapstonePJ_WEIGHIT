@@ -19,10 +19,12 @@ class galleryTap extends StatefulWidget {
 }
 
 class _galleryTapState extends State<galleryTap> {
-  int _currentIndex;
+  var _currentIndex;
+  var indexCh = 0;
   bool first = true;
   @override
   Widget build(BuildContext context) {
+
     var reference = FirebaseFirestore.instance.collection('user');
     final _user = Provider.of<TheUser>(context);
     var val = [];
@@ -30,33 +32,34 @@ class _galleryTapState extends State<galleryTap> {
         .ref()
         .child('${_user.username}')
         .child('${widget.name}.png');
-    final size = MediaQuery.of(context).size;
-    return StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('user').snapshots(),
-        builder: (context, snapshot) {
-          return Scaffold(
-            appBar: AppBar(
-              actions: [
-                IconButton(
-                  icon: Icon(
-                    Icons.delete,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    // reference.doc(_user.uid).delete();
-                    // photoUrl.remove(widget.url);
-                  },
-                )
-              ],
-              leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
+    final size = MediaQuery
+        .of(context)
+        .size;
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance.collection('user').doc(_user.uid).snapshots(),
+      builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (!snapshot.hasData ||
+            snapshot.data == null) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return Scaffold(
+          appBar: AppBar(
+            leading: IconButton(icon: Icon(Icons.arrow_back), color: Colors.black,onPressed: () {
+              Navigator.pop(context);
+            },),
+            title: snapshot.hasData == null ? Text('잠시만 기다려 주세요') : Text('${snapshot.data.get('pickTime')[widget.index]}', style: TextStyle(color: Colors.black),),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.delete, color: Colors.black,),
+                onPressed: () async {
+                  // print(snapshot.data.data().values);
+                  await reference.doc(_user.uid).update({
+                    'url': FieldValue.arrayRemove([0]),
+                  });
+                  // photoUrl.remove(widget.url);
                 },
               ),
+              ],
               backgroundColor: Theme.of(context).backgroundColor,
               toolbarHeight: size.height * 0.1,
               centerTitle: true,
@@ -79,7 +82,7 @@ class _galleryTapState extends State<galleryTap> {
                           setState(() {
                             _currentIndex = index;
                             first = false;
-                            print(_currentIndex);
+                            widget.index = _currentIndex;
                           });
                         }),
                     itemBuilder: (context, index) {
