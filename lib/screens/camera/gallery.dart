@@ -114,7 +114,7 @@ class _galleryState extends State<gallery> {
       onTap: () {
         Navigator.push(context, MaterialPageRoute(
             builder: (context) =>
-                galleryTap(name: [user.pickTime[index]], url: user.url[index], allUrl: user.url, index: index,)));
+                galleryTap(name: [user.pickTime[index]], url: user.url[index], allUrl: user.url, index: index, named: user.pickTime[index],)));
       },
       onLongPress: () {
         setState(() {
