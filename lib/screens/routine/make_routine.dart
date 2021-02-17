@@ -33,7 +33,7 @@ class _RoutineState extends State<Routine> with SingleTickerProviderStateMixin {
     return StreamProvider(
       create: (_) => ExerciseDB().exercise,
       child: StreamBuilder<List<Exercise>>(
-          // 여기서 쓰는 stream을 Exercise_database.dart에서 변경시키기
+          // 밑의 ExerciseDB().newExercise 스트림을 Exercise_database.dart에서 변경시키기 (지금은 모두가 newRoutine이라는 collection을 공유함)
           stream: ExerciseDB().newExercise,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting ||
@@ -226,9 +226,11 @@ class _RoutineState extends State<Routine> with SingleTickerProviderStateMixin {
                                                 routineName:
                                                     routineController.text);
                                             int index = 0;
+                                            // alert dialogue에서 받아온 routine 이름으로 새로운 routine collection을 생성
                                             await dataService
                                                 .updateRoutineData();
 
+                                            // 새롭게 생성된 routine collection에 newExercise에 있는 운동들을 하나씩 집어넣는다.
                                             await newExercise
                                                 .forEach((ex) async {
                                               print('$index, ${ex.name}');

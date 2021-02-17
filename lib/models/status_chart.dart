@@ -10,7 +10,7 @@ class StatusChart {
         assert(map['reps'] != null),
         assert(map['day'] != null),
         day = map['day'],
-        reps = map['reps'],
+        reps = map['reps'], //<= 이거 이름 나중에 volume으로 바꿔주기
         barColor = map['barColor'];
 
   StatusChart({this.day, this.reps, this.barColor});

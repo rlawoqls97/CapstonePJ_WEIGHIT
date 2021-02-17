@@ -31,7 +31,7 @@ class RecordDB {
         .update({part: volume, 'timestamp': DateTime.now()});
   }
 
-  // Firebase로부터 record를 가져와서 userRecord에 적용할 때
+  // Firebase로부터 record를 가져와서 userRecord에 저장하고 다시 return 하는 함수
   Future<UserRecord> bringRecord(UserRecord userRecord, int days) async {
     await FirebaseFirestore.instance
         .collection('record')
@@ -58,6 +58,57 @@ class RecordDB {
         userRecord.back.add(0);
         userRecord.leg.add(0);
       }
+    });
+
+    return userRecord;
+  }
+
+  // 특정한 날의 특정 부위에 대한 값을 가져오는 함수
+  Future<List<dynamic>> bringPartialRecord(
+      List<dynamic> userRecord, int days, String part) async {
+    await FirebaseFirestore.instance
+        .collection('record')
+        .doc(uid)
+        .collection('Overall')
+        .doc(DateFormat('yy-MM-dd')
+            .format(DateTime.now().subtract(Duration(days: days))))
+        .get()
+        .then((DocumentSnapshot doc) {
+      if (doc.exists) {
+        userRecord.add(doc.get(part) ?? 0);
+      } else {
+        print('record없음');
+        userRecord.add(0);
+      }
+    });
+
+    return userRecord;
+  }
+
+  Future<List<dynamic>> bringLatestSevenRecord(
+      List<dynamic> userRecord, String part) async {
+    await FirebaseFirestore.instance
+        .collection('record')
+        .doc(uid)
+        .collection('Overall')
+        .orderBy('timestamp')
+        .limitToLast(7)
+        .get()
+        .then((QuerySnapshot snapshot) {
+      snapshot.docs.map((QueryDocumentSnapshot doc) {
+        print(doc.get(part) ?? 0);
+        userRecord.add([
+          doc.get(part) ?? 0,
+          DateTime.fromMillisecondsSinceEpoch(
+                  doc.get('timestamp').millisecondsSinceEpoch)
+              .month,
+          DateTime.fromMillisecondsSinceEpoch(
+                  doc.get('timestamp').millisecondsSinceEpoch)
+              .day
+        ]);
+
+        return userRecord;
+      }).toList();
     });
 
     return userRecord;
