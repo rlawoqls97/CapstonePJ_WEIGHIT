@@ -31,8 +31,11 @@ class _DetailedStatusState extends State<DetailedStatus> {
         builder: (context, snapshot) {
           var record = snapshot.data;
           //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
-          if (snapshot.hasData == false) {
-            return Center(child: CircularProgressIndicator());
+          if (snapshot.connectionState == ConnectionState.none ||
+              snapshot.connectionState == ConnectionState.waiting ||
+              snapshot.hasData == false) {
+            // 이 경우
+            return Scaffold(body: Center(child: CircularProgressIndicator()));
           } else if (snapshot.hasError) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
@@ -190,6 +193,9 @@ Future<List<dynamic>> _fetchRecord(String uid, Time time, String part) async {
       userRecord = await recordservice.bringPartialRecord(userRecord, 0, part);
       break;
     case Time.History:
+      userRecord = await recordservice.bringLatestSevenRecord(userRecord, part);
+      break;
+    default:
   }
   print(userRecord);
 
@@ -218,7 +224,7 @@ Widget _chooseGraph(Time time, List<dynamic> record) {
     case Time.History:
       return Container(
         height: 300.0,
-        child: Text('History'),
+        child: ChartMaker().buildChartWorkedDays(record),
       );
       break;
     default:

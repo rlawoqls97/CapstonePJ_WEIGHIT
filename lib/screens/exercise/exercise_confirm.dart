@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
-import 'package:weighit/screens/exercise/exercise_ing.dart';
+import 'package:weighit/screens/exercise/exercisingScreen.dart';
 import 'package:weighit/screens/exercise/exercise_list.dart';
 import 'package:weighit/services/Exercise_database.dart';
 

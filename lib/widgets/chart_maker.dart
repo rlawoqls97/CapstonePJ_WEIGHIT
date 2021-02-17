@@ -164,7 +164,7 @@ class ChartMaker {
     );
   }
 
-  // 일주일치 차트를 만들어주기 위한 변수들을 지정하는 function. 이 때 첫 번째 인덱스에 부위를 저장하는 것이 아니라 index 0 부터
+  // 최근 일주일치 차트를 만들어주기 위한 변수들을 지정하는 function. 이 때 첫 번째 인덱스에 부위를 저장하는 것이 아니라 index 0 부터
   // 바로 기록을 채워넣는 것이 위의 _buildSingleChart와 다르다는 것에 유의하자.
   List<charts.Series<StatusChart, String>> _weeklyChart(List<dynamic> record) {
     var chartList = [
@@ -234,6 +234,66 @@ class ChartMaker {
                 absorbing: true,
                 child: charts.BarChart(
                   _weeklyChart(weeklyRecord),
+                  animate: false,
+                  defaultRenderer: charts.BarRendererConfig(strokeWidthPx: 5),
+                  primaryMeasureAxis: charts.NumericAxisSpec(
+                    renderSpec: charts.GridlineRendererSpec(
+                      labelStyle: charts.TextStyleSpec(
+                        fontSize: 12,
+                        color: charts.MaterialPalette.black,
+                      ),
+                    ),
+                  ),
+                  domainAxis: charts.OrdinalAxisSpec(
+                      renderSpec: charts.GridlineRendererSpec(
+                          labelStyle: charts.TextStyleSpec(
+                    fontSize: 12,
+                    color: charts.MaterialPalette.black,
+                  ))),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // 일한 날만 골라서 [volume, month, day]의 형태로 기록된 record로 chart List를 만드는 함수
+  List<charts.Series<StatusChart, String>> _workedChart(List<dynamic> record) {
+    var chartList = record
+        .map((data) => StatusChart(
+              day: '${data[1]}/${data[2]}',
+              reps: data[0],
+              barColor: charts.ColorUtil.fromDartColor(Color(0xff26E3BC)),
+            ))
+        .toList();
+
+    return <charts.Series<StatusChart, String>>[
+      charts.Series(
+        id: 'WorkedStatus',
+        data: chartList,
+        domainFn: (StatusChart series, _) => series.day,
+        measureFn: (StatusChart series, _) => series.reps,
+        colorFn: (StatusChart series, _) => series.barColor,
+      )
+    ];
+  }
+
+  // 위의 _weeklyChart function을 이용해 '운동한 날만 골라' 일주일치 차트를 만들어서 return하는 함수
+  Widget buildChartWorkedDays(List<dynamic> workedRecord) {
+    return Card(
+      elevation: 10,
+      color: Colors.white, //Theme.of(context).primaryColor,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: AbsorbPointer(
+                absorbing: true,
+                child: charts.BarChart(
+                  _workedChart(workedRecord),
                   animate: false,
                   defaultRenderer: charts.BarRendererConfig(strokeWidthPx: 5),
                   primaryMeasureAxis: charts.NumericAxisSpec(
