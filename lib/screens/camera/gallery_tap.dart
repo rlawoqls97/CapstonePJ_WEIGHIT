@@ -12,8 +12,9 @@ class galleryTap extends StatefulWidget {
   List<dynamic> name = [];
   List<dynamic> allUrl = [];
   final String url;
+  String named;
   int index;
-  galleryTap({this.name, this.url, this.allUrl, this.index});
+  galleryTap({this.name, this.url, this.allUrl, this.index, this.named});
   @override
   _galleryTapState createState() => _galleryTapState();
 }
@@ -28,10 +29,6 @@ class _galleryTapState extends State<galleryTap> {
     var reference = FirebaseFirestore.instance.collection('user');
     final _user = Provider.of<TheUser>(context);
     var val = [];
-    var ref = firebase_storage.FirebaseStorage.instance
-        .ref()
-        .child('${_user.username}')
-        .child('${widget.name}.png');
     final size = MediaQuery
         .of(context)
         .size;
@@ -52,14 +49,19 @@ class _galleryTapState extends State<galleryTap> {
               IconButton(
                 icon: Icon(Icons.delete, color: Colors.black,),
                 onPressed: () {
+
+                  // print(firebase_storage.FirebaseStorage.instance.ref().child(_user.username).child('${snapshot.data.get('pickTime')[widget.index]}'));
                   // print(snapshot.data.data().values);
                   List photoUrl = snapshot.data.get('url');
                   List pickTime = snapshot.data.get('pickTime');
+                  // firebase_storage.FirebaseStorage.instance
+                  //     .ref()
+                  //     .child('${_user.username}')
+                  //     .child('${widget.named}').delete();
                   photoUrl.removeAt(widget.index);
                   pickTime.removeAt(widget.index);
                   reference.doc(_user.uid).update({'url': photoUrl, 'pickTime': pickTime});
                   Navigator.pop(context);
-                  // photoUrl.remove(widget.url);
                 },
               ),
               ],
