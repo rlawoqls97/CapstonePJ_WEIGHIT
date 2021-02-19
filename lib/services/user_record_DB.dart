@@ -19,16 +19,40 @@ class RecordDB {
         .doc(uid)
         .collection('Overall')
         .doc(dateTime)
-        .set({'timestamp': DateTime.now()});
+        .set({
+      'timestamp': DateTime.now(),
+      '가슴': 0,
+      '등': 0,
+      '복부': 0,
+      '어깨': 0,
+      '팔': 0,
+      '하체': 0
+    });
   }
 
   // 새로운 volume을 update할 때
   Future updateOverallData(String part, int volume) async {
+    // 만약 해당 부위의 운동을 이미 했으면 volume을 거기에서 더한다.
+    int totalVolume;
+    await recordCollection
+        .doc(uid)
+        .collection('Overall')
+        .doc(dateTime)
+        .get()
+        .then((DocumentSnapshot doc) {
+      if (doc.exists) {
+        // 만약 해당 부위의 volume이 이미 있다면 이걸 가져온다.
+        totalVolume = doc.get(part) ?? 0;
+      } else {
+        totalVolume = 0;
+      }
+    });
+
     return await recordCollection
         .doc(uid)
         .collection('Overall')
         .doc(dateTime)
-        .update({part: volume, 'timestamp': DateTime.now()});
+        .update({part: totalVolume + volume, 'timestamp': DateTime.now()});
   }
 
   // Firebase로부터 record를 가져와서 userRecord에 저장하고 다시 return 하는 함수
@@ -85,6 +109,7 @@ class RecordDB {
     return userRecord;
   }
 
+  // document가 있는 날(i.e. 운동을 수행한 날) 중 최근 7개를 count해서 가져오는 함수
   Future<List<dynamic>> bringLatestSevenRecord(
       List<dynamic> userRecord, String part) async {
     await FirebaseFirestore.instance

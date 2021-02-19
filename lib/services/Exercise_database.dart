@@ -92,10 +92,12 @@ class ExerciseDB {
     List<dynamic> weightList = userExercise.weight;
     List<dynamic> repsList = userExercise.reps;
 
+    // 만약 set수를 유저가 줄인 것이라면, set만큼 weight와 reps도 같이 줄이기
     if (userExercise.sets > sets) {
       weightList = userExercise.weight.sublist(0, sets);
       repsList = userExercise.reps.sublist(0, sets);
     } else {
+      // 만약 set수를 유저가 늘린거라면, 마지막 set에 있던 weight와 reps를 늘어난 set만큼 복사시키기
       for (int i = 0; i < sets - userExercise.sets; i++) {
         weightList.add(userExercise.weight[userExercise.sets - 1]);
         repsList.add(userExercise.reps[userExercise.sets - 1]);

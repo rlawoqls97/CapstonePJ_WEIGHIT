@@ -5,6 +5,7 @@ import 'package:weighit/screens/exercise/add_routine/add_routine.dart';
 import 'package:weighit/screens/exercise/exercisingScreen.dart';
 import 'package:weighit/screens/routine/make_routine.dart';
 import 'package:weighit/services/Exercise_database.dart';
+import 'package:weighit/services/user_record_DB.dart';
 
 class ExerciseList extends StatefulWidget {
   final String routineName;
@@ -87,7 +88,10 @@ class _ExerciseListState extends State<ExerciseList> {
               '운동 시작하기',
               style: Theme.of(context).textTheme.headline3,
             ),
-            onPressed: () {
+            onPressed: () async {
+              // 운동 시작하기를 누르면 화면이 넘어가기 전에 그날의 userRecord를 새로 생성한다.
+              await RecordDB(uid: user.uid).newOverallData();
+
               Navigator.push(
                 context,
                 MaterialPageRoute(

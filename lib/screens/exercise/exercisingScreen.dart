@@ -7,6 +7,7 @@ import 'dart:async';
 
 import 'package:weighit/models/user_info.dart';
 import 'package:weighit/services/Exercise_database.dart';
+import 'package:weighit/services/user_record_DB.dart';
 import 'package:weighit/widgets/sliver_header.dart';
 
 class ExercisingScreen extends StatefulWidget {
@@ -102,6 +103,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
     final size = MediaQuery.of(context).size;
     final exerciseDB =
         ExerciseDB(uid: user.uid, routineName: widget.routineName);
+    final recordDB = RecordDB(uid: user.uid);
     List<UserExercise> userExercise = widget.exerciseList;
 
     return Scaffold(
@@ -137,14 +139,14 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                     alignment: Alignment.centerRight,
                     child: InkWell(
                       onTap: () {
+                        // 나중엔 차트에 넣기위한 userRecord에도 넣기
+                        //exerciseDB.updateALL(userExercise[exerciseIndex]
                         setState(() {
-                          // 나중엔 차트에 넣기위한 userRecord에도 넣기
-                          //exerciseDB.updateALL(userExercise[exerciseIndex]
                           if (userExercise.length - 1 > exerciseIndex) {
                             _setNo = 1;
                             exerciseIndex++;
                             if (!isDuringSet) {
-                              _toggleUI(); //만약 bar card ui가 아닐 때 다음을 눌러서 운동을 바꾸면, 이걸로 toggle시켜줌
+                              _toggleUI(); //만약 timer UI를 켜놓고 다음을 눌러서 운동을 바꾸면, 이걸 통해 set ui로 toggle시켜줌
                             }
                             // 만약 slider를 통해 개수나 무게를 움직였다면 db에 반영하기
                             if (_currentReps != null) {
@@ -240,7 +242,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
             ),
             isDuringSet
                 ? _setUI(size, userExercise)
-                : _timerUI(size, context, userExercise, exerciseDB)
+                : _timerUI(size, context, userExercise, exerciseDB, recordDB)
           ],
         ),
       ),
@@ -430,7 +432,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
         GestureDetector(
           onTap: () {
             setState(() {
-              // 나중엔 차트에 넣기위한 userRecord에도 넣기
+              // 폰을 흔들거나 setUI를 클릭하면 timer로 넘어가기
               _toggleUI();
             });
           },
@@ -478,8 +480,12 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
     );
   }
 
-  Widget _timerUI(Size size, BuildContext context,
-      List<UserExercise> userExercises, ExerciseDB exerciseDB) {
+  Widget _timerUI(
+      Size size,
+      BuildContext context,
+      List<UserExercise> userExercises,
+      ExerciseDB exerciseDB,
+      RecordDB recordDB) {
     return Column(
       children: [
         // Text('$_start'),
@@ -525,13 +531,29 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                   '넘기기',
                   style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
-                onPressed: () {
+                onPressed: () async {
+                  int volume = 0;
+                  if (_setNo == 1) {
+                    // 다음 운동으로 넘어갈 때 운동의 정보를 사용자의 record에 저장 먼저하기
+
+                    for (int v = 0;
+                        v < userExercises[exerciseIndex].sets;
+                        v++) {
+                      volume += (userExercises[exerciseIndex].reps[v] *
+                          userExercises[exerciseIndex].weight[v]);
+                      print(volume);
+                    }
+
+                    await recordDB.updateOverallData(
+                        userExercises[exerciseIndex].part, volume);
+                  }
                   setState(() {
                     ///////////////////////////////////////
                     ///timer를 캔슬 시키고, 다음 운동으로 넘기는 기능
                     _timer.cancel();
                     // 전체 exercise의 인덱스를 넘지 않는다면 다음 운동index로 움직임
                     if (_setNo == 1) {
+                      // 그 다음에 다음 운동으로 넘어가거나 운동이 끝났으면 메인 화면으로 나간다.
                       if (userExercises.length - 1 > exerciseIndex) {
                         exerciseIndex++;
                       } else {
@@ -554,6 +576,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                 ),
                 onPressed: () {
                   setState(() {
+                    // 만약 모든 세트를 수행한 경우 아래의 if문을 거쳐서 다음 운동으로 넘어간다.
                     if (_setNo >= userExercises[exerciseIndex].sets) {
                       _setNo = 1;
                       // 만약 slider를 통해 전체 세트 동일 설정으로 반복횟수를 움직였다면 db에 반영하기
