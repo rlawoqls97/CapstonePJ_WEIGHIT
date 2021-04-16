@@ -41,7 +41,7 @@ class RecordDB {
         .get()
         .then((DocumentSnapshot doc) {
       if (doc.exists) {
-        // 만약 해당 부위의 volume이 이미 있다면 이걸 가져온다.
+        // 만약 해당 부위의 volume이 이미 있다면 이걸 가져오고, 없다면 0으로 처리해서 가져온다.
         totalVolume = doc.get(part) ?? 0;
       } else {
         totalVolume = 0;

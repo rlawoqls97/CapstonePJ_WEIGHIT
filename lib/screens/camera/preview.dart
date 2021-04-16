@@ -22,7 +22,6 @@ class PreviewScreen extends StatefulWidget {
 int index = 0;
 
 class _PreviewScreenState extends State<PreviewScreen> {
-
   @override
   Widget build(BuildContext context) {
     final _user = Provider.of<TheUser>(context);

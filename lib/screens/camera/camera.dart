@@ -98,10 +98,10 @@ class _CameraScreenState extends State<CameraScreen> {
           getCameraLensIcons(lensDirection),
           color: Colors.white,
           size: 37,
-        ),),
+        ),
+      ),
     );
   }
-
 
   onCapture(context) async {
     try {
@@ -114,8 +114,7 @@ class _CameraScreenState extends State<CameraScreen> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    PreviewScreen(
+                builder: (context) => PreviewScreen(
                       imgPath: path,
                       fileName: '$formattedDate.png',
                       pickedTime: '$formattedDate',
@@ -147,61 +146,63 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     final _user = Provider.of<TheUser>(context);
-    final size = MediaQuery
-        .of(context)
-        .size;
+    final size = MediaQuery.of(context).size;
     return StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseFirestore.instance.collection('user').doc(_user.uid).snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting ||
-            !snapshot.hasData ||
-            snapshot.data == null) {
-          return Center(child: CircularProgressIndicator());
-        }
-        var userDoc = snapshot.data;
-        return Scaffold(
-          backgroundColor: Colors.black,
-          body: Container(
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  height: size.height - (size.height * 0.13 + size.height * 0.1),
-                  width: size.width,
+        stream: FirebaseFirestore.instance
+            .collection('user')
+            .doc(_user.uid)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting ||
+              !snapshot.hasData ||
+              snapshot.data == null) {
+            return Center(child: CircularProgressIndicator());
+          }
+          var userDoc = snapshot.data;
+          return Scaffold(
+            backgroundColor: Colors.black,
+            body: Container(
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    height:
+                        size.height - (size.height * 0.13 + size.height * 0.1),
+                    width: size.width,
                     child: cameraPreview(),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      colorFilter: ColorFilter.mode(
-                          Colors.black.withOpacity(0.4), BlendMode.dstATop),
-                      image: _user.pickedUrl == '' ? AssetImage('assets/body1.jpeg') : NetworkImage(userDoc.get('pickedUrl'))
-                    ),
                   ),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      height: size.height * 0.13,
-                      width: double.infinity,
-                      padding: EdgeInsets.all(15),
-                      color: Colors.black,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          savedPhoto(),
-                          cameraControl(context),
-                          cameraToggle(),
-                        ],
+                  Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          fit: BoxFit.fill,
+                          colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(0.4), BlendMode.dstATop),
+                          image: _user.pickedUrl == ''
+                              ? AssetImage('assets/body1.jpg')
+                              : NetworkImage(userDoc.get('pickedUrl'))),
+                    ),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        height: size.height * 0.13,
+                        width: double.infinity,
+                        padding: EdgeInsets.all(15),
+                        color: Colors.black,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            savedPhoto(),
+                            cameraControl(context),
+                            cameraToggle(),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
-      }
-    );
+          );
+        });
   }
 
   Widget savedPhoto() {
@@ -209,15 +210,15 @@ class _CameraScreenState extends State<CameraScreen> {
       child: IconButton(
         onPressed: () {
           print('clicked');
-          Navigator.push(context, MaterialPageRoute(
-              builder: (context) =>
-                  gallery()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => gallery()));
         },
         icon: Icon(
           Icons.photo_outlined,
           color: Colors.white,
           size: 40.0,
-        ),),
+        ),
+      ),
     );
   }
 
@@ -236,11 +237,10 @@ class _CameraScreenState extends State<CameraScreen> {
 
   onSwitchCamera() {
     selectedCameraIndex =
-    selectedCameraIndex < cameras.length - 1 ? selectedCameraIndex + 1 : 0;
+        selectedCameraIndex < cameras.length - 1 ? selectedCameraIndex + 1 : 0;
     CameraDescription selectedCamera = cameras[selectedCameraIndex];
     initCamera(selectedCamera);
   }
-
 
   showCameraException(e) {
     String errorText = 'Error ${e.code} \nError message: ${e.description}';

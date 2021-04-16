@@ -78,12 +78,12 @@ class _StatusState extends State<Status> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await recordService.newOverallData();
-          await recordService.updateOverallData('등', 200);
-          await recordService.updateOverallData('가슴', 300);
-          await recordService.updateOverallData('어깨', 400);
-          await recordService.updateOverallData('복부', 500);
-          await recordService.updateOverallData('하체', 600);
-          await recordService.updateOverallData('팔', 700);
+          await recordService.updateOverallData('등', 130);
+          await recordService.updateOverallData('가슴', 0);
+          await recordService.updateOverallData('어깨', 0);
+          await recordService.updateOverallData('복부', 400);
+          await recordService.updateOverallData('하체', 0);
+          await recordService.updateOverallData('팔', 600);
         },
         child: Icon(Icons.plus_one_rounded),
       ),
