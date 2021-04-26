@@ -8,8 +8,6 @@ class ExerciseDB {
   final String part; // 부위이름을 통해 운동 정보를 가져올 때
   ExerciseDB({this.uid, this.routineName, this.part});
 
-  final CollectionReference userCollection =
-      FirebaseFirestore.instance.collection('user');
   final CollectionReference routineCollection =
       FirebaseFirestore.instance.collection('routine');
   final CollectionReference exerciseCollection =
@@ -205,6 +203,8 @@ class ExerciseDB {
         routineName: doc.get('routineName'),
         // 레벨도 나중에 받기
         level: doc.get('level') ?? '중급',
+        // 해당 루틴에 어떤 운동들이 있는지도 나중에 받기
+        // e.g. workoutList: doc.get('workouts') ?? []
         workoutList: ['벤치프레스', '랫 풀 다운', '런지'],
       );
     }).toList();

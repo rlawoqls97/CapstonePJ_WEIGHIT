@@ -10,7 +10,7 @@ class TheUser {
   String pickedUrl;
   // level이랑 routine 부분 routine page고치고 바로 빼기
   final String level;
-  final String routine;
+
   ///////////////////////
   String username;
   int weight;
@@ -19,7 +19,6 @@ class TheUser {
   TheUser(
       {this.uid,
       this.level,
-      this.routine,
       this.username,
       this.weight,
       this.url,

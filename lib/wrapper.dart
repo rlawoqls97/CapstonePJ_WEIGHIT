@@ -7,6 +7,7 @@ import 'package:weighit/models/user_info.dart';
 import 'package:weighit/screens/UserInformationChange/input_information.dart';
 import 'package:weighit/screens/authenticate/login.dart';
 import 'package:weighit/screens/home/home.dart';
+import 'package:weighit/services/user_info_DB.dart';
 
 class Wrapper extends StatelessWidget {
   @override
@@ -20,22 +21,14 @@ class Wrapper extends StatelessWidget {
         child: LogIn(),
       );
     } else {
-      return StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('user')
-            .doc(user.uid)
-            .snapshots(),
+      return StreamBuilder<TheUser>(
+        stream: UserDB(uid: user.uid).userInfo,
         builder: (BuildContext context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Scaffold(body: Center(child: CircularProgressIndicator()));
-          } else if (snapshot.hasData && snapshot.data.data() != null) {
-            // 이하 네줄 ExerciseDB에 메소드 하나로 정리하기
-            user.username = snapshot.data.get('username');
-            user.weight = snapshot.data.get('weight');
-            user.workedDays = snapshot.data.get('workedDays');
-            user.url = snapshot.data.get('url');
-            user.pickTime = snapshot.data.get('pickTime');
-            user.pickedUrl = snapshot.data.get('pickedUrl');
+          } else if (snapshot.hasData && snapshot.data != null) {
+            // 만약 user에 추가될 field가 필요하다면, Model의 TheUser class와 services의 user_info_DB.dart에도 추가 수정하면 된다.
+            UserDB(uid: user.uid).inputUserInfotoProvider(user, snapshot.data);
             return HomePage();
           } else {
             //만약 유저의 data가 없으면 최초 정보 입력 화면으로 간다.
