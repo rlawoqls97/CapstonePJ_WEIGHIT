@@ -13,8 +13,6 @@ class gallery extends StatefulWidget {
 }
 
 class _galleryState extends State<gallery> {
-  Stream<QuerySnapshot> photoStream =
-      FirebaseFirestore.instance.collection('user').snapshots();
   // List<Card>_buildGridCards(BuildContext context, List<DocumentSnapshot> snapshot){
   //   final _user = Provider.of<TheUser>(context);
   //   if(snapshot.isEmpty){
@@ -75,16 +73,13 @@ class _galleryState extends State<gallery> {
         ],
         centerTitle: true,
       ),
-      body: StreamBuilder<QuerySnapshot>(
-          stream: photoStream,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData || snapshot.data.docs.isEmpty) {
-              return Center(
-                child: Text('사진이 없습니다.'),
-              );
-            }
-            // final cards = _buildGridCards(context, snapshot.data.docs) ?? [];
-            return SingleChildScrollView(
+      body: _user.url.isEmpty
+          ? Center(
+              child: Text('사진이 없습니다.'),
+            )
+          :
+          // final cards = _buildGridCards(context, snapshot.data.docs) ?? [];
+          SingleChildScrollView(
               child: Column(
                 children: [
                   Center(
@@ -114,8 +109,7 @@ class _galleryState extends State<gallery> {
                   ),
                 ],
               ),
-            );
-          }),
+            ),
     );
   }
 
