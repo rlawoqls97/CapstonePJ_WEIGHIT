@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:camera/camera.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
@@ -96,25 +98,26 @@ class _CameraScreenState extends State<CameraScreen> {
           getCameraLensIcons(lensDirection),
           color: Colors.white,
           size: 37,
-        ),),
+        ),
+      ),
     );
   }
-
 
   onCapture(context) async {
     try {
       final p = await getTemporaryDirectory();
-      final name = DateTime.now();
-      final path = '${p.path}/$name.png';
+      var now = DateTime.now();
+      var formattedDate = DateFormat('yy-MM-dd HH:mm:ss').format(now);
+      final path = '${p.path}/$now.png';
       await cameraController.takePicture(path).then((value) {
         print('here');
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    PreviewScreen(
+                builder: (context) => PreviewScreen(
                       imgPath: path,
-                      fileName: '$name.png',
+                      fileName: '$formattedDate.png',
+                      pickedTime: '$formattedDate',
                     )));
       });
     } catch (e) {
@@ -142,52 +145,67 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery
-        .of(context)
-        .size;
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Container(
-        child: Stack(
-          children: <Widget>[
-            Container(
-              height: size.height - (size.height * 0.13 + size.height * 0.1),
-              width: size.width,
-              child: Align(
-                child: cameraPreview(),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.fill,
-                  colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.4), BlendMode.dstATop),
-                  image: AssetImage('assets/body1.jpeg'),
-                ),
-              ),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  height: size.height * 0.13,
-                  width: double.infinity,
-                  padding: EdgeInsets.all(15),
-                  color: Colors.black,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      savedPhoto(),
-                      cameraControl(context),
-                      cameraToggle(),
-                    ],
+    final _user = Provider.of<TheUser>(context);
+    final size = MediaQuery.of(context).size;
+    return StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('user')
+            .doc(_user.uid)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting ||
+              !snapshot.hasData ||
+              snapshot.data == null) {
+            return Center(child: CircularProgressIndicator());
+          }
+          var userDoc = snapshot.data;
+          return Scaffold(
+            backgroundColor: Colors.black,
+            body: Container(
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    height:
+                        size.height - (size.height * 0.13 + size.height * 0.1),
+                    width: size.width,
+                    child: cameraPreview(),
                   ),
-                ),
+                  AspectRatio(
+                    aspectRatio: cameraController.value.aspectRatio,
+                    child: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          fit: BoxFit.contain,
+                          colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(0.4), BlendMode.dstATop),
+                          image: _user.pickedUrl == ''
+                              ? AssetImage('assets/body1.jpg')
+                              : NetworkImage(userDoc.get('pickedUrl'))),
+                    ),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        height: size.height * 0.1,
+                        width: double.infinity,
+                        padding: EdgeInsets.all(15),
+                        // color: Colors.black,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            savedPhoto(),
+                            cameraControl(context),
+                            cameraToggle(),
+                          ],
+                        ),
+                      ),
+                    ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 
   Widget savedPhoto() {
@@ -195,15 +213,15 @@ class _CameraScreenState extends State<CameraScreen> {
       child: IconButton(
         onPressed: () {
           print('clicked');
-          Navigator.push(context, MaterialPageRoute(
-              builder: (context) =>
-                  gallery()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => gallery()));
         },
         icon: Icon(
           Icons.photo_outlined,
           color: Colors.white,
           size: 40.0,
-        ),),
+        ),
+      ),
     );
   }
 
@@ -222,7 +240,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
   onSwitchCamera() {
     selectedCameraIndex =
-    selectedCameraIndex < cameras.length - 1 ? selectedCameraIndex + 1 : 0;
+        selectedCameraIndex < cameras.length - 1 ? selectedCameraIndex + 1 : 0;
     CameraDescription selectedCamera = cameras[selectedCameraIndex];
     initCamera(selectedCamera);
   }

@@ -8,13 +8,12 @@ import 'package:weighit/screens/routine/make_routine.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:weighit/services/Exercise_database.dart';
 
-class Routine3 extends StatefulWidget {
+class Arm extends StatefulWidget {
   @override
-  _Routine3State createState() => _Routine3State();
+  _ArmState createState() => _ArmState();
 }
 
-class _Routine3State extends State<Routine3>
-    with AutomaticKeepAliveClientMixin<Routine3> {
+class _ArmState extends State<Arm> with AutomaticKeepAliveClientMixin<Arm> {
   @override
   bool get wantKeepAlive => true;
   @override

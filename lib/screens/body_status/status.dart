@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+
 import 'package:weighit/models/user_info.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:weighit/models/status_chart.dart';
-import 'package:weighit/screens/body_status/detailed_status.dart';
+import 'package:weighit/services/user_record_DB.dart';
+
 import 'package:weighit/widgets/chart_maker.dart';
 
 class Status extends StatefulWidget {
@@ -13,151 +15,139 @@ class Status extends StatefulWidget {
 
 class _StatusState extends State<Status> {
   @override
+  // chartMaker는 차트를 만들어주는 클래스이며, widget folder의 chart_maker.dart에 정의 돼있다.
+  ChartMaker chartMaker = ChartMaker();
+
   UserRecord dummyRecord = UserRecord(
-    shoulder: ['어깨', 2000, 1000, 500, 4],
-    arm: ['팔', 500, 100, 500, 5],
-    chest: ['가슴', 2000, 1000, 500, 6],
-    abs: ['복근', 300, 1000, 500, 5],
-    back: ['등', 2000, 1000, 500, 3],
-    leg: ['다리', 200, 1000, 500, 2],
+    shoulder: ['어깨', 300, 200, 500, 4],
+    chest: ['가슴', 500, 400, 300, 2],
+    abs: ['복부', 150, 160, 170, 2],
+    arm: ['팔', 200, 210, 205, 3],
+    leg: ['하체', 500, 550, 570, 6],
+    back: ['등', 400, 420, 450, 3],
   );
 
-  // 이 function은 하나의 3 integer list를 chart로 변환해준다.
-  // 이 부분에서 넣어주는 parameter 'List<int> record'도 만약 db 연동에서 문제가 날 시 List<dynamic>으로 같이 변환한다.
-  List<charts.Series<StatusChart, String>> _buildSingleChart(
-      List<dynamic> record) {
-    var chartList = [
-      StatusChart(
-        day: 'total',
-        reps: record[1],
-        barColor: charts.ColorUtil.fromDartColor(Color(0xff26E3BC)),
-      ),
-      StatusChart(
-        day: 'week',
-        reps: record[2],
-        barColor: charts.ColorUtil.fromDartColor(Color(0xff26E3BC)),
-      ),
-      StatusChart(
-        day: 'today',
-        reps: record[3],
-        barColor: charts.ColorUtil.fromDartColor(Color(0xff26E3BC)),
-      )
-    ];
-    //일단 StatusChart list에 chart data들을 넣어주고, 이를 chart 전용 status값들로 바꿔준다.
-    return <charts.Series<StatusChart, String>>[
-      charts.Series(
-        id: 'Status',
-        data: chartList,
-        domainFn: (StatusChart series, _) => series.day,
-        measureFn: (StatusChart series, _) => series.reps,
-        colorFn: (StatusChart series, _) => series.barColor,
-      )
-    ];
-  }
-
-  // 위의 _buildSingleChart를 통해서 여섯 부위의 chart list를 만든다.
-  List<InkWell> _buildListChart(UserRecord record) {
-    return [
-      record.shoulder,
-      record.arm,
-      record.chest,
-      record.abs,
-      record.back,
-      record.leg,
-    ] //여기서 만든 6개의 integer list를 InkWell Card로 바꿔준다.
-        .map((record) {
-      return InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              // 나중에 꼭 provider로 firebase user record document를 넘기기!
-              //
-              builder: (BuildContext context) => DetailedStatus(
-                record: record,
-              ),
-            ),
-          );
-        },
-        child: Hero(
-          tag: record[0],
-          child: Card(
-            elevation: 10,
-            color: Theme.of(context).primaryColor,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        record[0],
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Text(
-                        'LV.${record[4]}',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: AbsorbPointer(
-                      absorbing: true,
-                      child: charts.BarChart(
-                        _buildSingleChart(record),
-                        animate: true,
-                        primaryMeasureAxis: charts.NumericAxisSpec(
-                          renderSpec: charts.GridlineRendererSpec(
-                            labelStyle: charts.TextStyleSpec(
-                              fontSize: 12,
-                              color: charts.MaterialPalette.white,
-                            ),
-                          ),
-                        ),
-                        domainAxis: charts.OrdinalAxisSpec(
-                            renderSpec: charts.GridlineRendererSpec(
-                                labelStyle: charts.TextStyleSpec(
-                          fontSize: 12,
-                          color: charts.MaterialPalette.white,
-                        ))),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
-    }).toList();
-  }
-
-  ChartMaker chartMaker = ChartMaker();
   @override
   Widget build(BuildContext context) {
-    final chartList = _buildListChart(dummyRecord);
     final user = Provider.of<TheUser>(context);
     final size = MediaQuery.of(context).size;
+
+    var recordService = RecordDB(uid: user.uid);
+    var chartList;
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: size.height * 0.1,
         iconTheme: IconThemeData(color: Colors.black),
         title: Text(
           '몸 상태',
-          style: TextStyle(color: Colors.black),
+          style: Theme.of(context).textTheme.headline6,
         ),
         automaticallyImplyLeading: false,
         centerTitle: true,
         backgroundColor: Color(0xffF8F6F6),
       ),
-      body: GridView.count(
-        crossAxisCount: 2,
-        padding: EdgeInsets.all(16.0),
-        childAspectRatio: 8.0 / 8.5,
-        children: chartList,
-      ),
+      body: FutureBuilder(
+          future: _fetchRecord(user.uid),
+          builder: (context, snapshot) {
+            //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
+            if (snapshot.hasData == false) {
+              return Center(child: CircularProgressIndicator());
+            }
+            //error가 발생하게 될 경우 반환하게 되는 부분
+            else if (snapshot.hasError) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Error: ${snapshot.error}',
+                  style: TextStyle(fontSize: 15),
+                ),
+              );
+            } else {
+              final chartList =
+                  chartMaker.buildListChart(context, snapshot.data);
+              return GridView.count(
+                crossAxisCount: 2,
+                padding: EdgeInsets.all(16.0),
+                childAspectRatio: 8.0 / 8.5,
+                children: chartList,
+              );
+            }
+          }),
       resizeToAvoidBottomInset: false,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await recordService.newOverallData();
+          await recordService.updateOverallData('등', 130);
+          await recordService.updateOverallData('가슴', 0);
+          await recordService.updateOverallData('어깨', 0);
+          await recordService.updateOverallData('복부', 400);
+          await recordService.updateOverallData('하체', 0);
+          await recordService.updateOverallData('팔', 600);
+        },
+        child: Icon(Icons.plus_one_rounded),
+      ),
     );
+  }
+
+  Future<UserRecord> _fetchRecord(String uid) async {
+    var userRecord = UserRecord(
+      shoulder: ['어깨'],
+      arm: ['팔'],
+      chest: ['가슴'],
+      abs: ['복부'],
+      back: ['등'],
+      leg: ['하체'],
+    );
+    var recordservice = RecordDB(uid: uid);
+
+    // 이틀전 데이터 가져오기
+    userRecord = await recordservice.bringRecord(userRecord, 2);
+    // 하루전 데이터 가져오기
+    userRecord = await recordservice.bringRecord(userRecord, 1);
+    // 오늘 데이터 가져오기
+    userRecord = await recordservice.bringRecord(userRecord, 0);
+
+    return userRecord;
+    //    지금 현재 시간을 기준으로 3일 전까지의 QuerySnapshot을 전부 가져오는 코드
+    //    만약 4일 전에 한 운동이라도 -72시간에 한 운동이라면 같이 포함되서 사용하지 않는다.
+    // final threedaysbefore = DateTime.now().subtract(Duration(days: 3));
+    // FirebaseFirestore.instance
+    //     .collection('record')
+    //     .doc(user.uid)
+    //     .collection('Overall')
+    //     .where('timestamp', isGreaterThan: threedaysbefore)
+    //     .get()
+    //     .catchError((onError) => print('Error'))
+    //     .then((QuerySnapshot snapshot) => {
+    //           snapshot.docs.forEach((doc) {
+    //             // userRecord에다가 적절한 값 집어넣기
+    //             print('Query Dummy: ' + doc.get('dummy'));
+    //           })
+    //         })
+    //     .catchError((onError) {
+    //   print('Error');
+    // });
+
+    //    그냥 QuerySnapshot으로 최근 3개를 일자 순으로 가져오는 코드.
+    //    최근 3개가 아니라 최근 3일을 기준으로 가져와야 해서 사용하지 않는다.
+    // var snapshot = await FirebaseFirestore.instance
+    //     .collection('record')
+    //     .doc(uid)
+    //     .collection('Overall')
+    //     .orderBy('timestamp', descending: false)
+    //     .limitToLast(3)
+    //     .get();
+    // snapshot.docs.forEach((doc) {
+    //   // userRecord에다가 적절한 값 집어넣기
+    //   print(doc.get('dummy'));
+    //   userRecord.shoulder.add(doc.get('어깨') ?? 0);
+    //   userRecord.arm.add(doc.get('팔') ?? 0);
+    //   userRecord.chest.add(doc.get('가슴') ?? 0);
+    //   userRecord.abs.add(doc.get('복부') ?? 0);
+    //   userRecord.back.add(doc.get('등') ?? 0);
+    //   userRecord.leg.add(doc.get('하체') ?? 0);
+    //   // print(userRecord.shoulder);
+    // });
   }
 }

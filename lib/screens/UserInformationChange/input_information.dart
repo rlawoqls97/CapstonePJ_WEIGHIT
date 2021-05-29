@@ -15,12 +15,12 @@ class InputInformation extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final user = Provider.of<TheUser>(context);
-    ExerciseDB exerciseDB = ExerciseDB(uid: user.uid);
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xffCBDBF9),
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text('회원 정보 입력'),
+        toolbarHeight: size.height * 0.1,
         centerTitle: true,
         actions: [],
       ),
@@ -113,58 +113,38 @@ class InputInformation extends StatelessWidget {
                                     FirebaseAuth.instance.currentUser.email ??
                                         '',
                                 'workedDays': 0,
+                                'url': [],
+                                'pickTime': [],
+                                'isExercising': false,
+                                'pickedUrl': '',
                               })
                               .then((value) => print('Item added'))
                               .catchError(
                                   (error) => print('Failed add Item : $error'));
-                          await exerciseDB.updateUserExerciseData(
-                              '전 독일 역도 선수 운동법! GVT (등)',
-                              '랫 풀 다운',
-                              '등',
-                              40,
-                              10,
-                              10,
-                              0);
-                          await exerciseDB.updateUserExerciseData(
-                              '전 독일 역도 선수 운동법! GVT (등)',
-                              '덤벨 플라이',
-                              '등',
-                              25,
-                              4,
-                              12,
-                              1);
-                          await exerciseDB.updateUserExerciseData(
-                              '전 독일 역도 선수 운동법! GVT (등)',
-                              '와이드 그립 로우',
-                              '등',
-                              40,
-                              4,
-                              12,
-                              2);
-                          await exerciseDB.updateUserExerciseData(
-                              '전 독일 역도 선수 운동법! GVT (하체)',
-                              '스쿼트',
-                              '하체',
-                              60,
-                              10,
-                              10,
-                              0);
-                          await exerciseDB.updateUserExerciseData(
-                              '전 독일 역도 선수 운동법! GVT (하체)',
-                              '루마니안 데드리프트',
-                              '하체',
-                              70,
-                              4,
-                              1,
-                              1);
-                          await exerciseDB.updateUserExerciseData(
-                              '전 독일 역도 선수 운동법! GVT (하체)',
-                              '런지',
-                              '하체',
-                              user.weight,
-                              10,
-                              10,
-                              2);
+
+                          // 기본 루틴 넣어주기
+                          var defaultRoutine1 = ExerciseDB(
+                              uid: user.uid,
+                              routineName: '독일 역도 선수 운동법! GVT (등)');
+                          await defaultRoutine1.updateUserRoutineData();
+                          await defaultRoutine1.addNewUserExerciseData(
+                              '랫 풀 다운', '등', 40, 10, 10, 0);
+                          await defaultRoutine1.addNewUserExerciseData(
+                              '덤벨 플라이', '등', 25, 4, 12, 1);
+                          await defaultRoutine1.addNewUserExerciseData(
+                              '와이드 그립 로우', '등', 40, 4, 12, 2);
+                          // 기본 루틴 넣어주기
+                          var defaultRoutine2 = ExerciseDB(
+                              uid: user.uid,
+                              routineName: '독일 역도 선수 운동법! GVT (하체)');
+                          await defaultRoutine2.updateUserRoutineData();
+
+                          await defaultRoutine2.addNewUserExerciseData(
+                              '스쿼트', '하체', 60, 10, 10, 0);
+                          await defaultRoutine2.addNewUserExerciseData(
+                              '루마니안 데드리프트', '하체', 70, 4, 12, 1);
+                          await defaultRoutine2.addNewUserExerciseData(
+                              '런지', '하체', user.weight, 4, 12, 2);
                         }
                       },
                       label: Text(

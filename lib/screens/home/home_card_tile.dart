@@ -1,11 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
+import 'package:weighit/services/Exercise_database.dart';
 import 'package:weighit/screens/exercise/exercise_confirm.dart';
 import 'package:weighit/screens/routine/make_routine.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'dart:math';
 
 class CardTile extends StatefulWidget {
   @override
@@ -19,6 +18,8 @@ class _CardTileState extends State<CardTile> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final _user = Provider.of<TheUser>(context);
+    final _routines = Provider.of<List<UserRoutine>>(context) ?? [];
+    if (_routines == null) {}
     return SafeArea(
       child: ListView(
         children: [
@@ -90,51 +91,18 @@ class _CardTileState extends State<CardTile> {
             ),
           ),
           SingleChildScrollView(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('routine')
-                  .doc(_user.uid)
-                  .collection('userRoutines')
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                }
-
-                if ((snapshot.hasError) || (snapshot.data == null)) {
-                  return Center(child: Text(snapshot.error.toString()));
-                }
-                final routines = _listTiles(context, snapshot.data.docs) ?? [];
-                return ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: routines.length,
-                  itemBuilder: (context, index) {
-                    return _routineTile(context, routines[index]);
-                  },
-                );
+            child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: _routines.length,
+              itemBuilder: (context, index) {
+                return _routineTile(context, _routines[index]);
               },
             ),
           ),
         ],
       ),
     );
-  }
-
-  List<UserRoutine> _listTiles(
-      BuildContext context, List<DocumentSnapshot> snapshot) {
-    if (snapshot == null) {
-      return null;
-    } else {
-      return snapshot.map((doc) {
-        return UserRoutine(
-          routineName: doc.get('routineName') ?? '',
-          // 레벨도 나중에 받기
-          level: '중급',
-          workoutList: ['벤치프레스', '랫 풀 다운', '런지'],
-        );
-      }).toList();
-    }
   }
 
   Widget _routineTile(BuildContext context, UserRoutine routine) {
@@ -146,12 +114,14 @@ class _CardTileState extends State<CardTile> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ExerciseConfirm()),
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ExerciseConfirm(routineName: routine.routineName)),
             );
           },
           title: Text(routine.routineName),
           subtitle: Text(
-            routine.level,
+            routine.level ?? '',
             style: TextStyle(color: Colors.white),
           ),
         ),

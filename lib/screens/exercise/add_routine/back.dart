@@ -8,20 +8,19 @@ import 'package:weighit/screens/routine/make_routine.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:weighit/services/Exercise_database.dart';
 
-class Routine3 extends StatefulWidget {
+class Back extends StatefulWidget {
   @override
-  _Routine3State createState() => _Routine3State();
+  _BackState createState() => _BackState();
 }
 
-class _Routine3State extends State<Routine3>
-    with AutomaticKeepAliveClientMixin<Routine3> {
+class _BackState extends State<Back> with AutomaticKeepAliveClientMixin<Back> {
   @override
   bool get wantKeepAlive => true;
   @override
   // ignore: must_call_super
   Widget build(BuildContext context) {
     final exerciseList = Provider.of<List<Exercise>>(context)
-            .where((element) => element.part == '팔')
+            .where((element) => element.part == '등')
             .toList() ??
         [];
     final size = MediaQuery.of(context).size;
@@ -43,7 +42,7 @@ class _Routine3State extends State<Routine3>
           color: Theme.of(context).primaryColor,
           child: ListTile(
             onTap: () async {
-              await ExerciseDB(part: '팔').updateNewExerciseData(exercise.name);
+              await ExerciseDB(part: '등').updateNewExerciseData(exercise.name);
             },
             title: Text(
               exercise.name,

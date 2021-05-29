@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:esys_flutter_share/esys_flutter_share.dart';
@@ -11,11 +12,14 @@ import 'package:weighit/models/user_info.dart';
 class PreviewScreen extends StatefulWidget {
   final String imgPath;
   final String fileName;
-  PreviewScreen({this.imgPath, this.fileName});
+  final String pickedTime;
+  PreviewScreen({this.imgPath, this.fileName, this.pickedTime});
 
   @override
   _PreviewScreenState createState() => _PreviewScreenState();
 }
+
+int index = 0;
 
 class _PreviewScreenState extends State<PreviewScreen> {
   @override
@@ -45,12 +49,31 @@ class _PreviewScreenState extends State<PreviewScreen> {
           centerTitle: true,
           actions: [
             IconButton(
-              icon: Icon(Icons.done, color: Colors.black,),
+              icon: Icon(
+                Icons.done,
+                color: Colors.black,
+              ),
               onPressed: () async {
                 await ref.putFile(imgFile);
+                var url = (await ref.getDownloadURL()).toString();
+                _user.url.add(url);
+                _user.pickTime.add(widget.pickedTime);
+                await FirebaseFirestore.instance
+                    .collection('user')
+                    .doc(_user.uid)
+                    .update({'url': _user.url, 'pickTime': _user.pickTime});
+                Navigator.pop(context);
               },
-
-            )
+            ),
+            // IconButton(
+            //   icon: Icon(
+            //     Icons.assignment_ind,
+            //     color: Colors.black,
+            //   ),
+            //   onPressed: () async {
+            //
+            //   },
+            // )
           ],
         ),
         body: Container(

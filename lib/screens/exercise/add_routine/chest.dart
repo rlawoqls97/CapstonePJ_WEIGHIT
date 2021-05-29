@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:weighit/models/exercise_type.dart';
-import 'package:weighit/models/user_info.dart';
-import 'package:weighit/screens/exercise/exercise_confirm.dart';
-import 'package:weighit/screens/routine/make_routine.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:weighit/services/Exercise_database.dart';
 
-class Routine3 extends StatefulWidget {
+class Chest extends StatefulWidget {
   @override
-  _Routine3State createState() => _Routine3State();
+  _ChestState createState() => _ChestState();
 }
 
-class _Routine3State extends State<Routine3>
-    with AutomaticKeepAliveClientMixin<Routine3> {
+class _ChestState extends State<Chest>
+    with AutomaticKeepAliveClientMixin<Chest> {
   @override
   bool get wantKeepAlive => true;
   @override
   // ignore: must_call_super
   Widget build(BuildContext context) {
+    if (Provider.of<List<Exercise>>(context) == null) {
+      return Center(child: CircularProgressIndicator());
+    }
     final exerciseList = Provider.of<List<Exercise>>(context)
-            .where((element) => element.part == '팔')
+            .where((element) => element.part == '가슴')
             .toList() ??
         [];
     final size = MediaQuery.of(context).size;
@@ -43,7 +42,7 @@ class _Routine3State extends State<Routine3>
           color: Theme.of(context).primaryColor,
           child: ListTile(
             onTap: () async {
-              await ExerciseDB(part: '팔').updateNewExerciseData(exercise.name);
+              await ExerciseDB(part: '가슴').updateNewExerciseData(exercise.name);
             },
             title: Text(
               exercise.name,

@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:weighit/models/exercise_type.dart';
 import 'package:weighit/models/user_info.dart';
-import 'package:weighit/screens/routine/routine1.dart';
-import 'package:weighit/screens/routine/routine2.dart';
-import 'package:weighit/screens/routine/routine3.dart';
-import 'package:weighit/screens/routine/routine4.dart';
-import 'package:weighit/screens/routine/routine5.dart';
-import 'package:weighit/screens/routine/routine6.dart';
+import 'abs.dart';
+import 'chest.dart';
+import 'arm.dart';
+import 'shoulder.dart';
+import 'back.dart';
+import 'leg.dart';
 import 'package:weighit/services/Exercise_database.dart';
-import 'package:weighit/widgets/sliver_header.dart';
 
-class Routine extends StatefulWidget {
+class AddRoutine extends StatefulWidget {
+  List<UserExercise> exerciseList;
+  final String routineName;
+
+  AddRoutine({Key key, this.exerciseList, this.routineName}) : super(key: key);
   @override
-  _RoutineState createState() => _RoutineState();
+  _AddRoutineState createState() => _AddRoutineState();
 }
 
-class _RoutineState extends State<Routine> with SingleTickerProviderStateMixin {
+class _AddRoutineState extends State<AddRoutine>
+    with SingleTickerProviderStateMixin {
   final routineController = TextEditingController();
   TabController _controller;
 
@@ -33,7 +36,6 @@ class _RoutineState extends State<Routine> with SingleTickerProviderStateMixin {
     return StreamProvider(
       create: (_) => ExerciseDB().exercise,
       child: StreamBuilder<List<Exercise>>(
-          // 밑의 ExerciseDB().newExercise 스트림을 Exercise_database.dart에서 변경시키기 (지금은 모두가 newRoutine이라는 collection을 공유함)
           stream: ExerciseDB().newExercise,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting ||
@@ -67,7 +69,7 @@ class _RoutineState extends State<Routine> with SingleTickerProviderStateMixin {
                       ),
                     ),
                     title: Text(
-                      '새로운 루틴',
+                      '루틴에 운동 추가하기',
                       style: Theme.of(context).textTheme.headline4,
                     ),
                     centerTitle: true,
@@ -107,12 +109,12 @@ class _RoutineState extends State<Routine> with SingleTickerProviderStateMixin {
                     child: TabBarView(
                       controller: _controller,
                       children: [
-                        Routine1(),
-                        Routine2(),
-                        Routine3(),
-                        Routine4(),
-                        Routine5(),
-                        Routine6(),
+                        Chest(),
+                        Shoulder(),
+                        Arm(),
+                        Back(),
+                        Abs(),
+                        Leg(),
                       ],
                     ),
                   )
@@ -164,97 +166,25 @@ class _RoutineState extends State<Routine> with SingleTickerProviderStateMixin {
                       child: FlatButton(
                         color: Theme.of(context).primaryColor,
                         child: Text(
-                          '새로운 루틴 만들기',
+                          '루틴에 운동 추가하기',
                           style: TextStyle(
                             fontSize: size.height * 0.025,
                             color: Theme.of(context).accentColor,
                           ),
                         ),
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  title: Column(
-                                    children: [
-                                      Text(
-                                        '새로운 루틴의 이름을 입력하세요',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline4,
-                                      ),
-                                    ],
-                                  ),
-                                  content: TextField(
-                                    cursorColor: Theme.of(context).accentColor,
-                                    controller: routineController,
-                                    decoration: InputDecoration(
-                                      contentPadding:
-                                          EdgeInsets.symmetric(vertical: 6),
-                                      border: OutlineInputBorder(),
-                                      labelText: '  Ex)가슴운동, 월요일운동',
-                                    ),
-                                  ),
-                                  actions: [
-                                    Row(
-                                      children: [
-                                        FlatButton(
-                                          child: Text(
-                                            'Cancel',
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .accentColor),
-                                          ),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                        FlatButton(
-                                          child: Text(
-                                            'Ok',
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .accentColor),
-                                          ),
-                                          onPressed: () async {
-                                            var dataService = ExerciseDB(
-                                                uid: user.uid,
-                                                routineName:
-                                                    routineController.text);
-                                            int index = 0;
-                                            // alert dialogue에서 받아온 routine 이름으로 새로운 routine collection을 생성
-                                            await dataService
-                                                .updateRoutineData();
+                        onPressed: () async {
+                          var dataService = ExerciseDB(
+                              uid: user.uid, routineName: widget.routineName);
+                          int index = widget.exerciseList.length;
+                          await dataService.updateUserRoutineData();
 
-                                            // 새롭게 생성된 routine collection에 newExercise에 있는 운동들을 하나씩 집어넣는다.
-                                            await newExercise
-                                                .forEach((ex) async {
-                                              print('$index, ${ex.name}');
-                                              await dataService
-                                                  .addNewUserExerciseData(
-                                                      ex.name,
-                                                      ex.part,
-                                                      40,
-                                                      5,
-                                                      12,
-                                                      index++);
-                                              await dataService
-                                                  .deleteNewExerciseData(
-                                                      ex.name);
-                                            });
-                                            Navigator.pop(context);
-                                            Navigator.pop(context);
-                                          },
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                );
-                              });
+                          await newExercise.forEach((ex) async {
+                            print('$index, ${ex.name}');
+                            await dataService.addNewUserExerciseData(
+                                ex.name, ex.part, 40, 5, 12, index++);
+                            await dataService.deleteNewExerciseData(ex.name);
+                          });
+                          Navigator.pop(context);
                         },
                       ),
                     ),
