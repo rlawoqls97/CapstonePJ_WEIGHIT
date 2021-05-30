@@ -168,31 +168,32 @@ class _CameraScreenState extends State<CameraScreen> {
                   AspectRatio(
                     aspectRatio: cameraController.value.aspectRatio,
                     child: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          colorFilter: ColorFilter.mode(
-                              Colors.black.withOpacity(0.4), BlendMode.dstATop),
-                          image: _user.pickedUrl == ''
-                              ? AssetImage('assets/body1.jpg')
-                              : NetworkImage(userDoc.get('pickedUrl'))),
-                    ),
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        height: size.height * 0.1,
-                        width: double.infinity,
-                        padding: EdgeInsets.all(0),
-                        // color: Colors.black,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            savedPhoto(),
-                            cameraControl(context),
-                            cameraToggle(),
-                          ],
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(0.4),
+                                BlendMode.dstATop),
+                            image: _user.pickedUrl == ''
+                                ? AssetImage('assets/body1.jpg')
+                                : NetworkImage(userDoc.get('pickedUrl'))),
+                      ),
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          height: size.height * 0.1,
+                          width: double.infinity,
+                          padding: EdgeInsets.all(0),
+                          // color: Colors.black,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              savedPhoto(),
+                              cameraControl(context),
+                              cameraToggle(),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
                     ),
                   ),
                 ],
