@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:provider/provider.dart';
 import 'package:weighit/models/user_info.dart';
+import 'package:weighit/screens/camera/ToGif.dart';
 import 'package:weighit/screens/camera/camera.dart';
 import 'package:weighit/screens/camera/gallery_tap.dart';
 import 'package:weighit/screens/camera/preview.dart';
@@ -69,6 +70,20 @@ class _galleryState extends State<gallery> {
               color: Colors.black,
             ),
             onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.video_collection_rounded,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ToGif(),
+                ),
+              );
+            },
           )
         ],
         centerTitle: true,
