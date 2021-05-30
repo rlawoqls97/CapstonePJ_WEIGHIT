@@ -7,6 +7,7 @@ import 'package:weighit/screens/camera/ToGif.dart';
 import 'package:weighit/screens/camera/camera.dart';
 import 'package:weighit/screens/camera/gallery_tap.dart';
 import 'package:weighit/screens/camera/preview.dart';
+import 'package:weighit/screens/camera/toGIF.dart';
 
 class gallery extends StatefulWidget {
   @override
