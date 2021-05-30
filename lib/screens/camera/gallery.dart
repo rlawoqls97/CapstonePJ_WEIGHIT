@@ -6,6 +6,7 @@ import 'package:weighit/models/user_info.dart';
 import 'package:weighit/screens/camera/camera.dart';
 import 'package:weighit/screens/camera/gallery_tap.dart';
 import 'package:weighit/screens/camera/preview.dart';
+import 'package:weighit/screens/camera/toGIF.dart';
 
 class gallery extends StatefulWidget {
   @override
@@ -69,6 +70,20 @@ class _galleryState extends State<gallery> {
               color: Colors.black,
             ),
             onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.video_collection_rounded,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ToGif(),
+                ),
+              );
+            },
           )
         ],
         centerTitle: true,
