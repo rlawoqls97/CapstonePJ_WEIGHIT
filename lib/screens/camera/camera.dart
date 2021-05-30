@@ -170,10 +170,12 @@ class _CameraScreenState extends State<CameraScreen> {
                     width: size.width,
                     child: cameraPreview(),
                   ),
-                  Container(
+                  AspectRatio(
+                    aspectRatio: cameraController.value.aspectRatio,
+                    child: Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          fit: BoxFit.fill,
+                          fit: BoxFit.contain,
                           colorFilter: ColorFilter.mode(
                               Colors.black.withOpacity(0.4), BlendMode.dstATop),
                           image: _user.pickedUrl == ''
@@ -183,10 +185,10 @@ class _CameraScreenState extends State<CameraScreen> {
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
-                        height: size.height * 0.13,
+                        height: size.height * 0.1,
                         width: double.infinity,
                         padding: EdgeInsets.all(15),
-                        color: Colors.black,
+                        // color: Colors.black,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -196,6 +198,7 @@ class _CameraScreenState extends State<CameraScreen> {
                           ],
                         ),
                       ),
+                    ),
                     ),
                   ),
                 ],
